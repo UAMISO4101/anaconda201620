@@ -1,6 +1,8 @@
 #nofiticationForm{
-  .closing-date{
-    padding-right: 0;
-    width: 100%;
+  input{
+    &.closing-date{
+      padding-right: 0;
+      width: 100%;
+    }
   }
 }
