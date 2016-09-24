@@ -11,4 +11,4 @@ class HelloClassInJavascript extends  React.Component {
     }
 }
 
-ReactDOM.render(<HelloClassInJavascript />, document.getElementById('container'))
+ReactDOM.render(<HelloClassInJavascript />, document.getElementById('container'));
