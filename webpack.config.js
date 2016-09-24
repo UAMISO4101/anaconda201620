@@ -1,7 +1,8 @@
 //require our dependencies
-var path = require('path')
-var webpack = require('webpack')
-var BundleTracker = require('webpack-bundle-tracker')
+var path = require('path');
+var webpack = require('webpack');
+var BundleTracker = require('webpack-bundle-tracker');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     //the base directory (absolute path) for resolving the entry option
@@ -9,7 +10,12 @@ module.exports = {
     //the entry point we created earlier. Note that './' means
     //your current directory. You don't have to specify the extension  now,
     //because you will specify extensions later in the `resolve` section
-    entry: './assets/js/index',
+    entry: {
+		"main": [
+			'./assets/css/main.scss',
+			'./assets/js/index.js',
+		],
+	},
 
     output: {
         //where you want your compiled bundle to be stored
@@ -26,7 +32,9 @@ module.exports = {
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery'
-        })
+        }),
+        new ExtractTextPlugin("./css/main.css")
+
     ],
 
     module: {
@@ -43,7 +51,19 @@ module.exports = {
                     //specify that we will be dealing with React code
                     presets: ['react','es2015']
                 }
-            }
+            },
+            {
+				test: /\.scss$/,
+				loader: ExtractTextPlugin.extract('style', 'css!sass?indentedSyntax&includePaths[]=' + __dirname +  '/node_modules'),
+			},
+            {
+				test: /\.css$/,
+				loader: ExtractTextPlugin.extract("style", "css")
+			},
+			{
+				test: /\.(png|svg|woff|woff2|ttf|eot)$/,
+				loader: "url-loader"
+			}
         ]
     },
 
@@ -51,6 +71,6 @@ module.exports = {
         //tells webpack where to look for modules
         modulesDirectories: ['node_modules'],
         //extensions that should be used to resolve modules
-        extensions: ['', '.js', '.jsx']
+        extensions: ['', '.js', '.jsx','scss']
     }
 }
