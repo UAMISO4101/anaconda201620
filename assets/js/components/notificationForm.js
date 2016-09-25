@@ -19,8 +19,8 @@ class NotificationForm extends Component{
                             </div>
                         </div>
                         <div className="form-group">
-                            <div className=" col-sm-12">
-                                <div className="checkbox">
+                            <div className=" col-sm-12 text-center">
+                                <div className="checkbox closedCheckedbox">
                                     <label className="radio-inline"><input type="radio" name="optradio"/>Option 1</label>
                                     <label className="radio-inline"><input type="radio" name="optradio"/>Option 2</label>
                                 </div>
@@ -39,16 +39,16 @@ class NotificationForm extends Component{
                         <div className="form-group">
                             <div className=" col-sm-5">
                                 <h4><span className="label label-default" />Fecha Inicio<span/></h4>
-                                <input type="date" className="pull-left start-date "/>
+                                <input type="date" className="pull-left dates "/>
                             </div>
                             <div className="col-sm-offset-2 col-sm-5">
                                 <h4><span className="label label-default" />Fecha Cierre<span/></h4>
-                                <input type="date" className="pull-right closing-date"/>
+                                <input type="date" className="pull-right dates"/>
                             </div>
                         </div>
                         <div className="form-group">
-                            <div className=" col-sm-12">
-                                <button type="submit" className="btn btn-default">Submit</button>
+                            <div className="col-sm-push-4 col-sm-4 col-xs-12">
+                                <button type="submit" className="btn btn-success">¿Comenzamos?</button>
                             </div>
                         </div>
                     </form>
