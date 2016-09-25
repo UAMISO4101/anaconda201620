@@ -4,9 +4,9 @@ import React, {Component} from 'react';
 class NotificationForm extends Component{
     render(){
         return(
-            <div className="notificationForm row">
+            <div className="sd notificationForm row">
                 <div className="col-md-3"></div>
-                <div className="col-md-6">
+                <div className="col-md-6 sd borderForm" >
                     <form className="form-horizontal">
                         <div className="form-group">
                             <div className="col-sm-12">
@@ -28,12 +28,12 @@ class NotificationForm extends Component{
                         </div>
                         <div className="form-group">
                             <div className="col-sm-9">
-                                 <input type="text" className="form-control" id="requestList" placeholder="Lista de Solicitudes"/>
+                                <input type="text" className="form-control" id="requestList" placeholder="Lista de Solicitudes"/>
                             </div>
                             <div className="col-sm-3">
-                                 <button type="button" className="btn btn-default btn-sm pull-right">
-                                     <span className="glyphicon glyphicon-comment" aria-hidden="true"></span> Solicitud
-                                 </button>
+                                <button type="button" className="btn btn-default btn-sm pull-right">
+                                    <span className="glyphicon glyphicon-comment" aria-hidden="true"></span> Solicitud
+                                </button>
                             </div>
                         </div>
                         <div className="form-group">
@@ -53,9 +53,10 @@ class NotificationForm extends Component{
                         </div>
                     </form>
                 </div>
+
                 <div className="col-md-3"></div>
             </div>
         )}
-    }
+}
 
-    export default NotificationForm;
+export default NotificationForm;
