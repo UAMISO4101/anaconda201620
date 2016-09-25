@@ -6,9 +6,11 @@ import NotificationForm from './notificationForm';
 class App extends Component{
     render(){
         return(
-            <div className="container">
+            <div >
                 <Navbar/>
-                <NotificationForm/>
+                <div className="navbarMarginTopForContainer">
+                    <NotificationForm/>
+                </div>
             </div>
         )
     }
