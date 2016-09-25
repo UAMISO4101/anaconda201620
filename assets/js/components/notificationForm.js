@@ -4,10 +4,10 @@ import React, {Component} from 'react';
 class NotificationForm extends Component{
     render(){
         return(
-            <div className="row">
+            <div className="notificationForm row">
                 <div className="col-md-3"></div>
                 <div className="col-md-6">
-                    <form id="nofiticationForm" className="form-horizontal">
+                    <form className="form-horizontal">
                         <div className="form-group">
                             <div className="col-sm-12">
                                 <input type="text" className="form-control" id="requestName" placeholder="Nombre de convocatoria "/>
