@@ -1,15 +1,37 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 import { Modal, OverlayTrigger, Button } from 'react-bootstrap';
+import SweetAlert from 'sweetalert-react';
 
 import Requests from './requests';
-import {CA_DASHBOARD} from '../utils/constants';
+import {CA_DASHBOARD, SERVER_URL} from '../utils/constants';
+import { addRequest } from '../actions';
+
+const mapStateToProps = (state, router) => ({
+  request: state.request
+});
+
+
+const setWarning = (name=null, description=null, initialDate=null, closingDate=null, request=0) => {
+  let warning = "Llenar campos: \n";
+  warning = !name ? warning + "Nombre" : warning;
+  warning = !description ? warning + " ,Descripción" : warning;
+  warning = !initialDate ? warning + " ,Fecha inicio" : warning;
+  warning = !closingDate ? warning + " ,Fecha Final" : warning;
+  warning = request == 0 ? warning + " ,Solicitudes Vacia" : warning;
+  return warning
+}
 
 class NotificationForm extends Component{
 
   constructor(props){
     super(props);
-    this.state = {showModal: false};
+    this.state = {
+      showModal: false,
+      sweetAlertMessage: "",
+      type: "warning"
+    };
   }
 
   closeModal() { this.setState({ showModal: false }); }
@@ -18,6 +40,13 @@ class NotificationForm extends Component{
   render(){
     return(
       <div className="sd notificationForm row">
+        <SweetAlert
+            show={this.state.show}
+            type={this.state.type}
+            title="Campos vacios"
+            text={this.state.sweetAlertMessage}
+            onConfirm={() => this.setState({ show: false })}
+        />
         <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)}>
           <Modal.Header closeButton>
             <Modal.Title>Modal heading</Modal.Title>
@@ -92,18 +121,47 @@ class NotificationForm extends Component{
         let vPrivate     = ReactDOM.findDOMNode(this.refs.private).checked ? "PR" : false;
         let initialDate  = ReactDOM.findDOMNode(this.refs.initialDate).value;
         let closingDate  = ReactDOM.findDOMNode(this.refs.closingDate).value;
+        if(name
+          &&  description
+          &&  initialDate
+          &&  closingDate
+          && this.props.request.length !== 0){
+          let notificationObj = {
+            name, description, initialDate, closingDate,
+            notifycationType: vPublic || vPrivate,
+            request: this.props.request
+          }
+          this.postServer(notificationObj);
 
-        // let fRequests     = requests(); //<-- #ToDo set the REQUESTS ¿After or Before?
-        let notificationObj = {
-          name, description, initialDate, closingDate,
-          notifycationType: vPublic || vPrivate
+        }else{
+          this.setState({
+            sweetAlertMessage: setWarning(name, description, initialDate, closingDate,this.props.request.length),
+            type: "warning",
+            show: true
+          })
         }
-        this.props.onSave(Object.assign({}, this.props.notification, notificationObj));
-
-        console.log()
+        // let fRequests     = requests(); //<-- #ToDo set the REQUESTS ¿After or Before?
         // browserHistory.push(`${CA_DASHBOARD}/convocatorias`);
-
       }
-    }
+    postServer(notificationObj){
+      $.ajax({
+        method: "POST",
+        url: SERVER_URL,
+        data: JSON.stringify(notificationObj)
+      })
+      .done(( msg ) => {
+          alert( "Data Saved: " + msg );
+        })
+      .fail((err) => {
+        con
+        this.setState({
+          show: true,
+          type: "error",
+          sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
+        });
 
-    export default NotificationForm;
+      })
+    }
+}
+
+  export default connect(mapStateToProps)(NotificationForm);
