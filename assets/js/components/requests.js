@@ -89,7 +89,7 @@ class Requests extends Component {
           );
      }else{
         MylistGroupItem = props =>(
-              <ul class="list-group">
+              <ul className="list-group">
                 {this.props.request.map( rq => <Request rq={rq} key={rq.id}/> )}
               </ul>
           )

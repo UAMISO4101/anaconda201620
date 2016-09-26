@@ -3,7 +3,7 @@ import { ListGroupItem } from 'react-bootstrap'
 
 const Request = ({ rq }) => {
   return (
-    <li class="list-group-item">
+    <li className="list-group-item">
       {`${rq.name}, ${rq.features}.`}
     </li>);
 };
