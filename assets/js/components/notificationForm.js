@@ -98,7 +98,6 @@ class NotificationForm extends Component{
           name, description, initialDate, closingDate,
           notifycationType: vPublic || vPrivate
         }
-        debugger;
         this.props.onSave(Object.assign({}, this.props.notification, notificationObj));
 
         console.log()
