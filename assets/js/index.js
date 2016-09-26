@@ -20,12 +20,14 @@ function run () {
   let state = store.getState();
   ReactDOM.render((<Provider store={store}>
     <Router history={history}>
+
       <Route path='/' component={App} >
         <IndexRedirect to={CA_DASHBOARD} />
         <Route path="dashboard">
           <Route path="agente-comercial" component={NotificationForm} />
         </Route>
       </Route>
+
     </Router>
   </Provider>), document.getElementById("container"));
 }
