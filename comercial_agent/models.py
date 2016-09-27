@@ -3,11 +3,11 @@ from django.db import models
 
 # Create your models here.
 
-class Usuario(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
-    foto_perfil = models.ImageField(
+class AbsUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_picture = models.ImageField(
         null=False,
-        upload_to='fotosPerfiles',
+        upload_to='profilePictures',
         max_length=1000,
     )
 
@@ -15,69 +15,69 @@ class Usuario(models.Model):
         abstract = True
 
 
-class Artista(Usuario):
-    nombre_artistico = models.CharField(
+class Artist(AbsUser):
+    artistic_name = models.CharField(
         max_length=255,
     )
-    numero_cuenta = models.IntegerField()
-    direccion = models.CharField(
+    account_number = models.IntegerField()
+    address = models.CharField(
         max_length=150,
     )
-    ciudad = models.CharField(
+    city = models.CharField(
         max_length=30,
     )
-    pais = models.CharField(
+    country = models.CharField(
         max_length=30,
     )
-    telefono = models.IntegerField()
+    telephone = models.IntegerField()
 
 
-class AgenteComercial(Usuario):
-    nombre_empresa = models.CharField(
+class BusinessAgent(AbsUser):
+    company_name = models.CharField(
         max_length=255,
     )
-    direccion = models.CharField(
+    address = models.CharField(
         max_length=150,
     )
-    ciudad = models.CharField(
+    city = models.CharField(
         max_length=30,
     )
-    pais = models.CharField(
+    country = models.CharField(
         max_length=30,
     )
-    telefono = models.IntegerField()
+    telephone = models.IntegerField()
 
-class Administrador(Usuario):
-    telefono = models.IntegerField()
+class Manager(AbsUser):
+    telephone = models.IntegerField()
 
-class Convocatoria(models.Model):
-    PRIVADA = 'PR'
-    PUBLICA = 'PB'
-    TIPOS_CONVOCATORIA = (
-        (PRIVADA, 'Privada'),
-        (PUBLICA, 'Publica')
+class Notification(models.Model):
+    PRIVATE = 'PR'
+    PUBLIC = 'PB'
+    NOTIFICATION_TYPE = (
+        (PRIVATE, 'Privada'),
+        (PUBLIC, 'Publica')
     )
 
-    nombre = models.CharField(
+    name = models.CharField(
         max_length=255,
     )
-    fecha_inicio = models.DateField()
-    fecha_cierre = models.DateField()
-    descripcion = models.CharField(
+    initial_date = models.DateField()
+    closing_date = models.DateField()
+    description = models.CharField(
         max_length=510,
     )
-    tipo_convocatoria = models.CharField(
+    notification_type = models.CharField(
         max_length=2,
-        choices=TIPOS_CONVOCATORIA,
-        default=PUBLICA,
+        choices=NOTIFICATION_TYPE,
+        default=PUBLIC,
     )
 
 
-class SolicitudObra(models.Model):
-    nombre = models.CharField(
+class ArtworkRequest(models.Model):
+    name = models.CharField(
         max_length=255,
     )
-    caracteristicas = models.CharField(
+    features = models.CharField(
         max_length=1020,
     )
-    convocatoria = models.ForeignKey(Convocatoria, null=False)
+    notification = models.ForeignKey(Notification, null=False)
