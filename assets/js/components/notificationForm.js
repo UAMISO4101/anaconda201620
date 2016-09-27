@@ -50,7 +50,7 @@ class NotificationForm extends Component{
         <SweetAlert
             show={this.state.show}
             type={this.state.type}
-            title="Campos vacios"
+            title={this.state.sweetAlertTitle}
             text={this.state.sweetAlertMessage}
             onConfirm={() => this.setState({ show: false })}
         />
@@ -128,8 +128,8 @@ class NotificationForm extends Component{
         let vPrivate     = ReactDOM.findDOMNode(this.refs.private).checked ? "PR" : false;
         let initialDate  = ReactDOM.findDOMNode(this.refs.initialDate).value;
         let closingDate  = ReactDOM.findDOMNode(this.refs.closingDate).value;
-        let inialD = new Date(initialDate);
-        let closingD = new Date(closingDate);
+        let inialD = this.formatDate(initialDate);
+        let closingD = this.formatDate(closingDate);
         let today = new Date();
 
         if(name
@@ -141,7 +141,7 @@ class NotificationForm extends Component{
           && inialD > today){
           let notificationObj = {
             name, description, initialDate, closingDate,
-            notifycationType: vPublic || vPrivate,
+            notificationType: vPublic || vPrivate,
             request: this.props.request
           }
           this.postServer(notificationObj);
@@ -155,10 +155,16 @@ class NotificationForm extends Component{
           })
         }
       }
+
+
+    formatDate(date){
+        return new Date(new Date(date).valueOf() + new Date().getTimezoneOffset()*60000);
+    }
+
     postServer(notificationObj){
       $.ajax({
         method: "POST",
-        url: SERVER_URL,
+        url: `${SERVER_URL}/comercial_agent/create-notification/`,
         data: JSON.stringify(notificationObj),
 
       })
