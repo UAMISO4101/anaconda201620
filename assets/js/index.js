@@ -15,6 +15,7 @@ const history = syncHistoryWithStore(hashHistory, store);
 
 import App from './components/app';
 import NotificationForm from './components/notificationForm';
+import Page404 from './components/page404';
 
 function run () {
   let state = store.getState();
@@ -27,7 +28,7 @@ function run () {
           <Route path="agente-comercial" component={NotificationForm} />
         </Route>
       </Route>
-
+      <Route path="*" component={Page404} />
     </Router>
   </Provider>), document.getElementById("container"));
 }
