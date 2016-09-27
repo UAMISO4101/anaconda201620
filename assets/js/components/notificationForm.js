@@ -17,12 +17,14 @@ const setWarning = (name=null, description=null, initialDate=null, closingDate=n
   let warning = "Llenar campos: \n";
   let initialD = new Date(initialDate);
   let closingD = new Date(closingDate);
+  let today = new Date();
   warning = !name ? warning + "Nombre" : warning;
   warning = !description ? warning + " ,Descripción" : warning;
   warning = !initialDate ? warning + " ,Fecha inicio" : warning;
   warning = !closingDate ? warning + " ,Fecha Final" : warning;
   warning = !closingDate ? warning + " ,Fecha Final" : warning;
   warning = initialD > closingD ? warning + " ,Fecha final menor a la inicial" : warning;
+  warning = initialD > today ? warning + " ,Fecha inicial debe ser mayor a hoy" : warning;
   warning = request == 0 ? warning + " ,Solicitudes Vacia" : warning;
   return warning
 }
@@ -34,6 +36,7 @@ class NotificationForm extends Component{
     this.state = {
       showModal: false,
       sweetAlertMessage: "",
+      sweetAlertTitle: "",
       type: "warning"
     };
   }
@@ -126,14 +129,16 @@ class NotificationForm extends Component{
         let initialDate  = ReactDOM.findDOMNode(this.refs.initialDate).value;
         let closingDate  = ReactDOM.findDOMNode(this.refs.closingDate).value;
         let inialD = new Date(initialDate);
-        let closingD = new Date(closingD);
+        let closingD = new Date(closingDate);
+        let today = new Date();
 
         if(name
           &&  description
           &&  initialDate
           &&  closingDate
           && this.props.request.length !== 0
-          && inialD.getTime() < closingD.getTime() ){
+          && inialD.getTime() < closingD.getTime()
+          && inialD > today){
           let notificationObj = {
             name, description, initialDate, closingDate,
             notifycationType: vPublic || vPrivate,
@@ -144,6 +149,7 @@ class NotificationForm extends Component{
         }else{
           this.setState({
             sweetAlertMessage: setWarning(name, description, initialDate, closingDate,this.props.request.length),
+            sweetAlertTitle: "Campos vacios",
             type: "warning",
             show: true
           })
@@ -153,15 +159,17 @@ class NotificationForm extends Component{
       $.ajax({
         method: "POST",
         url: SERVER_URL,
-        data: JSON.stringify(notificationObj)
+        data: JSON.stringify(notificationObj),
+
       })
       .done(( msg ) => {
           alert( "Data Saved: " + msg );
         })
       .fail((err) => {
-        con
+        console.error(err);
         this.setState({
           show: true,
+          sweetAlertTitle: "Error Servidor",
           type: "error",
           sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
         });
@@ -170,4 +178,4 @@ class NotificationForm extends Component{
     }
 }
 
-  export default connect(mapStateToProps)(NotificationForm);
+export default connect(mapStateToProps)(NotificationForm);
