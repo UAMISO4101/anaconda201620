@@ -15,10 +15,14 @@ const mapStateToProps = (state, router) => ({
 
 const setWarning = (name=null, description=null, initialDate=null, closingDate=null, request=0) => {
   let warning = "Llenar campos: \n";
+  let initialD = new Date(initialDate);
+  let closingD = new Date(closingDate);
   warning = !name ? warning + "Nombre" : warning;
   warning = !description ? warning + " ,Descripción" : warning;
   warning = !initialDate ? warning + " ,Fecha inicio" : warning;
   warning = !closingDate ? warning + " ,Fecha Final" : warning;
+  warning = !closingDate ? warning + " ,Fecha Final" : warning;
+  warning = initialD > closingD ? warning + " ,Fecha final menor a la inicial" : warning;
   warning = request == 0 ? warning + " ,Solicitudes Vacia" : warning;
   return warning
 }
@@ -121,11 +125,15 @@ class NotificationForm extends Component{
         let vPrivate     = ReactDOM.findDOMNode(this.refs.private).checked ? "PR" : false;
         let initialDate  = ReactDOM.findDOMNode(this.refs.initialDate).value;
         let closingDate  = ReactDOM.findDOMNode(this.refs.closingDate).value;
+        let inialD = new Date(initialDate);
+        let closingD = new Date(closingD);
+
         if(name
           &&  description
           &&  initialDate
           &&  closingDate
-          && this.props.request.length !== 0){
+          && this.props.request.length !== 0
+          && inialD.getTime() < closingD.getTime() ){
           let notificationObj = {
             name, description, initialDate, closingDate,
             notifycationType: vPublic || vPrivate,
@@ -140,8 +148,6 @@ class NotificationForm extends Component{
             show: true
           })
         }
-        // let fRequests     = requests(); //<-- #ToDo set the REQUESTS ¿After or Before?
-        // browserHistory.push(`${CA_DASHBOARD}/convocatorias`);
       }
     postServer(notificationObj){
       $.ajax({
