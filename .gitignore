@@ -4,3 +4,4 @@ node_modules/
 .idea/
 assests/
 comercial_agent/migrations/
+*.exe
