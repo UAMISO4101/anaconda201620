@@ -15,7 +15,7 @@ const history = syncHistoryWithStore(hashHistory, store);
 
 import App from './components/app';
 import NotificationForm from './components/notificationForm';
-import IndexContent from './components/indexContent';
+import SoundtracksContent from './components/soundtracksContent';
 import Page404 from './components/page404';
 
 function run () {
@@ -25,7 +25,7 @@ function run () {
 
       <Route path='/' component={App} >
         <IndexRedirect to='/home' />
-        <Route path="home" component={IndexContent} />
+        <Route path="home" component={SoundtracksContent} />
         <Route path="dashboard">
           <Route path="agente-comercial" component={NotificationForm} />
         </Route>
