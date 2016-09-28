@@ -7,28 +7,7 @@ import SweetAlert from 'sweetalert-react';
 import { SERVER_URL} from '../utils/constants';
 import { addRequest } from '../actions';
 
-const mapStateToProps = (state, router) => ({
-  request: state.request
-});
 
-
-var products = [{
-      id: 1,
-      sound: "my sound",
-      type: "A",
-      artist: "Item name 1",
-      popularity: 3
-  },{
-    id: 2,
-    sound: "my sound2",
-    type: "B",
-    artist: "Item name 2",
-    popularity: 2.4
-  }];
-// It's a data format example.
-function priceFormatter(cell, row){
-  return '<i class="glyphicon glyphicon-usd"></i> ' + cell;
-}
 
 class IndexContent extends Component{
 
@@ -39,6 +18,11 @@ class IndexContent extends Component{
       sweetAlertTitle: "",
       type: "error"
     };
+
+  }
+  componentDidMount(){
+    console.log("IndexContent Mounted!")
+    this.props.fetchSoundTracks();
   }
 
   closeModal() { this.setState({ showModal: false }); }
@@ -46,28 +30,35 @@ class IndexContent extends Component{
 
   render(){
     return(
-      <div className="sd notificationForm row">
+      <div className="index-content">
 
           <SweetAlert
-              show={this.state.show}
-              type={this.state.type}
-              title="Error"
-              text={this.state.sweetAlertMessage}
-              onConfirm={() => this.setState({ show: false })}
+              show={this.props.saModal.show}
+              type={this.props.saModal.type}
+              title={this.props.saModal.title}
+              text={this.props.saModal.text}
+              onConfirm={() => this.props.hideSAModal()}
           />
-
-          <div className="col-sm-push-1 col-sm-9 col-xs-12 " >
-            <BootstrapTable data={products} striped={true} hover={true}>
-               <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
-               <TableHeaderColumn dataField="sound" dataAlign="center" dataSort={true}>Sonido</TableHeaderColumn>
-               <TableHeaderColumn dataField="type" dataSort={true}>Tipo</TableHeaderColumn>
-               <TableHeaderColumn dataField="artist" >Artista</TableHeaderColumn>
-               <TableHeaderColumn dataField="popularity"  dataSort={true} >Popularidad</TableHeaderColumn>
-           </BootstrapTable>,
+          <div className="row">
+            <div className="col-sm-push-3 col-sm-8 col-xs-12 " >
+                <h1>Nuestros Sonidos de Moda</h1>
+                <br/>  <br/>  <br/>
+            </div>
+          </div>
+          <div className="row" >
+            <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
+              <BootstrapTable data={this.props.soundtracks } striped={true} hover={true}>
+                 <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
+                 <TableHeaderColumn dataField="sound" dataAlign="center" dataSort={true}>Sonido</TableHeaderColumn>
+                 <TableHeaderColumn dataField="type" dataSort={true}>Tipo</TableHeaderColumn>
+                 <TableHeaderColumn dataField="artist" >Artista</TableHeaderColumn>
+                 <TableHeaderColumn dataField="popularity"  dataSort={true} >Popularidad</TableHeaderColumn>
+             </BootstrapTable>,
+            </div>
           </div>
         </div>
       )
     }
 }
 
-export default connect(mapStateToProps)(IndexContent);
+export default IndexContent;
