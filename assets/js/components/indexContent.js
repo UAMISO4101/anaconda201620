@@ -3,20 +3,25 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import SweetAlert from 'sweetalert-react';
-import StarRating from 'react-star-rating'
+import StarRatingComponent from 'react-star-rating-component';
 
 
 
 import { SERVER_URL} from '../utils/constants';
 import { addRequest } from '../actions';
 
-
+const startsFormatter = (cell, row) => {
+  return (<StarRatingComponent
+                      name="rate2"
+                      editing={false}
+                      renderStarIcon={() => <span></span>}
+                      starCount={5}
+                      value={3}
+                  />)
+}
 
 class IndexContent extends Component{
 
-  constructor(props){
-    super(props);
-  }
   componentDidMount(){
     console.log("IndexContent Mounted!")
     this.props.fetchSoundTracks();
@@ -24,14 +29,12 @@ class IndexContent extends Component{
 
   closeModal() { this.setState({ showModal: false }); }
   openModal() { this.setState({ showModal: true }); }
-  startsFormatter (cell, row) {
-    return <StarRating name="small-rating" caption="" size={10} totalStars={5} rating={cell} />
-  }
+
 
   render(){
+
     return(
       <div className="index-content">
-
           <SweetAlert
               show={this.props.saModal.show}
               type={this.props.saModal.type}
@@ -52,7 +55,7 @@ class IndexContent extends Component{
                  <TableHeaderColumn dataField="sound" dataAlign="center" dataSort={true}>Sonido</TableHeaderColumn>
                  <TableHeaderColumn dataField="type" dataSort={true}>Tipo</TableHeaderColumn>
                  <TableHeaderColumn dataField="artist" >Artista</TableHeaderColumn>
-                 <TableHeaderColumn dataField="rating"  dataSort={true} dataFormat={this.startsFormatter} >Rating</TableHeaderColumn>
+                 <TableHeaderColumn dataField="rating"  dataSort={true} dataFormat={startsFormatter} >Rating</TableHeaderColumn>
                  <TableHeaderColumn dataField="likes"  dataSort={true} >Likes</TableHeaderColumn>
              </BootstrapTable>,
             </div>
