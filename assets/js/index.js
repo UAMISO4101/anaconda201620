@@ -22,7 +22,6 @@ function run () {
   let state = store.getState();
   ReactDOM.render((<Provider store={store}>
     <Router history={history}>
-
       <Route path='/' component={App} >
         <IndexRedirect to='/home' />
         <Route path="home" component={SoundtracksContent} />

@@ -11,7 +11,8 @@ export const request = (state=[], action) => {
   }
 };
 
-export const saModal = (state={show: false,type: "error", title: "",text: ""}, action) => {
+const modalDefault = {show: false,type: "error", title: "",text: ""};
+export const saModal = (state=modalDefault, action) => {
   let ma = {};
   switch (action.type) {
     case 'HIDE_SA_MODALS':
@@ -28,9 +29,8 @@ export const saModal = (state={show: false,type: "error", title: "",text: ""}, a
       return state ;
   }
 };
-
-export const soundtracks = (state=[{ id: 1, sound: "", type: "", artist: "", popularity: "" }],
-                              action) => {
+const soundtrackDefault = { id: 1, sound: "", type: "", artist: "", rating: 0, likes: "" };
+export const soundtracks = (state=[soundtrackDefault],  action) => {
   switch (action.type) {
     case 'GET_SOUNDTRACKS':
       return action.data || state;
