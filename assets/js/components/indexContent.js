@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import SweetAlert from 'sweetalert-react';
 import StarRatingComponent from 'react-star-rating-component';
-
+import FaApple from 'react-icons/lib/fa/apple';
 
 
 import { SERVER_URL} from '../utils/constants';
@@ -14,7 +14,7 @@ const startsFormatter = (cell, row) => {
   return (<StarRatingComponent
                       name="rate2"
                       editing={false}
-                      renderStarIcon={() => <span></span>}
+                      renderStarIcon={() => <span><FaApple /></span>}
                       starCount={5}
                       value={3}
                   />)
@@ -35,6 +35,7 @@ class IndexContent extends Component{
 
     return(
       <div className="index-content">
+
           <SweetAlert
               show={this.props.saModal.show}
               type={this.props.saModal.type}
