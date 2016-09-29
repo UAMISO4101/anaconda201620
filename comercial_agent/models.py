@@ -3,6 +3,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class AbsUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(
@@ -47,8 +48,10 @@ class BusinessAgent(AbsUser):
     )
     telephone = models.IntegerField()
 
+
 class Manager(AbsUser):
     telephone = models.IntegerField()
+
 
 class Notification(models.Model):
     PRIVATE = 'PR'
@@ -81,3 +84,28 @@ class ArtworkRequest(models.Model):
         max_length=1020,
     )
     notification = models.ForeignKey(Notification, null=False)
+
+
+class Artwork(models.Model):
+    name = models.CharField(
+        max_length=255,
+    )
+    ratingCount = models.IntegerField()
+    likesCount = models.IntegerField()
+    dislikesCount = models.IntegerField()
+    playsCount = models.IntegerField()
+    averageRating = models.IntegerField()
+    tags = models.ListField()
+
+    class Meta:
+        abstract = True
+
+
+class Sound(Artwork):
+    type = models.ForeignKey(SoundType, null=False)
+
+
+class SoundType(models.Model):
+    name = models.CharField(
+        max_length=50,
+    )
