@@ -152,4 +152,9 @@ class Sound(Artwork):
     type = models.ForeignKey(SoundType, null=False)
 
 
+class Album(Artwork):
+    genre = models.ForeignKey(Genre, null=False)
 
+
+class Song(Artwork):
+    song_album = models.ForeignKey(Album, null=False)
