@@ -15,15 +15,16 @@ const history = syncHistoryWithStore(hashHistory, store);
 
 import App from './components/app';
 import NotificationForm from './components/notificationForm';
+import SoundtracksContent from './components/soundtracksContent';
 import Page404 from './components/page404';
 
 function run () {
   let state = store.getState();
   ReactDOM.render((<Provider store={store}>
     <Router history={history}>
-
       <Route path='/' component={App} >
-        <IndexRedirect to={CA_DASHBOARD} />
+        <IndexRedirect to='/home' />
+        <Route path="home" component={SoundtracksContent} />
         <Route path="dashboard">
           <Route path="agente-comercial" component={NotificationForm} />
         </Route>
