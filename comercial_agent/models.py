@@ -94,6 +94,12 @@ class ArtworkRequest(models.Model):
 class ArtworkCollection(models.Model):
     artist = models.OneToOneField(Artist, null=False)
 
+    def __str__(self):
+        return ''.join([
+            self.artist.artistic_name,
+            ' Collection',
+        ])
+
 
 class Artwork(models.Model):
     name = models.CharField(
