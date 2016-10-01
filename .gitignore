@@ -7,3 +7,4 @@ assets/bundles
 comercial_agent/migrations/
 */*.pyc
 */*/*.pyc
+profilePictures/
