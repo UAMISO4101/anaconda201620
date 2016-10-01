@@ -95,17 +95,24 @@ class Artwork(models.Model):
     dislikesCount = models.IntegerField()
     playsCount = models.IntegerField()
     averageRating = models.IntegerField()
-    tags = models.ListField()
 
-    class Meta:
-        abstract = True
+    artists = models.ManyToManyField(Artist, blank=True)
 
 
-class Sound(Artwork):
-    type = models.ForeignKey(SoundType, null=False)
+class Tag(models.Model):
+    name = models.CharField(
+        max_length=255,
+    )
+    artwork = models.ForeignKey(Artwork, null=False)
 
 
 class SoundType(models.Model):
     name = models.CharField(
         max_length=50,
     )
+
+
+class Sound(Artwork):
+    type = models.ForeignKey(SoundType, null=False)
+
+
