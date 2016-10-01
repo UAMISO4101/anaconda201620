@@ -44,30 +44,28 @@ def create_notification(request):
 
 
 def get_artworks(request):
-    if request.method == 'POST':
-        if request.is_ajax():
 
-            sounds_response = {}
-            sounds_array = []
+    print ('Entra a get artworks')
 
-            sounds_model = Sound.objects.all()
+    sounds_response = {}
+    sounds_array = []
 
-            for sound in sounds_model:
-                sound_id = sound.pk
-                sound_name = sound.name
-                sound_type = sound.type.name
-                sound_artist = sound.artists.get(0).name
-                sound_rating = {{ sound.averageRating|floatformat:"0" }}
-                sound_likes = sound.likesCount
+    sounds_model = Sound.objects.all()
 
-                print (sound_id, sound_name, sound_type, sound_artist, sound_rating, sound_likes)
+    for sound in sounds_model:
+        sound_id = sound.pk
+        sound_name = sound.name
+        sound_type = sound.type.name
+        sound_artist = sound.collection.artist.artistic_name
+        sound_rating = sound.averageRating
+        sound_likes = sound.likesCount
 
-                sound_record = {"id":sound_id,"sound":sound_name,"type":sound_type,"artist":sound_artist,"rating":sound_rating,"likes":sound_likes}
+        sound_record = {"id":sound_id,"sound":sound_name,"type":sound_type,"artist":sound_artist,"rating":sound_rating,"likes":sound_likes}
 
-                print (sound_record)
+        sounds_array.append(sound_record)
 
-                sounds_array.append(sound_record)
+    sounds_response = sounds_array
 
-            sounds_response = sounds_array
+    print(sounds_response)
 
-            return JsonResponse(sounds_response)
+    return JsonResponse(dict(sounds=sounds_response))
