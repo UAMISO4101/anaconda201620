@@ -112,6 +112,12 @@ class Artwork(models.Model):
     averageRating = models.IntegerField()
     collection = models.ForeignKey(ArtworkCollection, null=False)
 
+    def __str__(self):
+        return ''.join([
+            self.name + ' - ',
+            self.collection.artist.artistic_name,
+        ])
+
 
 class Tag(models.Model):
     name = models.CharField(
@@ -131,13 +137,19 @@ class SoundType(models.Model):
         ])
 
 
-class Sound(Artwork):
-    type = models.ForeignKey(SoundType, null=False)
+class Genre(models.Model):
+    name = models.CharField(
+        max_length=100,
+    )
 
     def __str__(self):
         return ''.join([
-            self.name + ' - ',
-            self.collection.artist.artistic_name,
+            self.name,
         ])
+
+
+class Sound(Artwork):
+    type = models.ForeignKey(SoundType, null=False)
+
 
 
