@@ -16,7 +16,7 @@ const startsFormatter = (cell, row) => {
                       editing={false}
                       renderStarIcon={() => <span><FaApple /></span>}
                       starCount={5}
-                      value={3}
+                      value={cell}
                   />)
 }
 
