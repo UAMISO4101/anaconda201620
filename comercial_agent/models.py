@@ -32,6 +32,11 @@ class Artist(AbsUser):
     )
     telephone = models.IntegerField()
 
+    def __str__(self):
+        return ''.join([
+            self.artistic_name,
+        ])
+
 
 class BusinessAgent(AbsUser):
     company_name = models.CharField(
@@ -86,6 +91,10 @@ class ArtworkRequest(models.Model):
     notification = models.ForeignKey(Notification, null=False)
 
 
+class ArtworkCollection(models.Model):
+    artist = models.OneToOneField(Artist, null=False)
+
+
 class Artwork(models.Model):
     name = models.CharField(
         max_length=255,
@@ -95,8 +104,7 @@ class Artwork(models.Model):
     dislikesCount = models.IntegerField()
     playsCount = models.IntegerField()
     averageRating = models.IntegerField()
-
-    artists = models.ManyToManyField(Artist, blank=True)
+    collection = models.ForeignKey(ArtworkCollection, null=False)
 
 
 class Tag(models.Model):
@@ -110,6 +118,11 @@ class SoundType(models.Model):
     name = models.CharField(
         max_length=50,
     )
+
+    def __str__(self):
+        return ''.join([
+            self.name,
+        ])
 
 
 class Sound(Artwork):
