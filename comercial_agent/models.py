@@ -134,4 +134,10 @@ class SoundType(models.Model):
 class Sound(Artwork):
     type = models.ForeignKey(SoundType, null=False)
 
+    def __str__(self):
+        return ''.join([
+            self.name + ' - ',
+            self.collection.artist.artistic_name,
+        ])
+
 
