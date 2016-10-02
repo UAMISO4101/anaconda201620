@@ -80,6 +80,11 @@ class Notification(models.Model):
         default=PUBLIC,
     )
 
+    def __str__(self):
+        return ''.join([
+            self.name,
+        ])
+
 
 class ArtworkRequest(models.Model):
     name = models.CharField(
@@ -89,6 +94,11 @@ class ArtworkRequest(models.Model):
         max_length=1020,
     )
     notification = models.ForeignKey(Notification, null=False)
+
+    def __str__(self):
+        return ''.join([
+            self.name,
+        ])
 
 
 class ArtworkCollection(models.Model):
@@ -124,6 +134,11 @@ class Tag(models.Model):
         max_length=255,
     )
     artwork = models.ForeignKey(Artwork, null=False)
+
+    def __str__(self):
+        return ''.join([
+            self.name,
+        ])
 
 
 class SoundType(models.Model):
