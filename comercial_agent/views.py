@@ -6,6 +6,8 @@ from django.template.defaultfilters import floatformat
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from django.shortcuts import render
+from datetime import datetime, timedelta
+
 
 # Create your views here.
 from rest_framework import status
@@ -43,14 +45,19 @@ def create_notification(request):
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 
-def get_artworks(request):
-
-    print ('Entra a get artworks')
+def get_artworks(request,artwork_type):
 
     sounds_response = {}
     sounds_array = []
-
-    sounds_model = Sound.objects.all()
+    sounds_model = None
+    if artwork_type == "":
+        sounds_model = Sound.objects.all()
+    elif artwork_type == "popular":
+        sounds_model = Sound.objects.filter(ratingCount >= 4)
+    elif artwork_type == "recent":
+        sounds_model = Sound.objects.order_by('created_at')[:10]
+    else:
+        return JsonResponse({'status':'false','message':message}, status=400)
 
     for sound in sounds_model:
         sound_id = sound.pk
