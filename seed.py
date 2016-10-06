@@ -1,9 +1,11 @@
 #from django.contrib.auth.models import User
+# python manage.py shell << seed.py
 import os
 
 import django
 
 from comercial_agent.models import Artist, ArtworkCollection, SoundType, Genre, Album, Song, Sound
+
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sonidos_libres.settings")
 

@@ -6,4 +6,5 @@ node_modules/
 assets/bundles
 */*.pyc
 */*/*.pyc
+comercial_agent/migrations
 profilePictures/

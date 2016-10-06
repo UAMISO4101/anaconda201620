@@ -7,9 +7,10 @@ export const hideSAModal = () => ({ type: 'HIDE_SA_MODALS' });
 
 export const fetchSoundTracks = () => {
   return dispatch => {
+    // #FixMe all in line 13 should be dynamic
     jQuery.ajax({
         method: "GET",
-        url: `${SERVER_URL}/comercial_agent/get-sounds/`,
+        url: `${SERVER_URL}/comercial_agent/get-sounds/all`,
         statusCode: {
         200: (data) => {
           dispatch(getSoundTracks(data))
