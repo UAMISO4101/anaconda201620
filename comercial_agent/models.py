@@ -166,6 +166,9 @@ class Genre(models.Model):
         ])
 
 
+class Sound(Artwork):
+    type = models.ForeignKey(SoundType, null=False)
+
 
 class Album(Artwork):
     genre = models.ForeignKey(Genre, null=False)
