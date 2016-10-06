@@ -32,7 +32,7 @@ class IndexContent extends Component{
 
 
   render(){
-
+    console.log(this.props.soundtracks);
     return(
       <div className="index-content">
 
