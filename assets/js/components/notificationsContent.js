@@ -12,9 +12,9 @@ const mapStateToProps = (state, router) => ({
   saModal: state.saModal
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetchNotifications: () => dispatch(fetchNotifications()),
-  hideSAModal: () => dispatch(hideSAModal())
-});
+// const mapDispatchToProps = dispatch => ({
+//   fetchNotifications: () => dispatch(fetchNotifications()),
+//   hideSAModal: () => dispatch(hideSAModal())
+// });
 
-export default connect(mapStateToProps,mapDispatchToProps)(Notifications);
+export default connect(mapStateToProps,{fetchNotifications, hideSAModal})(Notifications);
