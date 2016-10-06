@@ -16,12 +16,11 @@ const startsFormatter = (cell, row) => {
                       editing={false}
                       renderStarIcon={() => <span><FaApple /></span>}
                       starCount={5}
-                      value={3}
+                      value={cell}
                   />)
 }
 
 class IndexContent extends Component{
-
   componentDidMount(){
     console.log("IndexContent Mounted!")
     this.props.fetchSoundTracks();
@@ -32,7 +31,6 @@ class IndexContent extends Component{
 
 
   render(){
-
     return(
       <div className="index-content">
 
@@ -51,7 +49,7 @@ class IndexContent extends Component{
           </div>
           <div className="row" >
             <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
-              <BootstrapTable data={this.props.soundtracks } striped={true} hover={true}>
+              <BootstrapTable data={this.props.soundtracks.sounds } striped={true} hover={true}>
                  <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
                  <TableHeaderColumn dataField="sound" dataAlign="center" dataSort={true}>Sonido</TableHeaderColumn>
                  <TableHeaderColumn dataField="type" dataSort={true}>Tipo</TableHeaderColumn>

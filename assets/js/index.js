@@ -15,7 +15,9 @@ const history = syncHistoryWithStore(hashHistory, store);
 
 import App from './components/app';
 import NotificationForm from './components/notificationForm';
+import Notification from './components/notifications';
 import SoundtracksContent from './components/soundtracksContent';
+import NotificationContent from './components/notificationsContent';
 import Page404 from './components/page404';
 
 function run () {
@@ -27,6 +29,7 @@ function run () {
         <Route path="home" component={SoundtracksContent} />
         <Route path="dashboard">
           <Route path="agente-comercial" component={NotificationForm} />
+            <Route path="convocatorias" component={NotificationContent} />
         </Route>
       </Route>
       <Route path="*" component={Page404} />

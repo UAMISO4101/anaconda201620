@@ -29,10 +29,11 @@ export const saModal = (state=modalDefault, action) => {
       return state ;
   }
 };
-const soundtrackDefault = { id: 1, sound: "", type: "", artist: "", rating: 0, likes: "" };
-export const soundtracks = (state=[soundtrackDefault],  action) => {
+const soundtrackDefault = {"sounds":[{ id: 0, sound: "", type: "", artist: "", rating: 0, likes: "" }]};
+export const soundtracks = (state=soundtrackDefault,  action) => {
   switch (action.type) {
     case 'GET_SOUNDTRACKS':
+      console.log(action.data);
       return action.data || state;
       break;
     default:

@@ -8,7 +8,8 @@ from django.http import JsonResponse
 # Create your views here.
 from rest_framework import status
 from .models import *
-from comercial_agent.models import ArtworkRequest, Notification
+from comercial_agent.models import ArtworkRequest, Notification, Sound
+
 
 
 def index(request):
@@ -47,3 +48,31 @@ def notification_json(request):
     dict_notification = [notification.as_dict() for notification in notifications]
 
     return JsonResponse({'notifications': dict_notification}, safe=False)
+
+
+def get_artworks(request):
+
+    print ('Entra a get artworks')
+
+    sounds_response = {}
+    sounds_array = []
+
+    sounds_model = Sound.objects.all()
+
+    for sound in sounds_model:
+        sound_id = sound.pk
+        sound_name = sound.name
+        sound_type = sound.type.name
+        sound_artist = sound.collection.artist.artistic_name
+        sound_rating = sound.averageRating
+        sound_likes = sound.likesCount
+
+        sound_record = {"id":sound_id,"sound":sound_name,"type":sound_type,"artist":sound_artist,"rating":sound_rating,"likes":sound_likes}
+
+        sounds_array.append(sound_record)
+
+    sounds_response = sounds_array
+
+    print(sounds_response)
+    print(dict(sounds=sounds_response))
+    return JsonResponse(dict(sounds=sounds_response))
