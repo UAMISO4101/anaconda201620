@@ -6,7 +6,13 @@ import FaEdit from 'react-icons/lib/fa/edit';
 
 import {Checkbox} from 'react-bootstrap';
 
-
+const getNotificationId = notification => {
+  let str = notification.target.id
+  let regex = /[^edit-|publish-]/g
+  let notificationID =str.match(regex);
+  console.log(`notification ID: ${notificationID}`)
+  return notificationID
+}
 class Notifications extends Component {
 
   constructor(props){
@@ -24,20 +30,20 @@ class Notifications extends Component {
   formatEdit(cell, row){;
       return (<button onClick={this.editClick}
                         name="btnRequests"
-                        ref={`edit-${cell}`}
+                        id={`edit-${cell}`}
                     ><FaEdit /></button>);
   }
   formatPublish(cell, row) {;
       return (<Checkbox
               onClick={this.publishClick.bind(this)}
-              ref={`publish-${cell}`}
+              id={`publish-${cell}`}
               />);
   }
-  editClick(){
-    console.log(this.refs);
+  editClick(notification){
+    this.props.editNotification(getNotificationId(notification));
   }
-  publishClick(){
-    console.log(this.refs);
+  publishClick(notification){
+    this.props.publishNotification(getNotificationId(notification));
   }
 
   closeModal() { this.setState({ showModal: false }); }

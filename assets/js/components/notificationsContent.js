@@ -1,9 +1,15 @@
 /**
- * Created by danielordonez on 10/5/16.
- */
+* Created by danielordonez on 10/5/16.
+*/
 import Notifications from './notifications'
 import { SERVER_URL } from '../utils/constants';
-import { fetchNotifications, showSAModal, hideSAModal } from '../actions';
+import {
+  editNotification,
+  fetchNotifications,
+  hideSAModal,
+  publishNotification,
+  showSAModal,
+} from '../actions';
 
 import { connect } from 'react-redux';
 
@@ -12,9 +18,10 @@ const mapStateToProps = (state, router) => ({
   saModal: state.saModal
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   fetchNotifications: () => dispatch(fetchNotifications()),
-//   hideSAModal: () => dispatch(hideSAModal())
-// });
-
-export default connect(mapStateToProps,{fetchNotifications, hideSAModal})(Notifications);
+const mapDispatchToProps = dispatch => ({
+  editNotification: (id) => {dispatch(editNotification)},
+  fetchNotifications: () => dispatch(fetchNotifications()),
+  hideSAModal: () => dispatch(hideSAModal()),
+  publishNotification: (id) => {dispatch(publishNotification)}
+})
+export default connect(mapStateToProps,mapDispatchToProps)(Notifications);
