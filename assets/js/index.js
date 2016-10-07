@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux';
-import { Router, Route, hashHistory, IndexRedirect } from 'react-router';
+import { Router, Route, hashHistory, IndexRedirect,IndexRoute } from 'react-router';
 import { CA_DASHBOARD } from './utils/constants';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import thunkMiddleware from 'redux-thunk';
@@ -25,10 +25,11 @@ function run () {
   ReactDOM.render((<Provider store={store}>
     <Router history={history}>
       <Route path='/' component={App} >
-        <IndexRedirect to='/home' />
-        <Route path="home" component={SoundtracksContent} />
+        <IndexRedirect to='/' />
+        <IndexRoute component={SoundtracksContent} />
         <Route path="dashboard">
-          <Route path="agente-comercial" component={NotificationForm} />
+          <Route path="agente-comercial" />
+            <IndexRoute component={NotificationForm} />
             <Route path="convocatorias" component={NotificationContent} />
         </Route>
       </Route>
