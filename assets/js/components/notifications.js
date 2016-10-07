@@ -2,29 +2,48 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { BootstrapTable, TableHeaderColumn, Button } from 'react-bootstrap-table';
-import SweetAlert from 'sweetalert-react';
+import FaEdit from 'react-icons/lib/fa/edit';
 
-const formatRequests = (cell, row) => {;
-    return (<button
-                        onClick=""//Falta solo clickear
-                      name="btnRequests"
-                  >Ver Solicitudes</button>);
-}
+import {Checkbox} from 'react-bootstrap';
+
+
 class Notifications extends Component {
-    componentDidMount(){
+
+  constructor(props){
+    super(props);
+    this.formatEdit = this.formatEdit.bind(this);
+    this.formatPublish = this.formatPublish.bind(this);
+    this.editClick = this.editClick.bind(this);
+  }
+  componentDidMount(){
     console.log("Notifications Mounted!")
     this.props.fetchNotifications();
+  }
+
+
+  formatEdit(cell, row){;
+      return (<button onClick={this.editClick}
+                        name="btnRequests"
+                        ref={`edit-${cell}`}
+                    ><FaEdit /></button>);
+  }
+  formatPublish(cell, row) {;
+      return (<Checkbox
+              onClick={this.publishClick.bind(this)}
+              ref={`publish-${cell}`}
+              />);
+  }
+  editClick(){
+    console.log(this.refs);
+  }
+  publishClick(){
+    console.log(this.refs);
   }
 
   closeModal() { this.setState({ showModal: false }); }
   openModal() { this.setState({ showModal: true }); }
 
-  constructor(props) {
-    super(props);
-    // this.state = {
-    //   show: false,
-    // };
-  }
+
   render(){
       return(
           <div>
@@ -40,7 +59,8 @@ class Notifications extends Component {
                  <TableHeaderColumn dataField="initial_date" dataSort={true}>Fecha de Inicio</TableHeaderColumn>
                  <TableHeaderColumn dataField="closing_date"  dataSort={true}  >Fecha de Cierre</TableHeaderColumn>
                  <TableHeaderColumn dataField="notification_type"  dataSort={true} >Tipo</TableHeaderColumn>
-                  <TableHeaderColumn dataField="id" dataFormat={formatRequests}  dataSort={false} >Acciones</TableHeaderColumn>
+                 <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>
+                 <TableHeaderColumn dataField="id" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>
              </BootstrapTable>
             </div>
           </div>
