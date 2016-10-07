@@ -56,7 +56,7 @@ class IndexContent extends Component{
                  <TableHeaderColumn dataField="artist" >Artista</TableHeaderColumn>
                  <TableHeaderColumn dataField="rating"  dataSort={true} dataFormat={startsFormatter} >Rating</TableHeaderColumn>
                  <TableHeaderColumn dataField="likes"  dataSort={true} >Likes</TableHeaderColumn>
-             </BootstrapTable>,
+             </BootstrapTable>
             </div>
           </div>
         </div>

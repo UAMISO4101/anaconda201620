@@ -89,6 +89,10 @@ class Notification(models.Model):
             "description": self.description,
             "notification_type": self.notification_type
         }
+    def __str__(self):
+        return ''.join([
+            self.name,
+        ])
 
 
 class ArtworkRequest(models.Model):
@@ -99,6 +103,11 @@ class ArtworkRequest(models.Model):
         max_length=1020,
     )
     notification = models.ForeignKey(Notification, null=False)
+
+    def __str__(self):
+        return ''.join([
+            self.name,
+        ])
 
 
 class ArtworkCollection(models.Model):
@@ -135,6 +144,11 @@ class Tag(models.Model):
     )
     artwork = models.ForeignKey(Artwork, null=False)
 
+    def __str__(self):
+        return ''.join([
+            self.name,
+        ])
+
 
 class SoundType(models.Model):
     name = models.CharField(
@@ -162,4 +176,9 @@ class Sound(Artwork):
     type = models.ForeignKey(SoundType, null=False)
 
 
+class Album(Artwork):
+    genre = models.ForeignKey(Genre, null=False)
 
+
+class Song(Artwork):
+    song_album = models.ForeignKey(Album, null=False)

@@ -8,7 +8,9 @@ from django.http import JsonResponse
 # Create your views here.
 from rest_framework import status
 from .models import *
-from comercial_agent.models import ArtworkRequest, Notification, Sound
+
+from comercial_agent.models import ArtworkRequest, Notification, Sound, Song
+
 
 
 
@@ -52,10 +54,7 @@ def notification_json(request):
 
 def get_artworks(request):
 
-    print ('Entra a get artworks')
-
-    sounds_response = {}
-    sounds_array = []
+    artworks_array = []
 
     sounds_model = Sound.objects.all()
 
@@ -69,10 +68,25 @@ def get_artworks(request):
 
         sound_record = {"id":sound_id,"sound":sound_name,"type":sound_type,"artist":sound_artist,"rating":sound_rating,"likes":sound_likes}
 
-        sounds_array.append(sound_record)
+        artworks_array.append(sound_record)
 
-    sounds_response = sounds_array
+    songs_model = Song.objects.all()
 
-    print(sounds_response)
-    print(dict(sounds=sounds_response))
-    return JsonResponse(dict(sounds=sounds_response))
+    for song in songs_model:
+        song_id = song.pk
+        song_name = song.name
+        song_type = 'Song'
+        song_artist = song.collection.artist.artistic_name
+        song_rating = song.averageRating
+        song_likes = song.likesCount
+
+        song_record = {"id":song_id,"sound":song_name,"type":song_type,"artist":song_artist,"rating":song_rating,"likes":song_likes}
+
+        artworks_array.append(song_record)
+
+    artworks_response = artworks_array
+
+
+    print(artworks_response)
+
+    return JsonResponse(dict(sounds=artworks_response))
