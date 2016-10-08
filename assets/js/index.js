@@ -14,7 +14,7 @@ const store = createStore(combineReducers(reducers), applyMiddleware(thunkMiddle
 const history = syncHistoryWithStore(hashHistory, store);
 
 import App from './components/app';
-import NotificationForm from './components/notificationForm';
+import NotificationFormContent from './components/notificationFormContent';
 import Notification from './components/notifications';
 import SoundtracksContent from './components/soundtracksContent';
 import NotificationContent from './components/notificationsContent';
@@ -28,9 +28,10 @@ function run () {
         <IndexRedirect to='/' />
         <IndexRoute component={SoundtracksContent} />
         <Route path="dashboard">
-          <Route path="agente-comercial" />
-            <IndexRoute component={NotificationForm} />
+          <Route path="agente-comercial" >
+            <IndexRoute component={NotificationFormContent} />
             <Route path="convocatorias" component={NotificationContent} />
+          </Route>
         </Route>
       </Route>
       <Route path="*" component={Page404} />
