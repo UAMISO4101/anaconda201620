@@ -41,6 +41,8 @@ def create_notification(request):
 
 
             return HttpResponse(status=status.HTTP_201_CREATED)
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
