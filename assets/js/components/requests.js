@@ -52,8 +52,7 @@ class Requests extends Component {
           <h6>Lista de Solicitudes</h6>
           <MylistGroupItem/>
         </div>
-        <div className="col-sm-push-1 col-sm-6 border"   >
-          <br/>  <br/>
+        <div className="col-sm-push-1 col-sm-6 border">
           <Form horizontal onSubmit={this.requestForm.bind(this)} >
             <FormGroup controlId="requestName">
               <Col sm={12}>

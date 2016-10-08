@@ -21,7 +21,6 @@ const startsFormatter = (cell, row) => {
 }
 
 class IndexContent extends Component{
-
   componentDidMount(){
     console.log("IndexContent Mounted!")
     this.props.fetchSoundTracks();
@@ -32,7 +31,6 @@ class IndexContent extends Component{
 
 
   render(){
-
     return(
       <div className="index-content">
 

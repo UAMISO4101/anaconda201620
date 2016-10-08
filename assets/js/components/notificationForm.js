@@ -119,7 +119,9 @@ class NotificationForm extends Component{
         </div>
       )}
 
-      onSave(event){
+
+
+  onSave(event){
         event.preventDefault();
 
         let name         = ReactDOM.findDOMNode(this.refs.name).value;
@@ -144,6 +146,7 @@ class NotificationForm extends Component{
             notificationType: vPublic || vPrivate,
             request: this.props.request
           }
+          this.showNotification(notificationObj);
           this.postServer(notificationObj);
 
         }else{
@@ -160,7 +163,9 @@ class NotificationForm extends Component{
     formatDate(date){
         return new Date(new Date(date).valueOf() + new Date().getTimezoneOffset()*60000);
     }
+  showNotification(notificationObj) {
 
+  };
     postServer(notificationObj){
       $.ajax({
         method: "POST",

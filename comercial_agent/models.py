@@ -80,6 +80,15 @@ class Notification(models.Model):
         default=PUBLIC,
     )
 
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "initial_date": str(self.initial_date),
+            "closing_date": str(self.closing_date),
+            "description": self.description,
+            "notification_type": self.notification_type
+        }
     def __str__(self):
         return ''.join([
             self.name,

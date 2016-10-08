@@ -1,16 +1,17 @@
 import json
 
 from django.http import HttpResponse
-from django.http import JsonResponse
-from django.template.defaultfilters import floatformat
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from django.shortcuts import render
-
+from django.http import JsonResponse
 # Create your views here.
 from rest_framework import status
+from .models import *
 
 from comercial_agent.models import ArtworkRequest, Notification, Sound, Song
+
+
 
 
 def index(request):
@@ -22,6 +23,7 @@ def create_notification(request):
         if request.is_ajax():
             notification_json = json.loads(request.body.decode("utf-8"))
 
+            print(notification_json)
             notification_model = Notification(name=notification_json['name'],
                                               initial_date=notification_json['initialDate'],
                                               closing_date=notification_json['closingDate'],
@@ -41,6 +43,13 @@ def create_notification(request):
             return HttpResponse(status=status.HTTP_201_CREATED)
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+def notification_json(request):
+    notifications = Notification.objects.order_by(('initial_date'))
+    dict_notification = [notification.as_dict() for notification in notifications]
+
+    return JsonResponse({'notifications': dict_notification}, safe=False)
 
 
 def get_artworks(request):
@@ -76,6 +85,7 @@ def get_artworks(request):
         artworks_array.append(song_record)
 
     artworks_response = artworks_array
+
 
     print(artworks_response)
 

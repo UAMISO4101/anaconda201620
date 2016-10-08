@@ -29,12 +29,25 @@ export const saModal = (state=modalDefault, action) => {
       return state ;
   }
 };
+
 const soundtrackDefault = {"sounds":
       [{ id: 1, sound: "", type: "", artist: "", rating: 0, likes: "" }]
 };
 export const soundtracks = (state=soundtrackDefault,  action) => {
   switch (action.type) {
     case 'GET_SOUNDTRACKS':
+      console.log(action.data);
+      return action.data || state;
+      break;
+    default:
+      return state ;
+  }
+};
+const notificationsDefault = {"notifications":[{ id: 0, name: "", description: "", initial_date: "", closing_date: "", notification_type: "" }]};
+export const notifications = (state=notificationsDefault,  action) => {
+  switch (action.type) {
+    case 'GET_NOTIFICATIONS':
+      console.log(action.data);
       return action.data || state;
       break;
     default:
