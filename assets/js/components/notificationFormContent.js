@@ -5,7 +5,8 @@ import NotificationForm from './notificationForm';
 import { addRequest } from '../actions';
 
 const mapStateToProps = (state, router) => ({
-  request: state.request
+  request: state.request,
+  notification: state.notification
 });
 
 

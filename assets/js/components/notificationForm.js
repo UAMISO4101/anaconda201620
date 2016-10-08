@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { Modal, OverlayTrigger, Button } from 'react-bootstrap';
+import {moment} from 'moment';
+import DateRangePicker from 'react-bootstrap-daterangepicker';
 import SweetAlert from 'sweetalert-react';
 
 import Requests from './requests';
@@ -18,7 +20,7 @@ const setWarning = (name=null, description=null, initialDate=null, closingDate=n
   warning = !closingDate ? warning + " ,Fecha Final" : warning;
   warning = !closingDate ? warning + " ,Fecha Final" : warning;
   warning = initialD > closingD ? warning + " ,Fecha final menor a la inicial" : warning;
-  warning = initialD > today ? warning + " ,Fecha inicial debe ser mayor a hoy" : warning;
+  warning = !(initialD > today) ? warning + " ,Fecha inicial debe ser mayor a hoy" : warning;
   warning = request == 0 ? warning + " ,Solicitudes Vacia" : warning;
   return warning
 }
@@ -63,12 +65,12 @@ class NotificationForm extends Component{
           <form className="form-horizontal">
             <div className="form-group">
               <div className="col-sm-12">
-                <input ref="name" type="text" className="form-control" placeholder="Nombre de convocatoria "/>
+                <input ref="name" type="text" className="form-control" placeholder="Nombre de convocatoria" value={this.props.notification.name}/>
               </div>
             </div>
             <div className="form-group">
               <div className="col-sm-12">
-                <input ref="description" type="text" className="form-control" id="description" placeholder="Description"/>
+                <input ref="description" type="text" className="form-control" id="description" placeholder="Description" value={this.props.notification.description}/>
               </div>
             </div>
             <div className="form-group">
@@ -94,11 +96,11 @@ class NotificationForm extends Component{
               <div className="form-group">
                 <div className=" col-sm-5">
                   <h4><span className="label label-default" />Fecha Inicio<span/></h4>
-                  <input ref="initialDate" type="date" className="pull-left dates "/>
+                  <input ref="initialDate" type="date" className="pull-left dates" value={this.props.notification.initialDate}/>
                 </div>
                 <div className="col-sm-offset-2 col-sm-5">
                   <h4><span className="label label-default" />Fecha Cierre<span/></h4>
-                  <input ref="closingDate" type="date" className="pull-right dates"/>
+                  <input ref="closingDate" type="date" className="pull-right dates" value={this.props.notification.closingDate}/>
                 </div>
               </div>
               <div className="form-group">
@@ -129,9 +131,9 @@ class NotificationForm extends Component{
         let today = new Date();
 
         if(name
-          &&  description
-          &&  initialDate
-          &&  closingDate
+          && description
+          && initialDate
+          && closingDate
           && this.props.request.length !== 0
           && inialD.getTime() < closingD.getTime()
           && inialD > today){

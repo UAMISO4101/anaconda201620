@@ -4,8 +4,8 @@ export const addRequest = request => ({ type: 'ADD_REQUEST', data: request });
 export const getSoundTracks = (soundtracks) => ({ type: 'GET_SOUNDTRACKS', data: soundtracks });
 export const getNotifications = (notifications) => ({ type: 'GET_NOTIFICATIONS', data: notifications });
 //// #ToDo Add reducers functions;
-export const editNotification = (id) => {}  ;
-export const publishNotification = (id) => {};
+export const editNotification = (id) => ({type: 'EDIT_NOTIFICATIONS',data: id});
+export const publishNotification = (id) => ({type: 'PUBLISH_NOTIFICATIONS',data: id});
 
 export const showSAModal = (modalProps) => ({ type: 'SHOW_SA_MODALS', data: modalProps });
 export const hideSAModal = () => ({ type: 'HIDE_SA_MODALS' });
