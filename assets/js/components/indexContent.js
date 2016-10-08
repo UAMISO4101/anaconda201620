@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 import SweetAlert from 'sweetalert-react';
 import StarRatingComponent from 'react-star-rating-component';
 import FaApple from 'react-icons/lib/fa/apple';
@@ -51,6 +52,10 @@ class IndexContent extends Component{
           </div>
           <div className="row" >
             <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
+              <DropdownButton id="soundsDropdown" title="Filtrar">
+                <MenuItem>Todos</MenuItem>
+                <MenuItem>Rating</MenuItem>
+              </DropdownButton>
               <BootstrapTable data={this.props.soundtracks.sounds } striped={true} hover={true}>
                  <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
                  <TableHeaderColumn dataField="sound" dataAlign="center" dataSort={true}>Sonido</TableHeaderColumn>
