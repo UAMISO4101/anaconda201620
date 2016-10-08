@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { Modal, OverlayTrigger, Button } from 'react-bootstrap';
-import {moment} from 'moment';
+import moment from 'moment';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import SweetAlert from 'sweetalert-react';
+
+import FaCalendarCheckO from 'react-icons/lib/fa/calendar-check-o'
+import FaCalendarCheckMinusO from 'react-icons/lib/fa/calendar-minus-o'
+
 
 import Requests from './requests';
 import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
@@ -33,12 +37,23 @@ class NotificationForm extends Component{
       showModal: false,
       sweetAlertMessage: "",
       sweetAlertTitle: "",
-      type: "warning"
+      type: "warning",
+      initialDate: null,
+      closingDate: null
     };
+
   }
 
   closeModal() { this.setState({ showModal: false }); }
   openModal() { this.setState({ showModal: true }); }
+
+  calendarEvent(event, picker) {
+        console.log(picker.startDate);
+        this.setState({
+          initialDate: picker.startDate.format(),
+          closingDate: picker.endDate.format()
+        })
+  }
 
   render(){
     return(
@@ -94,14 +109,23 @@ class NotificationForm extends Component{
                 </div>
               </div>
               <div className="form-group">
-                <div className=" col-sm-5">
-                  <h4><span className="label label-default" />Fecha Inicio<span/></h4>
-                  <input ref="initialDate" type="date" className="pull-left dates" value={this.props.notification.initialDate}/>
+                <div className="col-sm-9">
+                  <h4><span className="label label-default" />Fecha Inicio Y Final<span/></h4>
+                    <DateRangePicker startDate={moment().locale('es')} endDate={moment().locale('es').add(1, 'days')} onEvent={this.calendarEvent.bind(this)} >
+                        <h2>
+                          <span>
+                            <FaCalendarCheckO/>
+                          </span>
+
+                          <span> &nbsp; </span>
+
+                          <span>
+                            <FaCalendarCheckMinusO/>
+                          </span>
+                        </h2>
+                    </DateRangePicker>
                 </div>
-                <div className="col-sm-offset-2 col-sm-5">
-                  <h4><span className="label label-default" />Fecha Cierre<span/></h4>
-                  <input ref="closingDate" type="date" className="pull-right dates" value={this.props.notification.closingDate}/>
-                </div>
+
               </div>
               <div className="form-group">
                 <div className="col-sm-push-4 col-sm-4 col-xs-12">
@@ -124,19 +148,17 @@ class NotificationForm extends Component{
         let description  = ReactDOM.findDOMNode(this.refs.description).value;
         let vPublic      = ReactDOM.findDOMNode(this.refs.public).checked ? "PB" : false;
         let vPrivate     = ReactDOM.findDOMNode(this.refs.private).checked ? "PR" : false;
-        let initialDate  = ReactDOM.findDOMNode(this.refs.initialDate).value;
-        let closingDate  = ReactDOM.findDOMNode(this.refs.closingDate).value;
-        let inialD = this.formatDate(initialDate);
-        let closingD = this.formatDate(closingDate);
-        let today = new Date();
+        let initialDate    = this.state.initialDate;
+        let closingDate  = this.state.closingDate;
+        let today = moment.today;
 
         if(name
           && description
           && initialDate
           && closingDate
           && this.props.request.length !== 0
-          && inialD.getTime() < closingD.getTime()
-          && inialD > today){
+          && initialDate < closingDate
+          && initialDate > today){
           let notificationObj = {
             name, description, initialDate, closingDate,
             notificationType: vPublic || vPrivate,
@@ -159,9 +181,7 @@ class NotificationForm extends Component{
     formatDate(date){
         return new Date(new Date(date).valueOf() + new Date().getTimezoneOffset()*60000);
     }
-  showNotification(notificationObj) {
 
-  };
     postServer(notificationObj){
       $.ajax({
         method: "POST",
