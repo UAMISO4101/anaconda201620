@@ -39,20 +39,26 @@ class NotificationForm extends Component{
       sweetAlertTitle: "",
       type: "warning",
       initialDate: null,
-      closingDate: null
+      closingDate: null,
+      name: null,
+      description: null
     };
 
+
   }
+  handleName(event){ this.setState({name: event.target.value}); }
+  handleDescription(event){ this.setState({description: event.target.value}); }
 
   closeModal() { this.setState({ showModal: false }); }
   openModal() { this.setState({ showModal: true }); }
 
   calendarEvent(event, picker) {
-        console.log(picker.startDate);
+
         this.setState({
-          initialDate: picker.startDate.format(),
-          closingDate: picker.endDate.format()
+          initialDate: picker.startDate,
+          closingDate: picker.endDate
         })
+        console.log(this.state.initialDate.format())
   }
 
   render(){
@@ -80,12 +86,12 @@ class NotificationForm extends Component{
           <form className="form-horizontal">
             <div className="form-group">
               <div className="col-sm-12">
-                <input ref="name" type="text" className="form-control" placeholder="Nombre de convocatoria" value={this.props.notification.name}/>
+                <input ref="name" type="text" className="form-control" placeholder="Nombre de convocatoria" value={this.state.name || this.props.notification.name} onChange={ this.handleName.bind(this)}/>
               </div>
             </div>
             <div className="form-group">
               <div className="col-sm-12">
-                <input ref="description" type="text" className="form-control" id="description" placeholder="Description" value={this.props.notification.description}/>
+                <input ref="description" type="text" className="form-control" id="description" placeholder="Description" value={this.state.description || this.props.notification.description} onChange={ this.handleDescription.bind(this)}/>
               </div>
             </div>
             <div className="form-group">
@@ -111,7 +117,7 @@ class NotificationForm extends Component{
               <div className="form-group">
                 <div className="col-sm-9">
                   <h4><span className="label label-default" />Fecha Inicio Y Final<span/></h4>
-                    <DateRangePicker startDate={moment().locale('es')} endDate={moment().locale('es').add(1, 'days')} onEvent={this.calendarEvent.bind(this)} >
+                    <DateRangePicker onEvent={this.calendarEvent.bind(this)} >
                         <h2>
                           <span>
                             <FaCalendarCheckO/>
@@ -148,10 +154,9 @@ class NotificationForm extends Component{
         let description  = ReactDOM.findDOMNode(this.refs.description).value;
         let vPublic      = ReactDOM.findDOMNode(this.refs.public).checked ? "PB" : false;
         let vPrivate     = ReactDOM.findDOMNode(this.refs.private).checked ? "PR" : false;
-        let initialDate    = this.state.initialDate;
+        let initialDate  = this.state.initialDate;
         let closingDate  = this.state.closingDate;
-        let today = moment.today;
-
+        let today = moment();
         if(name
           && description
           && initialDate
@@ -159,12 +164,14 @@ class NotificationForm extends Component{
           && this.props.request.length !== 0
           && initialDate < closingDate
           && initialDate > today){
+          ////#ToDo set format for the backend
           let notificationObj = {
-            name, description, initialDate, closingDate,
+            name, description,
+            initialDate: initialDate.format(),
+            closingDate: closingDate.format(),
             notificationType: vPublic || vPrivate,
             request: this.props.request
           }
-          this.showNotification(notificationObj);
           this.postServer(notificationObj);
 
         }else{
@@ -183,9 +190,11 @@ class NotificationForm extends Component{
     }
 
     postServer(notificationObj){
+      let postNotificationUrl = this.props.notification.id ? `${SERVER_URL}/comercial_agent/edit-notification/${this.props.notification.id}` : `${SERVER_URL}/comercial_agent/create-notification/`
+      debugger
       $.ajax({
         method: "POST",
-        url: `${SERVER_URL}/comercial_agent/create-notification/`,
+        url: postNotificationUrl,
         data: JSON.stringify(notificationObj),
 
       })
