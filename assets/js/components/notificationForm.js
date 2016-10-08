@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
 import { Modal, OverlayTrigger, Button } from 'react-bootstrap';
 import SweetAlert from 'sweetalert-react';
 
 import Requests from './requests';
-import {CA_DASHBOARD, SERVER_URL} from '../utils/constants';
-import { addRequest } from '../actions';
-
-const mapStateToProps = (state, router) => ({
-  request: state.request
-});
+import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
 
 
 const setWarning = (name=null, description=null, initialDate=null, closingDate=null, request=0) => {
@@ -189,4 +183,4 @@ class NotificationForm extends Component{
     }
 }
 
-export default connect(mapStateToProps)(NotificationForm);
+export default NotificationForm;
