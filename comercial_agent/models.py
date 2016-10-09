@@ -108,6 +108,7 @@ class ArtworkRequest(models.Model):
     def __str__(self):
         return ''.join([
             self.name,
+            self.features,
         ])
 
 

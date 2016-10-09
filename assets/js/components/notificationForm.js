@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import { hashHistory } from 'react-router'
+
 import { Modal, OverlayTrigger, Button } from 'react-bootstrap';
 import moment from 'moment';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
@@ -53,12 +55,10 @@ class NotificationForm extends Component{
   openModal() { this.setState({ showModal: true }); }
 
   calendarEvent(event, picker) {
-
         this.setState({
           initialDate: picker.startDate,
           closingDate: picker.endDate
         })
-        console.log(this.state.initialDate.format())
   }
 
   render(){
@@ -164,11 +164,10 @@ class NotificationForm extends Component{
           && this.props.request.length !== 0
           && initialDate < closingDate
           && initialDate > today){
-          ////#ToDo set format for the backend
           let notificationObj = {
             name, description,
-            initialDate: initialDate.format(),
-            closingDate: closingDate.format(),
+            initialDate: initialDate.format('YYYY-MM-DD'),
+            closingDate: closingDate.format('YYYY-MM-DD'),
             notificationType: vPublic || vPrivate,
             request: this.props.request
           }
@@ -190,16 +189,22 @@ class NotificationForm extends Component{
     }
 
     postServer(notificationObj){
-      let postNotificationUrl = this.props.notification.id ? `${SERVER_URL}/comercial_agent/edit-notification/${this.props.notification.id}` : `${SERVER_URL}/comercial_agent/create-notification/`
-      debugger
+
+      let notificationId = "";
+      let ajaxMethod = "POST";
+      if (this.props.notification.id){
+        notificationId = this.props.notification.id;
+        ajaxMethod     = "EDIT";
+      }
+
       $.ajax({
-        method: "POST",
-        url: postNotificationUrl,
+        method: ajaxMethod,
+        url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}`,
         data: JSON.stringify(notificationObj),
 
       })
       .done(( msg ) => {
-          alert( "Data Saved: " + msg );
+          hashHistory.push(`${SERVER_URL}/#${CA_DASHBOARD}/convocatorias`)
         })
       .fail((err) => {
         console.error(err);
