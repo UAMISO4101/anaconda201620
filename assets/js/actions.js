@@ -5,11 +5,11 @@ export const getSoundTracks = (soundtracks) => ({ type: 'GET_SOUNDTRACKS', data:
 export const showSAModal = (modalProps) => ({ type: 'SHOW_SA_MODALS', data: modalProps });
 export const hideSAModal = () => ({ type: 'HIDE_SA_MODALS' });
 
-export const fetchSoundTracks = () => {
+export const fetchSoundTracks = (filter) => {
   return dispatch => {
     jQuery.ajax({
         method: "GET",
-        url: `${SERVER_URL}/comercial_agent/get-sounds/`,
+        url: `${SERVER_URL}/comercial_agent/get-sounds/${filter}`,
         statusCode: {
         200: (data) => {
           dispatch(getSoundTracks(data))

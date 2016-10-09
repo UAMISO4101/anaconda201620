@@ -10,7 +10,7 @@ const mapStateToProps = (state, router) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchSoundTracks: () => dispatch(fetchSoundTracks()),
+  fetchSoundTracks: (filter) => dispatch(fetchSoundTracks(filter)),
   hideSAModal: () => dispatch(hideSAModal())
 });
 
