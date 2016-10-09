@@ -75,20 +75,16 @@ def edit_notification(request,notification_id):
 def notification_json(request):
     notifications = Notification.objects.order_by(('initial_date'))
     dict_notifications = []
+
     for notification in notifications:
-        requests = ArtworkRequest.objects.filter(pk=notification.id)
+        requests = ArtworkRequest.objects.filter(notification_id=notification.id).order_by(('id'))
         dict_notification = notification.as_dict();
-
-
         dict_request = []
         for request in requests:
-            print({'name': request.name, 'features': request.features})
             dict_request.append({'name': request.name, 'features': request.features})
 
         dict_notification['request'] = dict_request
         dict_notifications.append(dict_notification)
-
-
 
     return JsonResponse({'notifications': dict_notifications}, safe=False)
 
