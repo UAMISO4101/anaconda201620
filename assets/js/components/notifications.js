@@ -50,8 +50,8 @@ class Notifications extends Component {
     }
     publishClick(notification){
       $.ajax({
-        method: "POST",
-        url: `${SERVER_URL}/comercial_agent/notification/${idNotification}/publish`,
+        method: "EDIT",
+        url: `${SERVER_URL}/comercial_agent/notifications/${idNotification}/publish`,
         data: JSON.stringify(notificationObj),
 
       })
