@@ -14,30 +14,32 @@ import {
 } from 'react-bootstrap'
 import SweetAlert from 'sweetalert-react';
 import { connect } from 'react-redux';
-
-import { addRequest } from '../actions';
 import Request from './request';
+import { addRequest } from '../actions';
 
 
 const mapStateToProps = (state, router) => ({
-  request: state.request
-});
+    request: state.request
+})
 
-const matchDispatchToProps = dispatch => ({
-      addRequest: request => dispatch(addRequest(request))
-    }
-)
+const mapDispatchToProps = dispatch => ({
+      addRequest: request => dispatch(addRequest(request)),
+})
 
-var MylistGroupItem = null;
+
+var RequestList = null;
 
 class Requests extends Component {
   constructor(props) {
     super(props);
+    this.requestForm = this.requestForm.bind(this);
     this.state = {
       show: false,
     };
   }
+  
   render(){
+
     this.isEmpty(this.props.request);
     return(
       <Row bsClass="sl-modal">
@@ -50,10 +52,10 @@ class Requests extends Component {
         />
         <div className="border col-sm-4">
           <h6>Lista de Solicitudes</h6>
-          <MylistGroupItem/>
+          <RequestList/>
         </div>
         <div className="col-sm-push-1 col-sm-6 border">
-          <Form horizontal onSubmit={this.requestForm.bind(this)} >
+          <Form horizontal onSubmit={this.requestForm} >
             <FormGroup controlId="requestName">
               <Col sm={12}>
                 <input ref="requestName" type="text" className="form-control" placeholder="Nombre de la solicitud."/>
@@ -81,13 +83,13 @@ class Requests extends Component {
   isEmpty(request){
 
     if (request.length == 0) {
-         MylistGroupItem = props => (
+         RequestList = props => (
               <ListGroup bsClass="list">
                 <ListGroupItem>No hay Solicitudes para mostrar</ListGroupItem>
               </ListGroup>
           );
      }else{
-        MylistGroupItem = props =>(
+        RequestList = props =>(
               <ul className="list-group">
                 {this.props.request.map( rq => <Request rq={rq} key={rq.id}/> )}
               </ul>
@@ -113,4 +115,4 @@ class Requests extends Component {
 
 }
 
-export default connect(mapStateToProps,matchDispatchToProps)(Requests);
+export default connect(mapStateToProps,mapDispatchToProps)(Requests);

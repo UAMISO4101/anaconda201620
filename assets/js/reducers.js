@@ -6,6 +6,17 @@ export const request = (state=[], action) => {
       });
       return state.concat([newRequest]);
       break;
+
+    case 'SET_REQUEST':
+      let requestsFromNotification = action.data.map((request) =>{
+        return Object.assign({}, request, {
+          id: +new Date
+        });
+      });
+      return requestsFromNotification;
+      break;
+
+  
     default:
       return state ;
   }
@@ -43,7 +54,8 @@ export const soundtracks = (state=soundtrackDefault,  action) => {
   }
 };
 
-const notificationDefault  = { id: 1, name: "notification A", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "my description for notification A", publishingState: false };
+const requestDafault = {name: "requestDeafult", features: "Default Feature"};
+const notificationDefault  = { id: 1, name: "notification A", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "my description for notification A", publishingState: false, request: [requestDafault] };
 const notificationsDefault = {"notifications":[notificationDefault]};
 export const notifications = (state=notificationsDefault,  action) => {
   let notification = null;
@@ -55,7 +67,8 @@ export const notifications = (state=notificationsDefault,  action) => {
       return state ;
   }
 };
-const notificationBlank  = { name: "", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "", publishingState: false };
+const requestBlank = {name: "", features: ""};
+const notificationBlank  = { name: "", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "", publishingState: false, request: [requestBlank] };
 
 export const notification = (state=notificationBlank,  action) => {
   let notification = null;

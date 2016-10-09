@@ -1,6 +1,7 @@
 import {SERVER_URL} from './utils/constants';
 
 export const addRequest = request => ({ type: 'ADD_REQUEST', data: request });
+export const setRequest = (request) => ({ type: 'SET_REQUEST', data: request });
 export const getSoundTracks = (soundtracks) => ({ type: 'GET_SOUNDTRACKS', data: soundtracks });
 export const getNotifications = (notifications) => ({ type: 'GET_NOTIFICATIONS', data: notifications });
 export const editNotification = (id) => ({type: 'EDIT_NOTIFICATIONS',data: id});
@@ -11,7 +12,6 @@ export const hideSAModal = () => ({ type: 'HIDE_SA_MODALS' });
 
 export const fetchSoundTracks = (filter) => {
   return dispatch => {
-    // #FixMe all in line 13 should be dynamic
     jQuery.ajax({
         method: "GET",
         url: `${SERVER_URL}/comercial_agent/sounds/${filter}`,
