@@ -79,16 +79,18 @@ def notification_json(request):
         requests = ArtworkRequest.objects.filter(pk=notification.id)
         dict_notification = notification.as_dict();
 
-        ##ToDo serilze request
 
-        dict_request = dict(request=[request for request in requests])
-        import pdb; pdb.set_trace()
-        dict_notification['request'] = dict_request['request']
+        dict_request = []
+        for request in requests:
+            print({'name': request.name, 'features': request.features})
+            dict_request.append({'name': request.name, 'features': request.features})
+
+        dict_notification['request'] = dict_request
         dict_notifications.append(dict_notification)
 
 
 
-    return JsonResponse({'notifications': dict_notification}, safe=False)
+    return JsonResponse({'notifications': dict_notifications}, safe=False)
 
 
 def get_artworks(request):
