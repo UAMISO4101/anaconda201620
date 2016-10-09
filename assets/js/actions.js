@@ -2,6 +2,8 @@ import {SERVER_URL} from './utils/constants';
 
 export const addRequest = request => ({ type: 'ADD_REQUEST', data: request });
 export const setRequest = (request) => ({ type: 'SET_REQUEST', data: request });
+export const deleteRequest = (requestId) => ({ type: 'DELETE_REQUEST', data: requestId });
+
 export const getSoundTracks = (soundtracks) => ({ type: 'GET_SOUNDTRACKS', data: soundtracks });
 export const getNotifications = (notifications) => ({ type: 'GET_NOTIFICATIONS', data: notifications });
 export const editNotification = (id) => ({type: 'EDIT_NOTIFICATIONS',data: id});

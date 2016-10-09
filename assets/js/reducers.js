@@ -16,7 +16,10 @@ export const request = (state=[], action) => {
       return requestsFromNotification;
       break;
 
-  
+    case 'DELETE_REQUEST':
+        let newState = state.filter(r => r.id !== action.data);
+        return newState;
+
     default:
       return state ;
   }
