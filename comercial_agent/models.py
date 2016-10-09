@@ -66,6 +66,15 @@ class Notification(models.Model):
         (PUBLIC, 'Publica')
     )
 
+    CREATED = 'CRE'
+    PUBLISHED = 'PUB'
+    CLOSED = 'CER'
+    NOTIFICATION_STATE = (
+        (CREATED, 'Creada'),
+        (PUBLISHED, 'Publicada'),
+        (CLOSED, 'Cerrada')
+    )
+
     name = models.CharField(
         max_length=255,
     )
@@ -79,6 +88,11 @@ class Notification(models.Model):
         choices=NOTIFICATION_TYPE,
         default=PUBLIC,
     )
+    notification_state = models.CharField(
+        max_length=3,
+        choices=NOTIFICATION_STATE,
+        default=CREATED,
+    )
 
     def as_dict(self):
         return {
@@ -87,8 +101,10 @@ class Notification(models.Model):
             "initial_date": str(self.initial_date),
             "closing_date": str(self.closing_date),
             "description": self.description,
-            "notification_type": self.notification_type
+            "notification_type": self.notification_type,
+            "notification_state": self.notification_state,
         }
+
     def __str__(self):
         return ''.join([
             self.name,
