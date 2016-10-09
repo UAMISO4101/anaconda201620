@@ -4,7 +4,7 @@ webpack-stats.json
 node_modules/
 .idea/
 assets/bundles
-comercial_agent/migrations/
 */*.pyc
 */*/*.pyc
+comercial_agent/migrations
 profilePictures/

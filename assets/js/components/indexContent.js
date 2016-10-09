@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 import SweetAlert from 'sweetalert-react';
 import StarRatingComponent from 'react-star-rating-component';
 import FaApple from 'react-icons/lib/fa/apple';
 
 
-import { SERVER_URL} from '../utils/constants';
+import { SERVER_URL, SOUNDS_FILTER} from '../utils/constants';
 import { addRequest } from '../actions';
 
 const startsFormatter = (cell, row) => {
@@ -23,7 +24,7 @@ const startsFormatter = (cell, row) => {
 class IndexContent extends Component{
   componentDidMount(){
     console.log("IndexContent Mounted!")
-    this.props.fetchSoundTracks();
+    this.props.fetchSoundTracks(SOUNDS_FILTER.ALL);
   }
 
   closeModal() { this.setState({ showModal: false }); }
@@ -49,11 +50,15 @@ class IndexContent extends Component{
           </div>
           <div className="row" >
             <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
+              <DropdownButton id="soundsDropdown" title="Filtrar" onSelect={this.soundsDropdownChange.bind(this)}>
+                <MenuItem eventKey={SOUNDS_FILTER.ALL}>Todos</MenuItem>
+                <MenuItem eventKey={SOUNDS_FILTER.RATING}>Rating</MenuItem>
+              </DropdownButton>
               <BootstrapTable data={this.props.soundtracks.sounds } striped={true} hover={true}>
                  <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
                  <TableHeaderColumn dataField="sound" dataAlign="center" dataSort={true}>Sonido</TableHeaderColumn>
                  <TableHeaderColumn dataField="type" dataSort={true}>Tipo</TableHeaderColumn>
-                 <TableHeaderColumn dataField="artist" >Artista</TableHeaderColumn>
+                 <TableHeaderColumn dataField="artist">Artista</TableHeaderColumn>
                  <TableHeaderColumn dataField="rating"  dataSort={true} dataFormat={startsFormatter} >Rating</TableHeaderColumn>
                  <TableHeaderColumn dataField="likes"  dataSort={true} >Likes</TableHeaderColumn>
              </BootstrapTable>
@@ -61,6 +66,11 @@ class IndexContent extends Component{
           </div>
         </div>
       )
+    }
+
+    soundsDropdownChange(selectedFilter){
+//        let filterVar = selectedFilter == SOUNDS_FILTER.ALL ? SOUNDS_FILTER.ALL : SOUNDS_FILTER.RATING
+        this.props.fetchSoundTracks(selectedFilter);
     }
 }
 
