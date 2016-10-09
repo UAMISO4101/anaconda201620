@@ -110,7 +110,6 @@ def get_open_notifications(request):
     return JsonResponse({'notifications': notifications_array}, safe=False)
 
 
-
 def get_artworks(request,artwork_type):
     if request.method == 'GET':
         sounds_response = {}
@@ -169,3 +168,16 @@ def get_artworks(request,artwork_type):
         print(artworks_response)
 
         return JsonResponse(dict(sounds=artworks_response))
+
+
+@csrf_exempt
+def edit_notification_state(request,notification_id):
+    if request.method == 'PUT':
+        notification_json = json.loads(request.body.decode("utf-8"))
+        Notification.objects.filter(pk=notification_id).update(
+            notification_state=notification_json['notificationState']
+        )
+
+        return HttpResponse(status=status.HTTP_201_CREATED)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
