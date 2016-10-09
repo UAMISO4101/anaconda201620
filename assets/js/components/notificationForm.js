@@ -198,12 +198,12 @@ class NotificationForm extends Component{
       let ajaxMethod = "POST";
       if (this.props.notification.id){
         notificationId = this.props.notification.id;
-        ajaxMethod     = "EDIT";
+        ajaxMethod     = "PUT";
       }
 
       $.ajax({
         method: ajaxMethod,
-        url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}`,
+        url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}/`,
         data: JSON.stringify(notificationObj),
 
       })
