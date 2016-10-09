@@ -93,60 +93,60 @@ def notification_json(request):
 
 
 def get_artworks(request,artwork_type):
+    if request.method == 'GET':
+        sounds_response = {}
+        sounds_array = []
+        artworks_array = []
+        sounds_model = None
+        songs_model = None
+        if artwork_type == "all":
+            sounds_model = Sound.objects.all()
+            songs_model = Song.objects.all()
+        elif artwork_type == "rating":
+            sounds_model = Sound.objects.filter(averageRating__gte=3)
+            songs_model = Song.objects.filter(averageRating__gte=3)
+        elif artwork_type == "recent":
+            query = "SELECT TOP 10 \
+                COUNT(d.OrderID) AS total, d.ProductID, p.Title \
+                FROM OrderDetails d \
+                INNER JOIN Products p ON d.ProductID = p.ProductID \
+                WHERE d.SellerID = 'xxx' \
+                GROUP by d.ProductID, p.Title\
+                ORDER BY COUNT(d.OrderID) DESC"
+            sounds_model = Artwork.objects.order_by('created_at')[:3]
+            # Person.objects.raw('SELECT * FROM some_other_table', translations=name_map)
 
-    sounds_response = {}
-    sounds_array = []
-    artworks_array = []
-    sounds_model = None
-    songs_model = None
-    if artwork_type == "all":
-        sounds_model = Sound.objects.all()
-        songs_model = Song.objects.all()
-    elif artwork_type == "rating":
-        sounds_model = Sound.objects.filter(averageRating__gte=3)
-        songs_model = Song.objects.filter(averageRating__gte=3)
-    elif artwork_type == "recent":
-        query = "SELECT TOP 10 \
-            COUNT(d.OrderID) AS total, d.ProductID, p.Title \
-            FROM OrderDetails d \
-            INNER JOIN Products p ON d.ProductID = p.ProductID \
-            WHERE d.SellerID = 'xxx' \
-            GROUP by d.ProductID, p.Title\
-            ORDER BY COUNT(d.OrderID) DESC"
-        sounds_model = Artwork.objects.order_by('created_at')[:3]
-        # Person.objects.raw('SELECT * FROM some_other_table', translations=name_map)
+        else:
+            return JsonResponse({'status':'false','message':message}, status=400)
 
-    else:
-        return JsonResponse({'status':'false','message':message}, status=400)
+        for sound in sounds_model:
+            # import pdb; pdb.set_trace()
+            sound_id = sound.pk
+            sound_name = sound.name
+            sound_type = sound.type.name
+            sound_artist = sound.collection.artist.artistic_name
+            sound_rating = sound.averageRating
+            sound_likes = sound.likesCount
 
-    for sound in sounds_model:
-        # import pdb; pdb.set_trace()
-        sound_id = sound.pk
-        sound_name = sound.name
-        sound_type = sound.type.name
-        sound_artist = sound.collection.artist.artistic_name
-        sound_rating = sound.averageRating
-        sound_likes = sound.likesCount
+            sound_record = {"id":sound_id,"sound":sound_name,"type":sound_type,"artist":sound_artist,"rating":sound_rating,"likes":sound_likes}
 
-        sound_record = {"id":sound_id,"sound":sound_name,"type":sound_type,"artist":sound_artist,"rating":sound_rating,"likes":sound_likes}
+            artworks_array.append(sound_record)
 
-        artworks_array.append(sound_record)
+        for song in songs_model:
+            song_id = song.pk
+            song_name = song.name
+            song_type = 'Song'
+            song_artist = song.collection.artist.artistic_name
+            song_rating = song.averageRating
+            song_likes = song.likesCount
 
-    for song in songs_model:
-        song_id = song.pk
-        song_name = song.name
-        song_type = 'Song'
-        song_artist = song.collection.artist.artistic_name
-        song_rating = song.averageRating
-        song_likes = song.likesCount
+            song_record = {"id":song_id,"sound":song_name,"type":song_type,"artist":song_artist,"rating":song_rating,"likes":song_likes}
 
-        song_record = {"id":song_id,"sound":song_name,"type":song_type,"artist":song_artist,"rating":song_rating,"likes":song_likes}
+            artworks_array.append(song_record)
 
-        artworks_array.append(song_record)
-
-    artworks_response = artworks_array
+        artworks_response = artworks_array
 
 
-    print(artworks_response)
+        print(artworks_response)
 
-    return JsonResponse(dict(sounds=artworks_response))
+        return JsonResponse(dict(sounds=artworks_response))
