@@ -3,7 +3,8 @@ import os
 
 import django
 
-from comercial_agent.models import Artist, ArtworkCollection, SoundType, Genre, Album, Song, Sound
+from comercial_agent.models import Artist, ArtworkCollection, SoundType, Genre, Album, Song, Sound, Notification, \
+    ArtworkRequest
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sonidos_libres.settings")
 
@@ -171,5 +172,61 @@ def sounds_creator():
     sound.save()
 
 
+def notifications_creator():
+
+    notification = Notification(
+        name='Not 01',
+        initial_date='2016-10-10',
+        closing_date='2016-11-11',
+        description='Not 01 Desc',
+        notification_type = 'PB',
+    )
+    notification.save()
+
+    artwork_request = ArtworkRequest(
+        name='AWR 01',
+        features='Features 01',
+        notification=notification,
+    )
+    artwork_request.save()
+
+    artwork_request = ArtworkRequest(
+        name='AWR 02',
+        features='Features 02',
+        notification=notification,
+    )
+    artwork_request.save()
+
+    artwork_request = ArtworkRequest(
+        name='AWR 03',
+        features='Features 03',
+        notification=notification,
+    )
+    artwork_request.save()
+
+    notification = Notification(
+        name='Not 02',
+        initial_date='2016-12-10',
+        closing_date='2017-01-11',
+        description='Not 02 Desc',
+        notification_type='PR',
+    )
+    notification.save()
+
+    artwork_request = ArtworkRequest(
+        name='AWR 04',
+        features='Features 04',
+        notification=notification,
+    )
+    artwork_request.save()
+
+    artwork_request = ArtworkRequest(
+        name='AWR 05',
+        features='Features 05',
+        notification=notification,
+    )
+    artwork_request.save()
+
 songs_creator()
 sounds_creator()
+notifications_creator()
