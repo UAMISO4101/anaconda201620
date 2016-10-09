@@ -88,12 +88,11 @@ class Requests extends Component {
                 <ListGroupItem>No hay Solicitudes para mostrar</ListGroupItem>
               </ListGroup>
           );
-     }else{
-        RequestList = props =>(
-              <ul className="list-group">
-                {this.props.request.map( rq => <RequestContent rq={rq} key={rq.id}/> )}
-              </ul>
-          )
+     }else
+        RequestList = props =>{
+              return (<ul className="list-group">
+                { this.props.request.map( rq => <RequestContent rq={rq} key={rq.id}/> )}
+              </ul>)
       }
   }
   requestForm(event){

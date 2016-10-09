@@ -17,9 +17,9 @@ export const request = (state=[], action) => {
       break;
 
     case 'DELETE_REQUEST':
-        let newState = state.filter(r => r.id !== action.data);
-        return newState;
-
+      let newState = state.filter(r => r.id !== action.data);
+      return newState;
+      break;
     default:
       return state ;
   }
@@ -64,7 +64,7 @@ export const notifications = (state=notificationsDefault,  action) => {
   let notification = null;
   switch (action.type) {
     case 'GET_NOTIFICATIONS':
-      return action.data || state;
+      return action.data || JSON.parse(localStorage.getItem("NOTIFICATIONS")) || state;
       break;
     default:
       return state ;

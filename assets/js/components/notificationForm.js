@@ -47,10 +47,12 @@ class NotificationForm extends Component{
     };
   }
   componentDidMount(){
+    this.props.getNotifications();
     if (this.props.setRequest){
       this.props.setRequest(this.props.notification.request)
     }
   }
+
   handleName(event){ this.setState({name: event.target.value}); }
   handleDescription(event){ this.setState({description: event.target.value}); }
 
