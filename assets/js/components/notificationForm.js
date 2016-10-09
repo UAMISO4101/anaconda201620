@@ -45,8 +45,11 @@ class NotificationForm extends Component{
       name: null,
       description: null
     };
-
-
+  }
+  componentDidMount(){
+    if (this.props.setRequest){
+      this.props.setRequest(this.props.notification.request)
+    }
   }
   handleName(event){ this.setState({name: event.target.value}); }
   handleDescription(event){ this.setState({description: event.target.value}); }
@@ -73,10 +76,11 @@ class NotificationForm extends Component{
         />
         <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Solicitudes</Modal.Title>
+            <h3>Al Ingresar las solicitudes dar click en la X para salir</h3>
           </Modal.Header>
           <Modal.Body>
-            <Requests/>
+            <Requests notificationId={this.props.notification.id} />
           </Modal.Body>
           <Modal.Footer>
           </Modal.Footer>
