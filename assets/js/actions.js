@@ -40,7 +40,7 @@ export const fetchNotifications = () => {
         url: `${SERVER_URL}/comercial_agent/notifications/`,
         statusCode: {
         200: (data) => {
-            console.log(data)
+          localStorage.setItem("NOTIFICATIONS", JSON.stringify(data));
           dispatch(getNotifications(data))
         },
         404: (err) => {
