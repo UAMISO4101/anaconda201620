@@ -55,7 +55,7 @@ def get_artworks(request,artwork_type):
     if artwork_type == "all":
         sounds_model = Sound.objects.all()
         songs_model = Song.objects.all()
-    elif artwork_type == "popular":
+    elif artwork_type == "rating":
         sounds_model = Sound.objects.filter(averageRating__gte=3)
         songs_model = Song.objects.filter(averageRating__gte=3)
     elif artwork_type == "recent":
