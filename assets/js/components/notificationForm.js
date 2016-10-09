@@ -24,7 +24,7 @@ const setWarning = (name=null, description=null, initialDate=null, closingDate=n
   warning = !closingDate ? warning + " ,Fecha Final" : warning;
   warning = !closingDate ? warning + " ,Fecha Final" : warning;
   warning = initialD > closingD ? warning + " ,Fecha final menor a la inicial" : warning;
-  warning = initialD > today ? warning + " ,Fecha inicial debe ser mayor a hoy" : warning;
+  warning = !(initialD > today) ? warning + " ,Fecha inicial debe ser mayor a hoy" : warning;
   warning = request == 0 ? warning + " ,Solicitudes Vacia" : warning;
   return warning
 }

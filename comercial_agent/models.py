@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 
@@ -121,6 +122,8 @@ class Artwork(models.Model):
     playsCount = models.IntegerField()
     averageRating = models.IntegerField()
     collection = models.ForeignKey(ArtworkCollection, null=False)
+    created_at = models.DateTimeField(editable=False, default=timezone.now())
+
 
     def __str__(self):
         return ''.join([
