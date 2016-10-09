@@ -33,7 +33,12 @@ class Notifications extends Component {
     this.props.fetchNotifications();
   }
 
-
+  formatRequests(cell, row){;
+     return (<button
+                         onClick=""//Falta solo clickear
+                       name="btnRequests"
+                   >Ver Solicitudes</button>);
+ }
   formatEdit(cell, row){;
     return (
       <Link to={`${CA_DASHBOARD}/convocatoria/${cell}`}> <FaEdit /> </Link>
@@ -82,20 +87,27 @@ class Notifications extends Component {
             text={this.state.sweetAlertMessage}
             onConfirm={() => this.setState({ show: false })}
             />
-          <div className="border col-sm-4">
-            <h1>Lista de Convocatorias</h1>
+          <center>
+             <div className="border col-sm-12">
+               <center>
+                 <h1>Convocatorias</h1>
+               </center>
+
           </div>
+          </center>
+
           <div className="row" >
             <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
               <BootstrapTable data={this.props.notifications.notifications } striped={true} hover={true}>
                 <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
                 <TableHeaderColumn dataField="name" dataSort={true}>Nombre</TableHeaderColumn>
                 <TableHeaderColumn dataField="description" dataAlign="center" dataSort={true}>Descripción</TableHeaderColumn>
-                <TableHeaderColumn dataField="initialDate" dataSort={true}>Fecha de Inicio</TableHeaderColumn>
-                <TableHeaderColumn dataField="closingDate"  dataSort={true}  >Fecha de Cierre</TableHeaderColumn>
-                <TableHeaderColumn dataField="notificationType"  dataSort={true} >Tipo</TableHeaderColumn>
+                <TableHeaderColumn dataField="initial_date" dataSort={true}>Fecha de Inicio</TableHeaderColumn>
+                <TableHeaderColumn dataField="closing_date"  dataSort={true}  >Fecha de Cierre</TableHeaderColumn>
+                <TableHeaderColumn dataField="notification_type"  dataSort={true} >Tipo</TableHeaderColumn>
                 <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>
                 <TableHeaderColumn dataField="publishingState" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>
+                 <TableHeaderColumn dataField="id" dataFormat={this.formatRequests}  dataSort={false} >Solicitudes</TableHeaderColumn>
               </BootstrapTable>
             </div>
           </div>
