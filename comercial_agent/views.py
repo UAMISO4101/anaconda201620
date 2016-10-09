@@ -92,6 +92,25 @@ def notification_json(request):
     return JsonResponse({'notifications': dict_notifications}, safe=False)
 
 
+def get_open_notifications(request):
+    notifications_model = Notification.objects.filter(notification_state=Notification.PUBLISHED)
+
+    notifications_array = []
+
+    for notification in notifications_model:
+        requests__model = ArtworkRequest.objects.filter(notification_id=notification.id).order_by(('id'))
+        dict_notification = notification.as_dict();
+        dict_request = []
+        for request in requests__model:
+            dict_request.append({'name': request.name, 'features': request.features})
+
+        dict_notification['request'] = dict_request
+        notifications_array.append(dict_notification)
+
+    return JsonResponse({'notifications': notifications_array}, safe=False)
+
+
+
 def get_artworks(request,artwork_type):
     if request.method == 'GET':
         sounds_response = {}
