@@ -46,6 +46,31 @@ def create_notification(request):
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
+@csrf_exempt
+def edit_notification(request,notification_id):
+    if request.method == 'PUT':
+        notification_json = json.loads(request.body.decode("utf-8"))
+        notification_model = Notification.objects.filter(pk=notification_id).update(
+                              name=notification_json['name'],
+                              initial_date=notification_json['initialDate'],
+                              closing_date=notification_json['closingDate'],
+                              description=notification_json['description'],
+                              notification_type=notification_json['notificationType']
+                            )
+
+        # import pdb; pdb.set_trace()
+        ArtworkRequest.objects.filter(notification_id=notification_id).delete()
+        for request in notification_json['request']:
+            request_model = ArtworkRequest(name=request['name'],
+                                            features=request['features'])
+
+            request_model.notification = Notification.objects.get(pk=notification_id)
+            request_model.save()
+
+        return HttpResponse(status=status.HTTP_201_CREATED)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
 
 def notification_json(request):
     notifications = Notification.objects.order_by(('initial_date'))
