@@ -14,7 +14,7 @@ import {
 } from 'react-bootstrap'
 import SweetAlert from 'sweetalert-react';
 import { connect } from 'react-redux';
-import Request from './request';
+import RequestContent from './requestContent';
 import { addRequest } from '../actions';
 
 
@@ -37,7 +37,7 @@ class Requests extends Component {
       show: false,
     };
   }
-  
+
   render(){
 
     this.isEmpty(this.props.request);
@@ -91,7 +91,7 @@ class Requests extends Component {
      }else{
         RequestList = props =>(
               <ul className="list-group">
-                {this.props.request.map( rq => <Request rq={rq} key={rq.id}/> )}
+                {this.props.request.map( rq => <RequestContent rq={rq} key={rq.id}/> )}
               </ul>
           )
       }

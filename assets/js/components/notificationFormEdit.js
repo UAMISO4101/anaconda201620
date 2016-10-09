@@ -15,7 +15,7 @@ const mapStateToProps = (state, { params: { notificationId }}) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-      setRequest: (request) => dispatch( setRequest(request))
+      setRequest: (notificationId) => dispatch( setRequest(notificationId))
 })
 
 
