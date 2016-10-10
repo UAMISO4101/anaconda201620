@@ -39,73 +39,81 @@ class Notifications extends Component {
       <Link to={`${CA_DASHBOARD}/convocatoria/${cell}`}> <FaEdit /> </Link>
     );
   }
-  formatPublish(cell, row) {;
-    return (<Checkbox
-      onClick={this.publishClick.bind(this)}
-      id={`publish-${cell}`}
-      />);
-    }
-    editClick(notification){
-      this.props.editNotification(getNotificationId(notification));
-    }
-    publishClick(notification){
-      $.ajax({
-        method: "EDIT",
-        url: `${SERVER_URL}/comercial_agent/notifications/${idNotification}/publish`,
-        data: JSON.stringify(notificationObj),
+  formatPublish(cell, row) {
+    return (
+      <input type="checkbox" onChange={this.publishClick.bind(this)} id={`publish-${row.id}`}  checked={ cell == "PUB" ? true : false}/>
+    )
+  }
+  editClick(notification){
+    this.props.editNotification(getNotificationId(notification));
+  }
+  publishClick(notification){
+    let idNotification    = getNotificationId(notification);
+    let notificationState = notification.target.checked ? "PUB" : "CRE";
+    $.ajax({
+      method: "PUT",
+      url: `${SERVER_URL}/comercial_agent/notifications/${idNotification}/publish/`,
+      data: JSON.stringify({
+        "notificationState": notificationState
+      }),
 
-      })
-      .done(( msg ) => {
-        alert( "Data Saved: " + msg );
-      })
-      .fail((err) => {
-        console.error(err);
-        this.setState({
-          show: true,
-          sweetAlertTitle: "Error Servidor",
-          type: "error",
-          sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
-        });
+    })
+    .done(( msg ) => {
+      this.setState({
+        show: true,
+        sweetAlertTitle: "Exito",
+        type: "success",
+        sweetAlertMessage: "El estado de la convocatoría se actualizó."
+      });
+    })
+    .fail((err) => {
+      console.error(err);
+      this.setState({
+        show: true,
+        sweetAlertTitle: "Error Servidor",
+        type: "error",
+        sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
+      });
 
-      })
-      this.props.publishNotification(getNotificationId(notification));
-    }
+    })
+    this.props.publishNotification(getNotificationId(notification));
+  }
 
 
-    render(){
-      return(
-        <div>
-          <SweetAlert
-            show={this.state.show}
-            type={this.state.type}
-            title={this.state.sweetAlertTitle}
-            text={this.state.sweetAlertMessage}
-            onConfirm={() => this.setState({ show: false })}
-            />
-          <div className="border col-sm-4">
-            <h1>Lista de Convocatorias</h1>
-          </div>
-          <div className="row" >
-            <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
-              <BootstrapTable data={this.props.notifications.notifications } striped={true} hover={true}>
-                <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
-                <TableHeaderColumn dataField="name" dataSort={true}>Nombre</TableHeaderColumn>
-                <TableHeaderColumn dataField="description" dataAlign="center" dataSort={true}>Descripción</TableHeaderColumn>
-                <TableHeaderColumn dataField="initialDate" dataSort={true}>Fecha de Inicio</TableHeaderColumn>
-                <TableHeaderColumn dataField="closingDate"  dataSort={true}  >Fecha de Cierre</TableHeaderColumn>
-                <TableHeaderColumn dataField="notificationType"  dataSort={true} >Tipo</TableHeaderColumn>
-                <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>
-                <TableHeaderColumn dataField="publishingState" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>
-              </BootstrapTable>
-            </div>
+  render(){
+    return(
+      <div>
+        <SweetAlert
+          show={this.state.show}
+          type={this.state.type}
+          title={this.state.sweetAlertTitle}
+          text={this.state.sweetAlertMessage}
+          onConfirm={() => this.setState({ show: false })}
+          />
+        <div className="border col-sm-4">
+          <h1>Lista de Convocatorias</h1>
+        </div>
+        <div className="row" >
+          <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
+            <BootstrapTable data={this.props.notifications.notifications } striped={true} hover={true}>
+              <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
+              <TableHeaderColumn dataField="name" dataSort={true}>Nombre</TableHeaderColumn>
+              <TableHeaderColumn dataField="description" dataAlign="center" dataSort={true}>Descripción</TableHeaderColumn>
+              <TableHeaderColumn dataField="initial_date" dataSort={true}>Fecha de Inicio</TableHeaderColumn>
+              <TableHeaderColumn dataField="closing_date"  dataSort={true}  >Fecha de Cierre</TableHeaderColumn>
+              <TableHeaderColumn dataField="notification_type"  dataSort={true} >Tipo</TableHeaderColumn>
+              <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>
+              <TableHeaderColumn dataField="notification_state" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>
+            </BootstrapTable>
           </div>
         </div>
-      )
-
-    }
-
-
+      </div>
+    )
 
   }
 
-  export default Notifications;
+
+
+}
+
+export default Notifications;
