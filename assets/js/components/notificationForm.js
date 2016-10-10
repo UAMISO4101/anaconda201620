@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { hashHistory } from 'react-router'
 
-import { Modal, OverlayTrigger, Button } from 'react-bootstrap';
+import { Modal, OverlayTrigger, Button, Form,
+  FormControl,
+  FormGroup,Col,
+  ControlLabel, } from 'react-bootstrap';
 import moment from 'moment';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import SweetAlert from 'sweetalert-react';
@@ -13,7 +16,7 @@ import FaCalendarCheckMinusO from 'react-icons/lib/fa/calendar-minus-o'
 
 import Requests from './requests';
 import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
-
+import Request from './request';
 
 const setWarning = (name=null, description=null, initialDate=null, closingDate=null, request=0) => {
   let warning = "Llenar campos: \n";
@@ -36,6 +39,7 @@ class NotificationForm extends Component{
   constructor(props){
     super(props);
     this.state = {
+      prev: false,
       showModal: false,
       sweetAlertMessage: "",
       sweetAlertTitle: "",
@@ -43,7 +47,8 @@ class NotificationForm extends Component{
       initialDate: null,
       closingDate: null,
       name: null,
-      description: null
+      description: null,
+      notif : null
     };
   }
   componentDidMount(){
@@ -56,8 +61,10 @@ class NotificationForm extends Component{
   handleName(event){ this.setState({name: event.target.value}); }
   handleDescription(event){ this.setState({description: event.target.value}); }
 
-  closeModal() { this.setState({ showModal: false }); }
-  openModal() { this.setState({ showModal: true }); }
+  closeModal() { this.setState({ showModal: false , prev: false}); }
+  openModal() { this.setState({ showModal: true , prev:false }); }
+  closePrevModal() { this.setState({ showModal: false, prev: false }); }
+  openPrevModal() { this.setState({ showModal: true , prev: true}); }
 
   calendarEvent(event, picker) {
         this.setState({
@@ -82,7 +89,7 @@ class NotificationForm extends Component{
             <h3>Al Ingresar las solicitudes dar click en la X para salir</h3>
           </Modal.Header>
           <Modal.Body>
-            <Requests notificationId={this.props.notification.id} />
+            { this.state.prev ? this.getNotifHTML() : <Requests notificationId={this.props.notification.id} />}
           </Modal.Body>
           <Modal.Footer>
           </Modal.Footer>
@@ -141,7 +148,7 @@ class NotificationForm extends Component{
               </div>
               <div className="form-group">
                 <div className="col-sm-push-4 col-sm-4 col-xs-12">
-                  <button onClick={this.onSave.bind(this)} type="submit" className="btn btn-success">¿Comenzamos?</button>
+                  <button onClick={this.onSave.bind(this)} type="submit" className="btn btn-success">Previsualizar</button>
                 </div>
               </div>
             </form>
@@ -177,8 +184,9 @@ class NotificationForm extends Component{
             notificationType: vPublic || vPrivate,
             request: this.props.request
           }
-          this.postServer(notificationObj);
-
+          // this.postServer(notificationObj);
+          this.setState({notif:notificationObj});
+          this.openPrevModal();
         }else{
           this.setState({
             sweetAlertMessage: setWarning(name, description, initialDate, closingDate,this.props.request.length),
@@ -194,8 +202,8 @@ class NotificationForm extends Component{
         return new Date(new Date(date).valueOf() + new Date().getTimezoneOffset()*60000);
     }
 
-    postServer(notificationObj){
-
+    postServer(){
+      let notificationObj = this.state.notif;
       let notificationId = "";
       let ajaxMethod = "POST";
       if (this.props.notification.id){
@@ -223,6 +231,28 @@ class NotificationForm extends Component{
 
       })
     }
+
+  getNotifHTML() {
+    return(<div><h1>Información de convocatoria</h1>
+      <p>Nombre: {this.state.notif.name}</p>
+  <p>Descripción: {this.state.notif.description}</p>
+  <p>Inicio: {this.state.notif.initialDate}</p>
+  <p>Cierre: {this.state.notif.closingDate}</p>
+  <p>Tipo: {this.state.notif.notificationType}</p>
+      <h4>Solicitudes:</h4>
+     <ul className="list-group">
+                {this.state.notif.request.map( rq => <Request rq={rq} key={rq.id}/> )}
+              </ul>
+    <Form horizontal onSubmit={this.postServer.bind(this)} >
+            <FormGroup>
+              <Col smOffset={2} sm={10}>
+                <Button  type="submit">
+                  Enviar Convocatoria
+                </Button>
+              </Col>
+            </FormGroup>
+          </Form></div>);
+  }
 }
 
 export default NotificationForm;

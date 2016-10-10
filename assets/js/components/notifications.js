@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import { BootstrapTable, TableHeaderColumn, Button } from 'react-bootstrap-table';
 import FaEdit from 'react-icons/lib/fa/edit';
 import SweetAlert from 'sweetalert-react';
-import {Checkbox} from 'react-bootstrap';
+import {Modal,OverlayTrigger, Checkbox} from 'react-bootstrap';
 import { Link } from 'react-router';
 import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
+
+import ArtworkRequest from './artworkRequest';
 
 const getNotificationId = notification => {
   let str = notification.target.id
@@ -25,7 +27,8 @@ class Notifications extends Component {
       showModal: false,
       sweetAlertMessage: "",
       sweetAlertTitle: "",
-      type: "warning"
+      type: "warning",
+        modalRequest : null
     };
   }
   componentDidMount(){
@@ -34,7 +37,19 @@ class Notifications extends Component {
   }
 
 
-  formatEdit(cell, row){;
+
+  closeModal() { this.setState({ showModal: false }); }
+  openModal(cell) {
+      this.setState({ showModal: true, modalRequest: cell });
+  }
+
+  formatRequests(cell, row){
+      return (<button onClick={()=>{
+          this.openModal(cell)
+      }}  type="submit">Ver</button>);
+ }
+
+  formatEdit(cell, row){
     return (
       <Link to={`${CA_DASHBOARD}/convocatoria/${cell}`}> <FaEdit /> </Link>
     );
@@ -80,35 +95,54 @@ class Notifications extends Component {
   }
 
 
-  render(){
-    return(
-      <div>
-        <SweetAlert
-          show={this.state.show}
-          type={this.state.type}
-          title={this.state.sweetAlertTitle}
-          text={this.state.sweetAlertMessage}
-          onConfirm={() => this.setState({ show: false })}
-          />
-        <div className="border col-sm-4">
-          <h1>Lista de Convocatorias</h1>
-        </div>
-        <div className="row" >
-          <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
-            <BootstrapTable data={this.props.notifications.notifications } striped={true} hover={true}>
-              <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
-              <TableHeaderColumn dataField="name" dataSort={true}>Nombre</TableHeaderColumn>
-              <TableHeaderColumn dataField="description" dataAlign="center" dataSort={true}>Descripción</TableHeaderColumn>
-              <TableHeaderColumn dataField="initial_date" dataSort={true}>Fecha de Inicio</TableHeaderColumn>
-              <TableHeaderColumn dataField="closing_date"  dataSort={true}  >Fecha de Cierre</TableHeaderColumn>
-              <TableHeaderColumn dataField="notification_type"  dataSort={true} >Tipo</TableHeaderColumn>
-              <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>
-              <TableHeaderColumn dataField="notification_state" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>
-            </BootstrapTable>
+    render(){
+      return(
+        <div>
+          <SweetAlert
+            show={this.state.show}
+            type={this.state.type}
+            title={this.state.sweetAlertTitle}
+            text={this.state.sweetAlertMessage}
+            onConfirm={() => this.setState({ show: false })}
+            />
+
+          <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Detalle solicitudes</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ArtworkRequest request={this.state.modalRequest}/>
+          </Modal.Body>
+          <Modal.Footer>
+          </Modal.Footer>
+          </Modal>
+          <center>
+             <div className="border col-sm-12">
+               <center>
+                 <h1>Convocatorias</h1>
+               </center>
+
+          </div>
+          </center>
+
+          <div className="row" >
+            <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
+              <BootstrapTable data={this.props.notifications.notifications } striped={true} hover={true}>
+                <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
+                <TableHeaderColumn dataField="name" dataSort={true}>Nombre</TableHeaderColumn>
+                <TableHeaderColumn dataField="description" dataAlign="center" dataSort={true}>Descripción</TableHeaderColumn>
+                <TableHeaderColumn dataField="initial_date" dataSort={true}>Fecha de Inicio</TableHeaderColumn>
+                <TableHeaderColumn dataField="closing_date"  dataSort={true}  >Fecha de Cierre</TableHeaderColumn>
+                <TableHeaderColumn dataField="notification_type"  dataSort={true} >Tipo</TableHeaderColumn>
+                <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>
+                <TableHeaderColumn dataField="publishingState" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>
+                 <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Solicitudes</TableHeaderColumn>
+
+              </BootstrapTable>
+            </div>
           </div>
         </div>
-      </div>
-    )
+      )
 
   }
 
