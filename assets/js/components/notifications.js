@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import { BootstrapTable, TableHeaderColumn, Button } from 'react-bootstrap-table';
 import FaEdit from 'react-icons/lib/fa/edit';
 import SweetAlert from 'sweetalert-react';
-import {Checkbox} from 'react-bootstrap';
+import {Modal,OverlayTrigger, Checkbox} from 'react-bootstrap';
 import { Link } from 'react-router';
 import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
+
+import ArtworkRequest from './artworkRequest';
 
 const getNotificationId = notification => {
   let str = notification.target.id
@@ -25,7 +27,8 @@ class Notifications extends Component {
       showModal: false,
       sweetAlertMessage: "",
       sweetAlertTitle: "",
-      type: "warning"
+      type: "warning",
+        modalRequest : null
     };
   }
   componentDidMount(){
@@ -33,18 +36,25 @@ class Notifications extends Component {
     this.props.fetchNotifications();
   }
 
-  formatRequests(cell, row){;
-     return (<button
-                         onClick=""//Falta solo clickear
-                       name="btnRequests"
-                   >Ver Solicitudes</button>);
+
+
+  closeModal() { this.setState({ showModal: false }); }
+  openModal(cell) {
+      this.setState({ showModal: true, modalRequest: cell });
+  }
+
+  formatRequests(cell, row){
+      return (<button onClick={()=>{
+          this.openModal(cell)
+      }}  type="submit">Ver</button>);
  }
-  formatEdit(cell, row){;
+
+  formatEdit(cell, row){
     return (
       <Link to={`${CA_DASHBOARD}/convocatoria/${cell}`}> <FaEdit /> </Link>
     );
   }
-  formatPublish(cell, row) {;
+  formatPublish(cell, row) {
     return (<Checkbox
       onClick={this.publishClick.bind(this)}
       id={`publish-${cell}`}
@@ -87,6 +97,17 @@ class Notifications extends Component {
             text={this.state.sweetAlertMessage}
             onConfirm={() => this.setState({ show: false })}
             />
+
+          <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Detalle solicitudes</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ArtworkRequest request={this.state.modalRequest}/>
+          </Modal.Body>
+          <Modal.Footer>
+          </Modal.Footer>
+          </Modal>
           <center>
              <div className="border col-sm-12">
                <center>
@@ -107,7 +128,8 @@ class Notifications extends Component {
                 <TableHeaderColumn dataField="notification_type"  dataSort={true} >Tipo</TableHeaderColumn>
                 <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>
                 <TableHeaderColumn dataField="publishingState" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>
-                 <TableHeaderColumn dataField="id" dataFormat={this.formatRequests}  dataSort={false} >Solicitudes</TableHeaderColumn>
+                 <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Solicitudes</TableHeaderColumn>
+
               </BootstrapTable>
             </div>
           </div>
