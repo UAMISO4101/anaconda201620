@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { hashHistory } from 'react-router'
 
 import { Modal, OverlayTrigger, Button, Form,
   FormControl,
@@ -228,7 +227,13 @@ class NotificationForm extends Component{
 
       })
       .done(( msg ) => {
-          hashHistory.push(`${SERVER_URL}/#${CA_DASHBOARD}/convocatorias`)
+          this.setState({
+          show: true,
+          sweetAlertTitle: "Exito",
+          type: "success",
+          sweetAlertMessage: "Convocatoria creada exitosamente",
+          showModal: false
+        });
         })
       .fail((err) => {
         console.error(err);

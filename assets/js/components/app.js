@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import Navbar from './navbar';
-import NotificationForm from './notificationForm';
 
 
 const App = ({children}) => {
