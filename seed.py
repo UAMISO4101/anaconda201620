@@ -231,3 +231,4 @@ def notifications_creator():
 
 songs_creator()
 sounds_creator()
+notifications_creator()
