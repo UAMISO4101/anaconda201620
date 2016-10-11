@@ -12,7 +12,7 @@ import SweetAlert from 'sweetalert-react';
 
 import FaCalendarCheckO from 'react-icons/lib/fa/calendar-check-o'
 import FaCalendarCheckMinusO from 'react-icons/lib/fa/calendar-minus-o'
-
+import Cookies from 'js-cookie'
 
 import Requests from './requests';
 import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
@@ -52,8 +52,8 @@ class NotificationForm extends Component{
     };
   }
   componentDidMount(){
-    this.props.getNotifications();
     if (this.props.setRequest){
+      this.props.getNotifications();
       this.props.setRequest(this.props.notification.request)
     }
   }
@@ -85,8 +85,10 @@ class NotificationForm extends Component{
         />
         <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)}>
           <Modal.Header closeButton>
-            <Modal.Title>Solicitudes</Modal.Title>
-            <h3>Al Ingresar las solicitudes dar click en la X para salir</h3>
+              { this.state.prev ? <div><Modal.Title>Información</Modal.Title><h3>Puede dar click en la X para salir</h3> </div>:<div> <Modal.Title>Solicitudes</Modal.Title>
+            <h3>Al Ingresar las solicitudes dar click en la X para salir</h3></div>}
+
+
           </Modal.Header>
           <Modal.Body>
             { this.state.prev ? this.getNotifHTML() : <Requests notificationId={this.props.notification.id} />}
@@ -158,8 +160,10 @@ class NotificationForm extends Component{
         </div>
       )}
 
-
-
+  csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
   onSave(event){
         event.preventDefault();
 
@@ -207,13 +211,19 @@ class NotificationForm extends Component{
       let notificationId = "";
       let ajaxMethod = "POST";
       if (this.props.notification.id){
-        notificationId = this.props.notification.id;
+        notificationId = `${this.props.notification.id}/`;
         ajaxMethod     = "PUT";
       }
-
+      let csrf = Cookies.get('csrftoken');
+      var self = this;
       $.ajax({
+        beforeSend: function(xhr, settings) {
+            if (!self.csrfSafeMethod(settings.type)) {
+                xhr.setRequestHeader("X-CSRFToken", csrf);
+            }
+        },
         method: ajaxMethod,
-        url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}/`,
+        url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}`,
         data: JSON.stringify(notificationObj),
 
       })
