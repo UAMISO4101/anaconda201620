@@ -20,34 +20,7 @@ from comercial_agent.models import Artwork, ArtworkRequest, Notification, Sound,
 def index(request):
     return render(request, 'comercial_agent/index.html')
 
-@csrf_exempt
-def create_notification(request):
-    if request.method == 'POST':
-        if request.is_ajax():
-            notification_json = json.loads(request.body.decode("utf-8"))
 
-            print(notification_json)
-            notification_model = Notification(name=notification_json['name'],
-                                              initial_date=notification_json['initialDate'],
-                                              closing_date=notification_json['closingDate'],
-                                              description=notification_json['description'],
-                                              notification_type=notification_json['notificationType'])
-
-            notification_model.save()
-
-            for request in notification_json['request']:
-                request_model = ArtworkRequest(name=request['name'],
-                                                features=request['features'])
-
-                request_model.notification = Notification.objects.get(pk=notification_model.pk)
-                request_model.save()
-
-
-            return HttpResponse(status=status.HTTP_201_CREATED)
-        else:
-            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
 def edit_notification(request,notification_id):
@@ -76,21 +49,44 @@ def edit_notification(request,notification_id):
 
 
 def notification_json(request):
-    notifications = Notification.objects.order_by(('initial_date'))
-    dict_notifications = []
+    if request.method == 'GET':
+        notifications = Notification.objects.order_by(('initial_date'))
+        dict_notifications = []
 
-    for notification in notifications:
-        requests = ArtworkRequest.objects.filter(notification_id=notification.id).order_by(('id'))
-        dict_notification = notification.as_dict();
-        dict_request = []
-        for request in requests:
-            dict_request.append({'name': request.name, 'features': request.features})
+        for notification in notifications:
+            requests = ArtworkRequest.objects.filter(notification_id=notification.id).order_by(('id'))
+            dict_notification = notification.as_dict();
+            dict_request = []
+            for request in requests:
+                dict_request.append({'name': request.name, 'features': request.features})
 
-        dict_notification['request'] = dict_request
-        dict_notifications.append(dict_notification)
+            dict_notification['request'] = dict_request
+            dict_notifications.append(dict_notification)
 
-    return JsonResponse({'notifications': dict_notifications}, safe=False)
+        return JsonResponse({'notifications': dict_notifications}, safe=False)
+    elif request.method == 'POST':
+            notification_json = json.loads(request.body.decode("utf-8"))
 
+            print(notification_json)
+            notification_model = Notification(name=notification_json['name'],
+                                              initial_date=notification_json['initialDate'],
+                                              closing_date=notification_json['closingDate'],
+                                              description=notification_json['description'],
+                                              notification_type=notification_json['notificationType'])
+
+            notification_model.save()
+
+            for request in notification_json['request']:
+                request_model = ArtworkRequest(name=request['name'],
+                                                features=request['features'])
+
+                request_model.notification = Notification.objects.get(pk=notification_model.pk)
+                request_model.save()
+
+
+            return HttpResponse(status=status.HTTP_201_CREATED)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 def get_open_notifications(request):
     notifications_model = Notification.objects.filter(notification_state=Notification.PUBLISHED)
