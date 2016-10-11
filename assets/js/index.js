@@ -35,6 +35,7 @@ function run () {
             <Route path="convocatorias" component={NotificationContent} />
           </Route>
         </Route>
+        <Route path="participar" component={NotificationContent} />
       </Route>
       <Route path="*" component={Page404} />
     </Router>
