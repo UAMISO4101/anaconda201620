@@ -109,10 +109,12 @@ class Notifications extends Component {
 
           <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)}>
           <Modal.Header closeButton>
-            <Modal.Title>Detalle solicitudes</Modal.Title>
+              {this.props.params.tipo!=='artista'? <Modal.Title>Detalle solicitudes</Modal.Title>:<Modal.Title>Postular Sonido</Modal.Title>}
           </Modal.Header>
           <Modal.Body>
-            <ArtworkRequest request={this.state.modalRequest}/>
+                   {this.props.params.tipo!=='artista'?     <ArtworkRequest request={this.state.modalRequest}/>:<button>Subir</button>}
+
+
           </Modal.Body>
           <Modal.Footer>
           </Modal.Footer>
