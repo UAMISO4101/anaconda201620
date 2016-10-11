@@ -13,8 +13,9 @@ import {
 
 import { connect } from 'react-redux';
 
-const mapStateToProps = (state, router) => ({
+const mapStateToProps = (state,  { params: { tipo }}) => ({
   notifications: state.notifications,
+  tipo : state.tipo,
   saModal: state.saModal
 });
 

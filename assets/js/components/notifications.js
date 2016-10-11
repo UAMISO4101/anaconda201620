@@ -32,7 +32,8 @@ class Notifications extends Component {
     };
   }
   componentDidMount(){
-    console.log("Notifications Mounted!")
+    console.log("Notifications Mounted!");
+      console.log(this);
     this.props.fetchNotifications();
   }
 
@@ -120,6 +121,7 @@ class Notifications extends Component {
              <div className="border col-sm-12">
                <center>
                  <h1>Convocatorias</h1>
+
                </center>
 
           </div>
@@ -135,9 +137,8 @@ class Notifications extends Component {
                 <TableHeaderColumn dataField="closing_date"  dataSort={true}  >Fecha de Cierre</TableHeaderColumn>
                 <TableHeaderColumn dataField="notification_type"  dataSort={true} >Tipo</TableHeaderColumn>
                 <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>
-                <TableHeaderColumn dataField="publishingState" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>
-                 <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Solicitudes</TableHeaderColumn>
-
+                {this.props.params.tipo!=='artista'? <TableHeaderColumn dataField="publishingState" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>:<TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Obras</TableHeaderColumn>}
+                {this.props.params.tipo!=='artista'?  <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Solicitudes</TableHeaderColumn> :  <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Participar</TableHeaderColumn>}
               </BootstrapTable>
             </div>
           </div>
