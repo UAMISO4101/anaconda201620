@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'sonidos_libres.wsgi.application'
 
 if os.environ.get('DJANGO_ENV') == 'production':
 
-    DEBUG = False
+    DEBUG = True
     DATABASES = {'default': dj_database_url.config(default= os.environ.get('DATABASE_URL'))}
 else:
 
