@@ -47,7 +47,7 @@ def edit_notification(request,notification_id):
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
-
+@csrf_exempt
 def notification_json(request):
     if request.method == 'GET':
         notifications = Notification.objects.order_by(('initial_date'))
