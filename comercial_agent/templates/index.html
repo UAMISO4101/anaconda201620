@@ -11,6 +11,9 @@
 
     </head>
     <body>
+        <span id="csrf_token">
+            {% csrf_token %}
+        </span>
         <div id="container"></div>
         {% render_bundle 'main' %}
     </body>
