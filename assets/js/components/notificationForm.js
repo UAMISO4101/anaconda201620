@@ -205,6 +205,8 @@ class NotificationForm extends Component{
         return new Date(new Date(date).valueOf() + new Date().getTimezoneOffset()*60000);
     }
 
+
+
     postServer(){
       let notificationObj = this.state.notif;
       let notificationId = "";
@@ -213,7 +215,7 @@ class NotificationForm extends Component{
         notificationId = `${this.props.notification.id}/`;
         ajaxMethod     = "PUT";
       }
-      let csrf = Cookies.get('csrftoken');
+      let csrf = $("#csrf_token").children("input")[0].value;
       var self = this;
       $.ajax({
         beforeSend: function(xhr, settings) {
