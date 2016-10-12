@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'webpack_loader',
     'corsheaders',
+    's3_folder_storage',
     #local apps
     'comercial_agent',
 ]
@@ -88,7 +89,7 @@ WSGI_APPLICATION = 'sonidos_libres.wsgi.application'
 
 if os.environ.get('DJANGO_ENV') == 'production':
 
-    DEBUG = True
+    DEBUG = False
     DATABASES = {'default': dj_database_url.config(default= os.environ.get('DATABASE_URL'))}
 else:
 
@@ -145,9 +146,34 @@ CORS_ALLOW_METHODS = (
     'OPTIONS',
 )
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = ''
+if os.environ.get( 'DJANGO_ENV' ) == 'production':
+    # AWS S3 Credentials
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    # AWS_PRELOAD_METADATA = True
+    # AWS_QUERYSTRING_AUTH = False
+    # AWS_S3_HOST = os.environ.get('AWS_S3_HOST')
+
+    DEFAULT_FILE_STORAGE = os.environ.get('DEFAULTFILES_STORAGE')
+    DEFAULT_S3_PATH = 'media'
+    STATICFILES_STORAGE = os.environ.get('STATICFILES_STORAGE')
+    STATIC_S3_PATH = 'static'
+
+    MEDIA_ROOT = '/media/'
+    MEDIA_URL = os.environ.get('MEDIA_URL')
+    STATIC_ROOT = '/static/'
+    STATIC_URL = os.environ.get('STATIC_URL')
+    ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+
+
+else:
+    # SETUP LOCAL SETTINGS
+    STATIC_URL = '/static/'
+
+
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 
 STATICFILES_DIRS = (

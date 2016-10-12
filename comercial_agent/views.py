@@ -128,13 +128,11 @@ def get_artworks(request,artwork_type):
                 GROUP by d.ProductID, p.Title\
                 ORDER BY COUNT(d.OrderID) DESC"
             sounds_model = Artwork.objects.order_by('created_at')[:3]
-            # Person.objects.raw('SELECT * FROM some_other_table', translations=name_map)
 
         else:
             return JsonResponse({'status':'false','message':message}, status=400)
 
         for sound in sounds_model:
-            # import pdb; pdb.set_trace()
             sound_id = sound.pk
             sound_name = sound.name
             sound_type = sound.type.name
@@ -174,6 +172,32 @@ def edit_notification_state(request,notification_id):
             notification_state=notification_json['notificationState']
         )
 
+        return HttpResponse(status=status.HTTP_201_CREATED)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+def sound(request):
+    if request.method == 'POST':
+        response = {}
+        # import pdb; pdb.set_trace()
+        file_name = request.FILES["file"]._name
+        file_body = request.FILES["file"].file.read()
+
+        sounds_json = json.loads(request.body.decode("utf-8"))
+
+        sounds_model = Sound(
+                name           =  sounds_json['name'] ,
+                # ratingCount    =  sounds_json['ratingCount'],
+                # likesCount     =  sounds_json['likesCount'],
+                # dislikesCount  =  sounds_json['dislikesCount'],
+                # playsCount     =  sounds_json['playsCount'],
+                # averageRating  =  sounds_json['averageRating'],
+                collection     =  sounds_json['collection'],
+                file_url       =  sounds_json['file_url']
+            )
+        sounds_model.save()
         return HttpResponse(status=status.HTTP_201_CREATED)
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)

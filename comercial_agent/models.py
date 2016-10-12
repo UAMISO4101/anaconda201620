@@ -94,7 +94,6 @@ class Notification(models.Model):
         choices=NOTIFICATION_STATE,
         default=CREATED,
     )
-
     def as_dict(self):
         return {
             "id": self.id,
@@ -148,6 +147,7 @@ class Artwork(models.Model):
     playsCount = models.IntegerField()
     averageRating = models.IntegerField()
     collection = models.ForeignKey(ArtworkCollection, null=False)
+    file_url = models.TextField(blank=False)
     created_at = models.DateTimeField(editable=False, default=timezone.now())
 
 
