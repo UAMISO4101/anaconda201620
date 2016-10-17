@@ -136,7 +136,6 @@ class NotificationForm extends Component{
                           <span>
                             <FaCalendarCheckO/>
                           </span>
-
                           <span> &nbsp; </span>
 
                           <span>
@@ -205,6 +204,7 @@ class NotificationForm extends Component{
         return new Date(new Date(date).valueOf() + new Date().getTimezoneOffset()*60000);
     }
 
+
     postServer(){
       let notificationObj = this.state.notif;
       let notificationId = "";
@@ -213,14 +213,8 @@ class NotificationForm extends Component{
         notificationId = `${this.props.notification.id}/`;
         ajaxMethod     = "PUT";
       }
-      let csrf = Cookies.get('csrftoken');
       var self = this;
       $.ajax({
-        beforeSend: function(xhr, settings) {
-            if (!self.csrfSafeMethod(settings.type)) {
-                xhr.setRequestHeader("X-CSRFToken", csrf);
-            }
-        },
         method: ajaxMethod,
         url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}`,
         data: JSON.stringify(notificationObj),

@@ -56,8 +56,9 @@ class Notifications extends Component {
     );
   }
   formatPublish(cell, row) {
+    let checkedState = row.notification_state == "PUB" ? "checked" : "";
     return (
-      <input type="checkbox" onChange={this.publishClick.bind(this)} id={`publish-${row.id}`}  checked={ cell == "PUB" ? true : false}/>
+      <input type="checkbox" onChange={this.publishClick.bind(this)} id={`publish-${row.id}`}  value={ checkedState ? true : false} />
     )
   }
   editClick(notification){

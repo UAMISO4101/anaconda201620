@@ -8,3 +8,4 @@ assets/bundles
 */*/*.pyc
 comercial_agent/migrations
 profilePictures/
+*.exe
