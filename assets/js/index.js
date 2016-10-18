@@ -16,6 +16,7 @@ const history = syncHistoryWithStore(hashHistory, store);
 import App from './components/app';
 import NotificationFormContent from './components/notificationFormContent';
 import NotificationFormEdit from './components/notificationFormEdit';
+import NotificationArtist from './components/notificationArtist';
 import Notification from './components/notifications';
 import SoundtracksContent from './components/soundtracksContent';
 import NotificationContent from './components/notificationsContent';
@@ -32,7 +33,11 @@ function run () {
           <Route path="agente-comercial" >
             <IndexRoute component={NotificationFormContent} />
             <Route path='convocatoria/:notificationId' component={NotificationFormEdit} />
-            <Route path="convocatorias/:tipo" component={NotificationContent} />
+            <Route path="convocatorias" component={NotificationContent} />
+          </Route>
+          <Route path="artista" >
+            <IndexRedirect to="/convocatorias" />
+            <Route path="convocatorias" component={NotificationArtist} />
           </Route>
         </Route>
         <Route path="participar(/:tipo)" component={NotificationContent} />

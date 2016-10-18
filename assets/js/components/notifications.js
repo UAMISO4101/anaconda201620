@@ -16,6 +16,7 @@ const getNotificationId = notification => {
   let notificationID =str.match(regex);
   return notificationID
 }
+
 class Notifications extends Component {
 
   constructor(props){
@@ -37,7 +38,23 @@ class Notifications extends Component {
     this.props.fetchNotifications();
   }
 
-
+  tableComponent(user_type){
+    switch (user_type){
+      case "artist":
+        return([
+          <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Obras</TableHeaderColumn>,
+          <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Participar</TableHeaderColumn>
+        ])
+      case "comercial_agent":
+        return([
+          <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>,
+          <TableHeaderColumn dataField="publishingState" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>,
+          <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Solicitudes</TableHeaderColumn>
+        ])
+      default:
+        return null
+    }
+  }
 
   closeModal() { this.setState({ showModal: false }); }
   openModal(cell) {
@@ -110,12 +127,18 @@ class Notifications extends Component {
 
           <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)}>
           <Modal.Header closeButton>
-              {this.props.params.tipo!=='artista'? <Modal.Title>Detalle solicitudes</Modal.Title>:<Modal.Title>Postular Sonido</Modal.Title>}
+              {
+                this.props.user_type!=='artist' ?
+                <Modal.Title>Detalle solicitudes</Modal.Title> :
+                <Modal.Title>Postular Sonido</Modal.Title>
+              }
           </Modal.Header>
           <Modal.Body>
-                   {this.props.params.tipo!=='artista'?     <ArtworkRequest request={this.state.modalRequest}/>:<button>Subir</button>}
-
-
+               {
+                 this.props.user_type!=='artist' ?
+                  <ArtworkRequest request={this.state.modalRequest}/> :
+                  <button>Subir</button>
+                }
           </Modal.Body>
           <Modal.Footer>
           </Modal.Footer>
@@ -139,9 +162,7 @@ class Notifications extends Component {
                 <TableHeaderColumn dataField="initial_date" dataSort={true}>Fecha de Inicio</TableHeaderColumn>
                 <TableHeaderColumn dataField="closing_date"  dataSort={true}  >Fecha de Cierre</TableHeaderColumn>
                 <TableHeaderColumn dataField="notification_type"  dataSort={true} >Tipo</TableHeaderColumn>
-                <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>
-                {this.props.params.tipo!=='artista'? <TableHeaderColumn dataField="publishingState" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>:<TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Obras</TableHeaderColumn>}
-                {this.props.params.tipo!=='artista'?  <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Solicitudes</TableHeaderColumn> :  <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Participar</TableHeaderColumn>}
+                { this.tableComponent(this.props.user_type) }
               </BootstrapTable>
             </div>
           </div>

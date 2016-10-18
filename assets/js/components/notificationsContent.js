@@ -16,7 +16,8 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state,  { params: { tipo }}) => ({
   notifications: state.notifications,
   tipo : state.tipo,
-  saModal: state.saModal
+  saModal: state.saModal,
+  user_type: 'comercial_agent'
 });
 
 const mapDispatchToProps = dispatch => ({
