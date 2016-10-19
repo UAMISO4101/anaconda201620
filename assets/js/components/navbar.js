@@ -19,7 +19,7 @@ class Navbar extends Component{
                         <ul className="nav navbar-nav">
                             <li><a href="#">Home</a></li>
                             <li><a href={`#${CA_DASHBOARD}`}>Crear Convocatoria</a></li>
-                            <li><a href={`#${CA_DASHBOARD}/convocatorias/agente`}>Convocatorias</a></li>
+                            <li><a href={`#${CA_DASHBOARD}/convocatorias`}>Convocatorias</a></li>
                             <li><a href={`#participar/artista`}>Participar</a></li>
                         </ul>
                     </div>
