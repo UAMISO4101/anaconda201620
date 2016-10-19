@@ -61,7 +61,6 @@ const requestDafault = {name: "requestDeafult", features: "Default Feature"};
 const notificationDefault  = { id: 1, name: "notification A", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "my description for notification A", publishingState: false, request: [requestDafault] };
 const notificationsDefault = {"notifications":[notificationDefault]};
 export const notifications = (state=notificationsDefault,  action) => {
-  let notification = null;
   switch (action.type) {
     case 'GET_NOTIFICATIONS':
       return action.data || JSON.parse(localStorage.getItem("NOTIFICATIONS")) || state;
@@ -90,3 +89,19 @@ export const notification = (state=notificationBlank,  action) => {
       return state ;
   }
 };
+
+
+export const notificationModal = (state={ showModal: false, modalRequest: [] },  action) => {
+  let notificationModal = {};
+  switch (action.type) {
+    case 'SHOW_NOTIFICATION_MODAL':
+      notificationModal = Object.assign({}, action.data);
+      return  notificationModal || state;
+      break;
+    case 'HIDE_NOTIFICATION_MODAL':
+      return  {  showModal: false, modalRequest: [] } || state;
+      break;
+    default:
+      return state ;
+  }
+}
