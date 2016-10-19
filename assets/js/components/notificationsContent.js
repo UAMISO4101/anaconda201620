@@ -8,6 +8,7 @@ import {
   fetchNotifications,
   hideSAModal,
   publishNotification,
+  showNotifictionModal,
   showSAModal,
 } from '../actions';
 
@@ -17,13 +18,14 @@ const mapStateToProps = (state,  { params: { tipo }}) => ({
   notifications: state.notifications,
   tipo : state.tipo,
   saModal: state.saModal,
-  user_type: 'comercial_agent'
+  userType: 'comercial_agent'
 });
 
 const mapDispatchToProps = dispatch => ({
   editNotification: (id) => {dispatch(editNotification)},
   fetchNotifications: () => dispatch(fetchNotifications()),
   hideSAModal: () => dispatch(hideSAModal()),
-  publishNotification: (id) => {dispatch(publishNotification)}
+  publishNotification: (id) => {dispatch(publishNotification)},
+  showNotifictionModal: (modalProps) => {dispatch(showNotifictionModal(modalProps))}
 })
 export default connect(mapStateToProps,mapDispatchToProps)(Notifications);
