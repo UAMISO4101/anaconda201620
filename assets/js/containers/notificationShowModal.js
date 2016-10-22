@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import NotificationModal from './notificationModal'
+import NotificationModal from '../components/notificationModal'
 
 import {
   hideNotifictionModal

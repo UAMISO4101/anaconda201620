@@ -1,10 +1,10 @@
-import Notifications from './notifications'
+
+import Notifications from '../components/notifications'
 import { SERVER_URL } from '../utils/constants';
 import {
   editNotification,
   fetchNotifications,
   hideSAModal,
-  hideNotifictionModal,
   publishNotification,
   showNotifictionModal,
   showSAModal,
@@ -16,7 +16,7 @@ const mapStateToProps = (state,  { params: { tipo }}) => ({
   notifications: state.notifications,
   tipo : state.tipo,
   saModal: state.saModal,
-  userType: 'artist'
+  userType: 'comercial_agent'
 });
 
 const mapDispatchToProps = dispatch => ({
