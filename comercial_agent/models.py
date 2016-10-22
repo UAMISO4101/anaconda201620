@@ -4,7 +4,7 @@ from django.utils import timezone
 
 # Create your models here.
 
-
+#USERS MODELS
 class AbsUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(
@@ -59,6 +59,7 @@ class Manager(AbsUser):
     telephone = models.IntegerField()
 
 
+#NOTIFICATIONS MODELS
 class Notification(models.Model):
     PRIVATE = 'PR'
     PUBLIC = 'PB'
@@ -112,7 +113,7 @@ class Notification(models.Model):
         ])
 
 
-class ArtworkRequest(models.Model):
+class RequestedPiece(models.Model):
     name = models.CharField(
         max_length=255,
     )
