@@ -1,12 +1,10 @@
-/**
-* Created by danielordonez on 10/5/16.
-*/
 import Notifications from './notifications'
 import { SERVER_URL } from '../utils/constants';
 import {
   editNotification,
   fetchNotifications,
   hideSAModal,
+  hideNotifictionModal,
   publishNotification,
   showNotifictionModal,
   showSAModal,
@@ -18,7 +16,7 @@ const mapStateToProps = (state,  { params: { tipo }}) => ({
   notifications: state.notifications,
   tipo : state.tipo,
   saModal: state.saModal,
-  userType: 'comercial_agent'
+  userType: 'artist'
 });
 
 const mapDispatchToProps = dispatch => ({

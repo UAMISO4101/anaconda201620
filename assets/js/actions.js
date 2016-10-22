@@ -12,6 +12,9 @@ export const publishNotification = (id) => ({type: 'PUBLISH_NOTIFICATIONS',data:
 export const showSAModal = (modalProps) => ({ type: 'SHOW_SA_MODALS', data: modalProps });
 export const hideSAModal = () => ({ type: 'HIDE_SA_MODALS' });
 
+export const showNotifictionModal = (modalProps) => ({ type: 'SHOW_NOTIFICATION_MODAL', data: modalProps });
+export const hideNotifictionModal = () => ({ type: 'HIDE_NOTIFICATION_MODAL' });
+
 export const fetchSoundTracks = (filter) => {
   return dispatch => {
     jQuery.ajax({
