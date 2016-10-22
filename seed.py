@@ -5,8 +5,7 @@ import os
 import django
 
 from comercial_agent.models import Artist, ArtworkCollection, SoundType, Genre, Album, Song, Sound, Notification, \
-    ArtworkRequest
-
+    RequestedPiece
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sonidos_libres.settings")
 
@@ -16,7 +15,7 @@ def songs_creator():
     user = django.contrib.auth.models.User.objects.create_user(username='ironmaiden_user', password='ironmaiden1234')
     artist = Artist(
         user = user,
-        profile_picture='profilePictures/ironmaiden2015bandwlogo_638.jpg',
+        profile_picture='media/profilePictures/ironmaiden2015bandwlogo_638.jpg',
         artistic_name = 'Iron Maiden',
         account_number = 88889,
         address = 'London 123',
@@ -46,6 +45,8 @@ def songs_creator():
         averageRating=4,
         collection=collection,
         genre=genre,
+        length=3072,
+        cover='media/covers/Iron_Maiden_-_Powerslave.jpg',
     )
     album.save()
 
@@ -58,6 +59,7 @@ def songs_creator():
         averageRating=4,
         collection=collection,
         song_album=album,
+        length=271,
     )
     song.save()
 
@@ -70,6 +72,7 @@ def songs_creator():
         averageRating=5,
         collection=collection,
         song_album=album,
+        length=432,
     )
     song.save()
 
@@ -82,6 +85,7 @@ def songs_creator():
         averageRating=3,
         collection=collection,
         song_album=album,
+        length=364,
     )
     song.save()
 
@@ -95,6 +99,8 @@ def songs_creator():
         averageRating=5,
         collection=collection,
         genre=genre,
+        cover='media/covers/IronMaiden_NumberOfBeast.jpg',
+        length=2351,
     )
     album.save()
 
@@ -107,6 +113,7 @@ def songs_creator():
         averageRating=4,
         collection=collection,
         song_album=album,
+        length=445,
     )
     song.save()
 
@@ -119,6 +126,7 @@ def songs_creator():
         averageRating=3,
         collection=collection,
         song_album=album,
+        length=350,
     )
     song.save()
 
@@ -131,6 +139,7 @@ def songs_creator():
         averageRating=5,
         collection=collection,
         song_album=album,
+        length=428,
     )
     song.save()
 
@@ -141,7 +150,7 @@ def sounds_creator():
     user = django.contrib.auth.models.User.objects.create_user(username='coke_user', password='coke1234')
     artist = Artist(
         user=user,
-        profile_picture='profilePictures/coca-cola-02.jpg',
+        profile_picture='media/profilePictures/coca-cola-02.jpg',
         artistic_name='Coca Cola',
         account_number=555555,
         address='Silver Summer Ave',
@@ -170,6 +179,7 @@ def sounds_creator():
         averageRating=2,
         collection=collection,
         type=sound_type,
+        length=235,
     )
     sound.save()
 
@@ -185,26 +195,26 @@ def notifications_creator():
     )
     notification.save()
 
-    artwork_request = ArtworkRequest(
-        name='AWR 01',
+    requested_piece = RequestedPiece(
+        name='Piece 01',
         features='Features 01',
         notification=notification,
     )
-    artwork_request.save()
+    requested_piece.save()
 
-    artwork_request = ArtworkRequest(
-        name='AWR 02',
+    requested_piece = RequestedPiece(
+        name='Piece 02',
         features='Features 02',
         notification=notification,
     )
-    artwork_request.save()
+    requested_piece.save()
 
-    artwork_request = ArtworkRequest(
-        name='AWR 03',
+    requested_piece = RequestedPiece(
+        name='Piece 03',
         features='Features 03',
         notification=notification,
     )
-    artwork_request.save()
+    requested_piece.save()
 
     notification = Notification(
         name='Not 02',
@@ -215,19 +225,19 @@ def notifications_creator():
     )
     notification.save()
 
-    artwork_request = ArtworkRequest(
+    requested_piece = RequestedPiece(
         name='AWR 04',
         features='Features 04',
         notification=notification,
     )
-    artwork_request.save()
+    requested_piece.save()
 
-    artwork_request = ArtworkRequest(
+    requested_piece = RequestedPiece(
         name='AWR 05',
         features='Features 05',
         notification=notification,
     )
-    artwork_request.save()
+    requested_piece.save()
 
 songs_creator()
 sounds_creator()
