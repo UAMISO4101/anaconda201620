@@ -49,13 +49,15 @@ class Notifications extends Component {
     }
   }
 
-  openModal(cell) {
+  openModal(cell,row) {
+    this.props.setActualUserType(this.props.userType);
+    this.props.getActualNotification(this.props.notifications.notifications, row.id);
     this.props.showNotifictionModal({ showModal: true, modalRequest: cell, userType: this.props.userType })
   }
 
   formatRequests(cell, row){
     return (<button onClick={()=>{
-      this.openModal(cell)
+      this.openModal(cell,row)
     }}  type="submit">Ver</button>);
   }
 
