@@ -14,12 +14,12 @@ const store = createStore(combineReducers(reducers), applyMiddleware(thunkMiddle
 const history = syncHistoryWithStore(hashHistory, store);
 
 import App from './components/app';
-import NotificationFormContent from './components/notificationFormContent';
-import NotificationFormEdit from './components/notificationFormEdit';
-import NotificationArtist from './components/notificationArtist';
+import NotificationFormContent from './containers/notificationFormContent';
+import NotificationFormEdit from './containers/notificationFormEdit';
+import NotificationArtist from './containers/notificationArtist';
 import Notification from './components/notifications';
-import SoundtracksContent from './components/soundtracksContent';
-import NotificationContent from './components/notificationsContent';
+import SoundtracksContent from './containers/soundtracksContent';
+import NotificationContent from './containers/notificationsContent';
 import Page404 from './components/page404';
 
 function run () {
