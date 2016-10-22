@@ -4,8 +4,11 @@ import { SERVER_URL } from '../utils/constants';
 import {
   editNotification,
   fetchNotifications,
+  getActualNotification,
   hideSAModal,
   publishNotification,
+  setActualUserType,
+  setUsertype,
   showNotifictionModal,
   showSAModal,
 } from '../actions';
@@ -22,8 +25,11 @@ const mapStateToProps = (state,  { params: { tipo }}) => ({
 const mapDispatchToProps = dispatch => ({
   editNotification: (id) => {dispatch(editNotification)},
   fetchNotifications: () => dispatch(fetchNotifications()),
+  getActualNotification: (notifications,notificationId) => dispatch(getActualNotification(notifications,notificationId)),
   hideSAModal: () => dispatch(hideSAModal()),
   publishNotification: (id) => {dispatch(publishNotification)},
+  setActualUserType: (userType) => {dispatch(setActualUserType(userType))},
+  setUsertype: (modalProps) => {dispatch(setUsertype(userType))},
   showNotifictionModal: (modalProps) => {dispatch(showNotifictionModal(modalProps))}
 })
 export default connect(mapStateToProps,mapDispatchToProps)(Notifications);

@@ -15,6 +15,11 @@ export const hideSAModal = () => ({ type: 'HIDE_SA_MODALS' });
 export const showNotifictionModal = (modalProps) => ({ type: 'SHOW_NOTIFICATION_MODAL', data: modalProps });
 export const hideNotifictionModal = () => ({ type: 'HIDE_NOTIFICATION_MODAL' });
 
+export const setActualUserType = (userType) => ({ type: 'SET_USER_TYPE', data: userType });
+export const getActualNotification = (notifications,notificationId) => ({ type: 'GET_ACTUAL_NOTIFICATION', data: {notifications, notificationId} });
+
+
+
 export const fetchSoundTracks = (filter) => {
   return dispatch => {
     jQuery.ajax({
