@@ -134,11 +134,6 @@ class Postulation(models.Model):
     notification = models.ForeignKey(Notification, null=False)
 
 
-class PostulatedArtwork(models.Model):
-    artwork = models.ForeignKey(Artwork, null=False)
-    requestedPiece = models.ForeignKey(RequestedPiece, null=False)
-
-
 #ARTWORKS MODELS
 class ArtworkCollection(models.Model):
     artist = models.OneToOneField(Artist, null=False)
@@ -186,6 +181,11 @@ class Tag(models.Model):
         return ''.join([
             self.name,
         ])
+
+
+class PostulatedArtwork(models.Model):
+    artwork = models.ForeignKey(Artwork, null=False)
+    requestedPiece = models.ForeignKey(RequestedPiece, null=False)
 
 
 class SoundType(models.Model):
