@@ -94,13 +94,13 @@ def get_open_notifications(request):
     notifications_array = []
 
     for notification in notifications_model:
-        requests__model = ArtworkRequest.objects.filter(notification_id=notification.id).order_by(('id'))
+        pieces_model = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
         dict_notification = notification.as_dict();
-        dict_request = []
-        for request in requests__model:
-            dict_request.append({'name': request.name, 'features': request.features})
+        dict_piece = []
+        for piece in pieces_model:
+            dict_piece.append({'name': piece.name, 'features': piece.features})
 
-        dict_notification['request'] = dict_request
+        dict_notification['request'] = dict_piece
         notifications_array.append(dict_notification)
 
     return JsonResponse({'notifications': notifications_array}, safe=False)
