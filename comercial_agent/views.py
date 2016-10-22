@@ -54,13 +54,13 @@ def notification_json(request):
         dict_notifications = []
 
         for notification in notifications:
-            requests = ArtworkRequest.objects.filter(notification_id=notification.id).order_by(('id'))
+            pieces = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
             dict_notification = notification.as_dict();
-            dict_request = []
-            for request in requests:
-                dict_request.append({'name': request.name, 'features': request.features})
+            dict_pieces = []
+            for piece in pieces:
+                dict_pieces.append({'name': piece.name, 'features': piece.features})
 
-            dict_notification['request'] = dict_request
+            dict_notification['request'] = dict_pieces
             dict_notifications.append(dict_notification)
 
         return JsonResponse({'notifications': dict_notifications}, safe=False)
@@ -76,12 +76,12 @@ def notification_json(request):
 
             notification_model.save()
 
-            for request in notification_json['request']:
-                request_model = ArtworkRequest(name=request['name'],
-                                                features=request['features'])
+            for piece in notification_json['request']:
+                piece_model = RequestedPiece(name=piece['name'],
+                                             features=piece['features'])
 
-                request_model.notification = Notification.objects.get(pk=notification_model.pk)
-                request_model.save()
+                piece_model.notification = Notification.objects.get(pk=notification_model.pk)
+                piece_model.save()
 
 
             return HttpResponse(status=status.HTTP_201_CREATED)
