@@ -1,0 +1,11 @@
+__pycache__/
+webpack-stats.json
+*.pyc
+node_modules/
+.idea/
+assets/bundles
+*/*.pyc
+*/*/*.pyc
+comercial_agent/migrations
+profilePictures/
+*.exe

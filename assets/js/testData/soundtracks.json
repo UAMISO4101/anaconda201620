@@ -1,0 +1,254 @@
+[
+  {
+    "id": 0,
+    "sound": "EQUITOX",
+    "type": "female",
+    "artist": "Lydia Johnson",
+    "popularity": 74.598175
+  },
+  {
+    "id": 1,
+    "sound": "EXTRAGEN",
+    "type": "female",
+    "artist": "Flowers Gentry",
+    "popularity": 25.724176
+  },
+  {
+    "id": 2,
+    "sound": "VICON",
+    "type": "male",
+    "artist": "Ines Blevins",
+    "popularity":  48.035427
+  },
+  {
+    "id": 3,
+    "sound": "MIRACLIS",
+    "type": "female",
+    "artist": "Lena Schmidt",
+    "popularity": 6.244858
+  },
+  {
+    "id": 4,
+    "sound": "VETRON",
+    "type": "female",
+    "artist": "Alba Burnett",
+    "popularity": 79.652068
+  },
+  {
+    "id": 5,
+    "sound": "GLASSTEP",
+    "type": "female",
+    "artist": "Joseph Nixon",
+    "popularity": 7.248073
+  },
+  {
+    "id": 6,
+    "sound": "ISOLOGICA",
+    "type": "male",
+    "artist": "Jarvis Morris",
+    "popularity": 69.774848
+  },
+  {
+    "id": 7,
+    "sound": "AQUOAVO",
+    "type": "male",
+    "artist": "Michelle Bolton",
+    "popularity":  44.172102
+  },
+  {
+    "id": 8,
+    "sound": "BOLAX",
+    "type": "female",
+    "artist": "Holmes Hutchinson",
+    "popularity":  61.276787
+  },
+  {
+    "id": 9,
+    "sound": "OBONES",
+    "type": "male",
+    "artist": "Short Newman",
+    "popularity": 19.498971
+  },
+  {
+    "id": 10,
+    "sound": "GEEKOLOGY",
+    "type": "male",
+    "artist": "Gallegos Mayo",
+    "popularity":  10.24436
+  },
+  {
+    "id": 11,
+    "sound": "BRISTO",
+    "type": "male",
+    "artist": "Rich Greene",
+    "popularity": 81.148961
+  },
+  {
+    "id": 12,
+    "sound": "APEXTRI",
+    "type": "male",
+    "artist": "Guy Lewis",
+    "popularity":  4.169619
+  },
+  {
+    "id": 13,
+    "sound": "COSMOSIS",
+    "type": "male",
+    "artist": "Louisa Austin",
+    "popularity":  44.003904
+  },
+  {
+    "id": 14,
+    "sound": "PRIMORDIA",
+    "type": "female",
+    "artist": "Ray Paul",
+    "popularity": 67.635131
+  },
+  {
+    "id": 15,
+    "sound": "IPLAX",
+    "type": "male",
+    "artist": "Ruiz Atkins",
+    "popularity":  29.446136
+  },
+  {
+    "id": 16,
+    "sound": "SKYPLEX",
+    "type": "male",
+    "artist": "Dionne Wyatt",
+    "popularity": 27.601977
+  },
+  {
+    "id": 17,
+    "sound": "SLAX",
+    "type": "female",
+    "artist": "Joni Compton",
+    "popularity": 37.807658
+  },
+  {
+    "id": 18,
+    "sound": "FUELWORKS",
+    "type": "female",
+    "artist": "Shields Ashley",
+    "popularity":  76.736498
+  },
+  {
+    "id": 19,
+    "sound": "ZILPHUR",
+    "type": "male",
+    "artist": "Jefferson Estrada",
+    "popularity":  50.078877
+  },
+  {
+    "id": 20,
+    "sound": "GENMEX",
+    "type": "male",
+    "artist": "Vazquez Carr",
+    "popularity":  24.003681
+  },
+  {
+    "id": 21,
+    "sound": "VISUALIX",
+    "type": "male",
+    "artist": "Julie Bond",
+    "popularity":  53.805059
+  },
+  {
+    "id": 22,
+    "sound": "APEXIA",
+    "type": "female",
+    "artist": "Tammy Wilkinson",
+    "popularity":  13.300107
+  },
+  {
+    "id": 23,
+    "sound": "IMPERIUM",
+    "type": "female",
+    "artist": "Hartman Whitfield",
+    "popularity": 89.665399
+  },
+  {
+    "id": 24,
+    "sound": "BRAINQUIL",
+    "type": "male",
+    "artist": "Finch Ortiz",
+    "popularity": 44.003249
+  },
+  {
+    "id": 25,
+    "sound": "INTERODEO",
+    "type": "male",
+    "artist": "Erin Johnston",
+    "popularity":  30.06632
+  },
+  {
+    "id": 26,
+    "sound": "QUILCH",
+    "type": "female",
+    "artist": "Guerrero Delacruz",
+    "popularity": 36.051036
+  },
+  {
+    "id": 27,
+    "sound": "BUGSALL",
+    "type": "male",
+    "artist": "Angeline Tran",
+    "popularity":  52.717949
+  },
+  {
+    "id": 28,
+    "sound": "QUILITY",
+    "type": "female",
+    "artist": "White Cole",
+    "popularity":  7.752181
+  },
+  {
+    "id": 29,
+    "sound": "HARMONEY",
+    "type": "male",
+    "artist": "Robin Sanchez",
+    "popularity":  21.595475
+  },
+  {
+    "id": 30,
+    "sound": "GRACKER",
+    "type": "female",
+    "artist": "Fisher Montgomery",
+    "popularity":  58.764002
+  },
+  {
+    "id": 31,
+    "sound": "TSUNAMIA",
+    "type": "male",
+    "artist": "Reilly Jefferson",
+    "popularity": 36.359661
+  },
+  {
+    "id": 32,
+    "sound": "ZILLAN",
+    "type": "male",
+    "artist": "Elba Davidson",
+    "popularity": 38.823869
+  },
+  {
+    "id": 33,
+    "sound": "PAPRIKUT",
+    "type": "female",
+    "artist": "Sarah Weaver",
+    "popularity": 73.425884
+  },
+  {
+    "id": 34,
+    "sound": "COMSTRUCT",
+    "type": "female",
+    "artist": "Gilbert Fuentes",
+    "popularity": 84.351318
+  },
+  {
+    "id": 35,
+    "sound": "GALLAXIA",
+    "type": "male",
+    "artist": "Mccall Pacheco",
+    "popularity":  82.002353
+  }
+]
