@@ -6,7 +6,7 @@ import SweetAlert from 'sweetalert-react';
 import { Link } from 'react-router';
 import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
 
-import NotificationShowModal from './notificationShowModal';
+import NotificationShowModal from '../containers/notificationShowModal';
 
 const getNotificationId = notification => {
   let str = notification.target.id
@@ -50,7 +50,7 @@ class Notifications extends Component {
   }
 
   openModal(cell) {
-    this.props.showNotifictionModal({ showModal: true, modalRequest: cell, userType: "artist" })
+    this.props.showNotifictionModal({ showModal: true, modalRequest: cell, userType: this.props.userType })
   }
 
   formatRequests(cell, row){
