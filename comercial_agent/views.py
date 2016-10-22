@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 from rest_framework import status
 from .models import *
 
-from comercial_agent.models import Artwork, ArtworkRequest, Notification, Sound, Song
+from comercial_agent.models import Artwork, Notification, Sound, Song
 
 
 
@@ -35,13 +35,13 @@ def edit_notification(request,notification_id):
                             )
 
         # import pdb; pdb.set_trace()
-        ArtworkRequest.objects.filter(notification_id=notification_id).delete()
-        for request in notification_json['request']:
-            request_model = ArtworkRequest(name=request['name'],
-                                            features=request['features'])
+        RequestedPiece.objects.filter(notification_id=notification_id).delete()
+        for piece in notification_json['request']:
+            piece_model = RequestedPiece(name=piece['name'],
+                                         features=piece['features'])
 
-            request_model.notification = Notification.objects.get(pk=notification_id)
-            request_model.save()
+            piece_model.notification = Notification.objects.get(pk=notification_id)
+            piece_model.save()
 
         return HttpResponse(status=status.HTTP_201_CREATED)
     else:
