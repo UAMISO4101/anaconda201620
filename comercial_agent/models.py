@@ -159,6 +159,12 @@ class Artwork(models.Model):
     playsCount = models.IntegerField()
     averageRating = models.IntegerField()
     collection = models.ForeignKey(ArtworkCollection, null=False)
+    length = models.IntegerField()
+    cover = models.ImageField(
+        null=True,
+        upload_to='media/covers',
+        max_length=1000,
+    )
     created_at = models.DateTimeField(editable=False, default=timezone.now())
 
 
