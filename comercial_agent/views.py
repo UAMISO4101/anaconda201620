@@ -88,6 +88,8 @@ def notification_json(request):
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
+
+@csrf_exempt
 def get_open_notifications(request):
     notifications_model = Notification.objects.filter(notification_state=Notification.PUBLISHED)
 
@@ -106,60 +108,115 @@ def get_open_notifications(request):
     return JsonResponse({'notifications': notifications_array}, safe=False)
 
 
-def get_artworks(request,artwork_type):
+@csrf_exempt
+def get_artworks(request,artwork_type,artwork_filter):
     if request.method == 'GET':
         artworks_array = []
         sounds_model = None
         songs_model = None
+        albums_model = None
 
-        if artwork_type == "all":
-            sounds_model = Sound.objects.all()
-            songs_model = Song.objects.all()
+        if artwork_filter == "all":
+            if artwork_type == "song":
+                songs_model = Song.objects.all()
+            elif artwork_type == "sound":
+                sounds_model = Sound.objects.all()
+            elif artwork_type == "album":
+                albums_model = Album.objects.all()
 
-        elif artwork_type == "rating":
-            sounds_model = Sound.objects.filter(averageRating__gte=3)
-            songs_model = Song.objects.filter(averageRating__gte=3)
+        elif artwork_filter == "rating":
+            if artwork_type == "song":
+                songs_model = Song.objects.filter(averageRating__gte=4).order_by('-averageRating')
+            elif artwork_type == "sound":
+                sounds_model = Sound.objects.filter(averageRating__gte=4).order_by('-averageRating')
+            elif artwork_type == "album":
+                albums_model = Album.objects.filter(averageRating__gte=4).order_by('-averageRating')
 
-        elif artwork_type == "recent":
-            sounds_model = Artwork.objects.order_by('created_at')[:3]
+        elif artwork_filter == "recent":
+            if artwork_type == "song":
+                songs_model = Song.objects.order_by('created_at')[:3]
+            elif artwork_type == "sound":
+                sounds_model = Sound.objects.order_by('created_at')[:3]
+            elif artwork_type == "album":
+                albums_model = Album.objects.order_by('created_at')[:3]
 
         else:
-            return JsonResponse({'status':'false','message':message}, status=400)
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+            #return JsonResponse({'status':'false','message':message}, status=status.HTTP_400_BAD_REQUEST)
 
-        for sound in sounds_model:
-            # import pdb; pdb.set_trace()
-            sound_id = sound.pk
-            sound_name = sound.name
-            sound_type = sound.type.name
-            sound_artist = sound.collection.artist.artistic_name
-            sound_rating = sound.averageRating
-            sound_likes = sound.likesCount
-            sound_length = sound.length
-            sound_cover = sound.cover
+        if artwork_type == "song":
+            for song in songs_model:
+                song_id = song.pk
+                song_name = song.name
+                song_type = 'Song'
+                song_artist = song.collection.artist.artistic_name
+                song_rating = song.averageRating
+                song_likes = song.likesCount
+                song_length = song.length
+                song_cover = str(song.cover)
 
-            sound_record = {"id":sound_id,"sound":sound_name,"type":sound_type,"artist":sound_artist,"rating":sound_rating,"likes":sound_likes,"length":sound_length,"cover":sound_cover}
+                song_record = {"id": song_id, "sound": song_name, "type": song_type, "artist": song_artist,
+                               "rating": song_rating, "likes": song_likes, "length": song_length, "cover": song_cover}
 
-            artworks_array.append(sound_record)
+                artworks_array.append(song_record)
 
-        for song in songs_model:
-            song_id = song.pk
-            song_name = song.name
-            song_type = 'Song'
-            song_artist = song.collection.artist.artistic_name
-            song_rating = song.averageRating
-            song_likes = song.likesCount
-            song_length = song.length
-            song_cover = song.cover
+        elif artwork_type == "sound":
+            for sound in sounds_model:
+                sound_id = sound.pk
+                sound_name = sound.name
+                sound_type = sound.type.name
+                sound_artist = sound.collection.artist.artistic_name
+                sound_rating = sound.averageRating
+                sound_likes = sound.likesCount
+                sound_length = sound.length
+                sound_cover = str(sound.cover)
 
-            song_record = {"id":song_id,"sound":song_name,"type":song_type,"artist":song_artist,"rating":song_rating,"likes":song_likes,"length":song_length,"cover":song_cover}
+                sound_record = {"id":sound_id,"sound":sound_name,"type":sound_type,"artist":sound_artist,"rating":sound_rating,"likes":sound_likes,"length":sound_length,"cover":sound_cover}
 
-            artworks_array.append(song_record)
+                artworks_array.append(sound_record)
+
+        elif artwork_type == "album":
+            for album in albums_model:
+                album_id = album.pk
+                album_name = album.name
+                album_type = 'Album'
+                album_artist = album.collection.artist.artistic_name
+                album_rating = album.averageRating
+                album_likes = album.likesCount
+                album_length = album.length
+                album_cover = str(album.cover)
+
+                album_record = {"id": album_id, "sound": album_name, "type": album_type, "artist": album_artist,
+                               "rating": album_rating, "likes": album_likes, "length": album_length, "cover": album_cover}
+
+                artworks_array.append(album_record)
 
         artworks_response = artworks_array
 
         print(artworks_response)
 
         return JsonResponse(dict(sounds=artworks_response))
+
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+def to_songs_array(songs_model):
+    songs_array = []
+
+    for song in songs_model:
+        song_id = song.pk
+        song_name = song.name
+        song_type = 'Song'
+        song_artist = song.collection.artist.artistic_name
+        song_rating = song.averageRating
+        song_likes = song.likesCount
+        song_length = song.length
+        song_cover = str(song.cover)
+
+        song_record = {"id": song_id, "sound": song_name, "type": song_type, "artist": song_artist,
+                       "rating": song_rating, "likes": song_likes, "length": song_length, "cover": song_cover}
+
+        songs_array.append(song_record)
 
 
 @csrf_exempt
