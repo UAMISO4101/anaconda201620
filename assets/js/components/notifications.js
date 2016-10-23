@@ -120,7 +120,7 @@ class Notifications extends Component {
           <center>
             <div className="border col-sm-12">
               <center>
-                <h1>Convocatorias</h1>
+                <h1>{this.props.userType == "comercial_agent" ? "Convocatorias" : "Postularse"}</h1>
               </center>
             </div>
           </center>

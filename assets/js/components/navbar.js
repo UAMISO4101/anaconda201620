@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { CA_DASHBOARD } from '../utils/constants'
+import { CA_DASHBOARD, ARTIST_DASHBOARD } from '../utils/constants'
 
 class Navbar extends Component{
     render(){
@@ -20,7 +20,7 @@ class Navbar extends Component{
                             <li><a href="#">Home</a></li>
                             <li><a href={`#${CA_DASHBOARD}`}>Crear Convocatoria</a></li>
                             <li><a href={`#${CA_DASHBOARD}/convocatorias`}>Convocatorias</a></li>
-                            <li><a href={`#participar/artista`}>Participar</a></li>
+                            <li><a href={`#${ARTIST_DASHBOARD}/1/convocatorias`}>Participar</a></li>
                         </ul>
                     </div>
                 </div>
