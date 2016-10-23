@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'webpack_loader',
     'corsheaders',
+    'storages',
+    's3_folder_storage',
     #local apps
     'comercial_agent',
 ]
