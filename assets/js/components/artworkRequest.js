@@ -50,10 +50,32 @@ class ArtworkRequest extends Component {
         case "artist":
           return( <TableHeaderColumn dataFormat={this.requestUpload.bind(this)}> Upload Artwork </TableHeaderColumn> )
         case "comercial_agent":
-          return null
+          return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
         default:
-          return null
+          return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
       }
+    }
+
+    buttonsComponent(userType){
+        switch (userType){
+            case "artist":
+                return (<div className="row" >
+                            <div className="col-sm-push-1 col-sm-5 col-xs-12 " >
+                              <button className='btn btn-primary'>Postularme</button>
+                            </div>
+                            <div className="col-sm-5 col-xs-12 " >
+                              <button className='btn btn-danger' onClick={()=>{
+                                    this.props.hideNotifictionModal();
+                                  }
+                                }
+                              >Cancelar</button>
+                            </div>
+                          </div>)
+            case "comercial_agent":
+                return null
+            default:
+                return null
+        }
     }
 
     requestUpload(cell, row){
@@ -86,18 +108,7 @@ class ArtworkRequest extends Component {
               </BootstrapTable>
             </div>
           </div>
-          <div className="row" >
-            <div className="col-sm-push-1 col-sm-5 col-xs-12 " >
-              <button className='btn btn-primary'>Postularme</button>
-            </div>
-            <div className="col-sm-5 col-xs-12 " >
-              <button className='btn btn-danger' onClick={()=>{
-                    this.props.hideNotifictionModal();
-                  }
-                }
-              >Cancelar</button>
-            </div>
-          </div>
+          { this.buttonsComponent(this.props.userType) }
         </div>
         )
     }

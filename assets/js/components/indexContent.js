@@ -19,7 +19,6 @@ const startsFormatter = (cell, row) => {
                   />)
 }
 
-
 let filterVar = SOUNDS_FILTER.ALL;
 let typeVar = SOUNDS_TYPE.SONG;
 
