@@ -4,7 +4,7 @@ var webpack = require('webpack');
 var BundleTracker = require('webpack-bundle-tracker');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-module.exports = {
+var config = module.exports = {
     //the base directory (absolute path) for resolving the entry option
     context: __dirname,
     //the entry point we created earlier. Note that './' means
@@ -80,4 +80,11 @@ module.exports = {
         //extensions that should be used to resolve modules
         extensions: ['', '.js', '.jsx','scss']
     }
+}
+
+if (process.env.NODE_ENV === 'production') {
+  config.plugins.push(
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin({ minimize: true })
+  );
 }
