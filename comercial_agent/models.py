@@ -9,7 +9,7 @@ class AbsUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(
         null=False,
-        upload_to='media/profilePictures',
+        upload_to='profilePictures',
         max_length=1000,
     )
 
@@ -152,7 +152,7 @@ class Artwork(models.Model):
     contentUrl = models.FileField(
         null=True,
         blank=True,
-        upload_to='media/audios',
+        upload_to='audios',
         max_length=1000,
     )
     ratingCount = models.IntegerField()
@@ -164,7 +164,7 @@ class Artwork(models.Model):
     length = models.IntegerField()
     cover = models.ImageField(
         null=True,
-        upload_to='media/covers',
+        upload_to='covers',
         max_length=1000,
     )
     created_at = models.DateTimeField(editable=False, default=timezone.now())
@@ -188,6 +188,13 @@ class Artwork(models.Model):
             self.name + ' - ',
             self.collection.artist.artistic_name,
         ])
+
+    def save(self, *args, **kwargs):
+        if not self.contentUrl:
+            self.contentUrl = None
+        if not self.cover:
+            self.cover = None
+        super(Artwork, self).save(*args, **kwargs)
 
 
 class Tag(models.Model):
