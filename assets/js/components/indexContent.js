@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import SweetAlert from 'sweetalert-react';
@@ -9,7 +8,6 @@ import FaApple from 'react-icons/lib/fa/apple';
 
 
 import { SERVER_URL, SOUNDS_FILTER} from '../utils/constants';
-import { addRequest } from '../actions';
 
 const startsFormatter = (cell, row) => {
   return (<StarRatingComponent
