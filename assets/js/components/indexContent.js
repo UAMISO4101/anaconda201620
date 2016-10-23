@@ -7,7 +7,7 @@ import StarRatingComponent from 'react-star-rating-component';
 import FaApple from 'react-icons/lib/fa/apple';
 
 
-import { SERVER_URL, SOUNDS_FILTER} from '../utils/constants';
+import { SERVER_URL, SOUNDS_FILTER, SOUNDS_TYPE} from '../utils/constants';
 
 const startsFormatter = (cell, row) => {
   return (<StarRatingComponent
@@ -19,10 +19,40 @@ const startsFormatter = (cell, row) => {
                   />)
 }
 
+
+let filterVar = SOUNDS_FILTER.ALL;
+let typeVar = SOUNDS_TYPE.SONG;
+
+const translator = (varToFilter) => {
+    switch(varToFilter){
+        case 'all':
+            return 'Todos';
+            break;
+        case 'recent':
+            return 'Recientes';
+            break;
+        case 'rating':
+            return 'Calificación';
+            break;
+        case 'album':
+            return 'Albumes';
+            break;
+        case 'song':
+            return 'Canciones';
+            break;
+        case 'sound':
+            return 'Sonidos';
+            break;
+        default:
+            return varToFilter;
+            break;
+    }
+}
+
 class IndexContent extends Component{
   componentDidMount(){
     console.log("IndexContent Mounted!")
-    this.props.fetchSoundTracks(SOUNDS_FILTER.ALL);
+    this.props.fetchSoundTracks(SOUNDS_FILTER.ALL, SOUNDS_TYPE.SONG);
   }
 
   closeModal() { this.setState({ showModal: false }); }
@@ -48,9 +78,15 @@ class IndexContent extends Component{
           </div>
           <div className="row" >
             <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
-              <DropdownButton id="soundsDropdown" title="Filtrar" onSelect={this.soundsDropdownChange.bind(this)}>
-                <MenuItem eventKey={SOUNDS_FILTER.ALL}>Todos</MenuItem>
-                <MenuItem eventKey={SOUNDS_FILTER.RATING}>Rating</MenuItem>
+              <DropdownButton id="soundsFilterDropdown" title={translator(filterVar)} onSelect={this.soundsFilterDropdownChange.bind(this)}>
+                <MenuItem eventKey={SOUNDS_FILTER.ALL}>{translator(SOUNDS_FILTER.ALL)}</MenuItem>
+                <MenuItem eventKey={SOUNDS_FILTER.RATING}>{translator(SOUNDS_FILTER.RATING)}</MenuItem>
+                <MenuItem eventKey={SOUNDS_FILTER.RECENT}>{translator(SOUNDS_FILTER.RECENT)}</MenuItem>
+              </DropdownButton>
+              <DropdownButton id="soundsTypeDropdown" title={translator(typeVar)} onSelect={this.soundsTypeDropdownChange.bind(this)}>
+                <MenuItem eventKey={SOUNDS_TYPE.ALBUM}>{translator(SOUNDS_TYPE.ALBUM)}</MenuItem>
+                <MenuItem eventKey={SOUNDS_TYPE.SONG}>{translator(SOUNDS_TYPE.SONG)}</MenuItem>
+                <MenuItem eventKey={SOUNDS_TYPE.SOUND}>{translator(SOUNDS_TYPE.SOUND)}</MenuItem>
               </DropdownButton>
               <BootstrapTable data={this.props.soundtracks.sounds } striped={true} hover={true}>
                  <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
@@ -66,9 +102,14 @@ class IndexContent extends Component{
       )
     }
 
-    soundsDropdownChange(selectedFilter){
-//        let filterVar = selectedFilter == SOUNDS_FILTER.ALL ? SOUNDS_FILTER.ALL : SOUNDS_FILTER.RATING
-        this.props.fetchSoundTracks(selectedFilter);
+    soundsFilterDropdownChange(selectedFilter){
+        filterVar = selectedFilter;
+        this.props.fetchSoundTracks(filterVar, typeVar);
+    }
+
+    soundsTypeDropdownChange(selectedType){
+        typeVar = selectedType;
+        this.props.fetchSoundTracks(filterVar, typeVar);
     }
 }
 

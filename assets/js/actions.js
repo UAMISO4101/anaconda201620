@@ -20,11 +20,11 @@ export const getActualNotification = (notifications,notificationId) => ({ type: 
 
 export const getArtistArtworks = id => ({type: 'GET_ARTIST_ARTWORKS', data: id})
 
-export const fetchSoundTracks = (filter) => {
+export const fetchSoundTracks = (filter, type) => {
   return dispatch => {
     jQuery.ajax({
         method: "GET",
-        url: `${SERVER_URL}/comercial_agent/sounds/${filter}`,
+        url: `${SERVER_URL}/comercial_agent/sounds/${type}/${filter}`,
         statusCode: {
         200: (data) => {
           dispatch(getSoundTracks(data))
