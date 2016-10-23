@@ -1,4 +1,4 @@
-import IndexContent from './indexContent'
+import IndexContent from '../components/indexContent'
 import { SERVER_URL } from '../utils/constants';
 import { fetchSoundTracks, showSAModal, hideSAModal } from '../actions';
 

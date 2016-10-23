@@ -1,3 +1,12 @@
+export const userType = (state=[], action) => {
+  switch (action.type) {
+    case 'SET_USER_TYPE':
+      return action.data
+    default:
+      return state ;
+  }
+}
+
 export const request = (state=[], action) => {
   switch (action.type) {
     case 'ADD_REQUEST':
@@ -65,24 +74,31 @@ export const notifications = (state=notificationsDefault,  action) => {
     case 'GET_NOTIFICATIONS':
       return action.data || JSON.parse(localStorage.getItem("NOTIFICATIONS")) || state;
       break;
+    case 'GET_ACTUAL_NOTIFICATION':
+      let actualNotification = action.data.notifications.filter(notification => notification.id === parseInt(action.data.notificationId, 10))[0];
+      let notification = Object.assign({}, action.data, {
+        actualNotification: actualNotification
+      });
+      return notification;
+      break;
     default:
       return state ;
   }
 };
+
 const requestBlank = {name: "", features: ""};
 const notificationBlank  = { name: "", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "", publishingState: false, request: [requestBlank] };
-
 export const notification = (state=notificationBlank,  action) => {
   let notification = null;
   switch (action.type) {
+    case 'PUBLISH_NOTIFICATION':
+    notification = Object.assign({}, action.data, {
+      publishing_state: !action.data.publishing_state
+    });
+    return  notification || state;
+    break;
     case 'UPDATE_NOTIFICATION':
       notification = Object.assign({}, action.data);
-      return  notification || state;
-      break;
-    case 'PUBLISH_NOTIFICATION':
-      notification = Object.assign({}, action.data, {
-        publishing_state: !action.data.publishing_state
-      });
       return  notification || state;
       break;
     default:
