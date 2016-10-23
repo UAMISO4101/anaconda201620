@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
+import {AU} from '../testData/states';
 
 
 class ArtworkRequest extends Component {
@@ -8,9 +11,39 @@ class ArtworkRequest extends Component {
     constructor(props) {
         super(props);
          this.state = {
+            country: 'AU',
+            clearable: true,
+      			disabled: false,
+            onFocus: '',
+      			searchable: true,
+      			selectValue: 'new-south-wales',
             show: false,
         };
+
     }
+
+    switchCountry (e) {
+  		var newCountry = e.target.value;
+  		console.log('Country changed to ' + newCountry);
+  		this.setState({
+  			country: newCountry,
+  			selectValue: null
+  		});
+  	}
+  	updateValue (newValue) {
+  		console.log('State changed to ' + newValue);
+  		this.setState({
+  			selectValue: newValue
+  		});
+  	}
+  	focusStateSelect () {
+  		this.refs.stateSelect.focus();
+  	}
+  	toggleCheckbox (e) {
+  		let newState = {};
+  		newState[e.target.name] = e.target.checked;
+  		this.setState(newState);
+  	}
 
     tableComponent(userType){
       switch (userType){
@@ -25,7 +58,19 @@ class ArtworkRequest extends Component {
 
     requestUpload(cell, row){
       return (
-        <button className='btn btn-info'>Selecionar Obra</button>
+        <div className="section artwork-selection">
+  				<Select ref="stateSelect"
+             autofocus
+             options={AU}
+             simpleValue
+             clearable={this.state.clearable}
+             name="selected-state"
+             disabled={this.state.disabled}
+             value={this.state.selectValue}
+             onChange={this.updateValue}
+             searchable={this.state.searchable}
+          />
+  			</div>
       );
     }
 
