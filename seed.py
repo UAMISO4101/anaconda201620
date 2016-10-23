@@ -47,6 +47,7 @@ def songs_creator():
         genre=genre,
         length=3072,
         cover='media/covers/Iron_Maiden_-_Powerslave.jpg',
+        artwork_type='ALB',
     )
     album.save()
 
@@ -60,6 +61,7 @@ def songs_creator():
         collection=collection,
         song_album=album,
         length=271,
+        artwork_type='SNG',
     )
     song.save()
 
@@ -73,6 +75,7 @@ def songs_creator():
         collection=collection,
         song_album=album,
         length=432,
+        artwork_type='SNG',
     )
     song.save()
 
@@ -86,6 +89,7 @@ def songs_creator():
         collection=collection,
         song_album=album,
         length=364,
+        artwork_type='SNG',
     )
     song.save()
 
@@ -101,6 +105,7 @@ def songs_creator():
         genre=genre,
         cover='media/covers/IronMaiden_NumberOfBeast.jpg',
         length=2351,
+        artwork_type='ALB',
     )
     album.save()
 
@@ -114,6 +119,7 @@ def songs_creator():
         collection=collection,
         song_album=album,
         length=445,
+        artwork_type='SNG',
     )
     song.save()
 
@@ -127,6 +133,7 @@ def songs_creator():
         collection=collection,
         song_album=album,
         length=350,
+        artwork_type='SNG',
     )
     song.save()
 
@@ -140,6 +147,7 @@ def songs_creator():
         collection=collection,
         song_album=album,
         length=428,
+        artwork_type='SNG',
     )
     song.save()
 
@@ -180,6 +188,7 @@ def sounds_creator():
         collection=collection,
         type=sound_type,
         length=235,
+        artwork_type='SNG',
     )
     sound.save()
 
