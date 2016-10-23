@@ -161,6 +161,36 @@ if os.environ.get( 'DJANGO_ENV' ) == 'production':
     STATIC_S3_PATH = 'static'
     STATIC_URL = os.environ.get('STATIC_URL')
 
+    ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+
+    STATICFILES_DIRS = (
+        # This lets Django's collectstatic store our bundles
+        os.path.join(BASE_DIR, 'assets'),
+        os.path.join(PROJECT_ROOT, 'static'),
+    )
+
+elif os.environ.get('DJANGO_ENV') == 'staging':
+    # ASW-S3 credentials
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+
+    # AWS-S3 Settings
+    DEFAULT_FILE_STORAGE = os.environ.get('DEFAULTFILES_STORAGE')
+    DEFAULT_S3_PATH = 'media'
+    MEDIA_URL = os.environ.get('MEDIA_URL')
+
+    #STATICFILES_STORAGE = os.environ.get('STATICFILES_STORAGE')
+    STATIC_S3_PATH = 'static'
+    STATIC_URL = '/static/'
+
+    ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+
+    STATICFILES_DIRS = (
+        # This lets Django's collectstatic store our bundles
+        os.path.join(BASE_DIR, 'assets'),
+        os.path.join(PROJECT_ROOT, 'static'),
+    )
 
 else:
     #Local Storage Settings
