@@ -9,7 +9,7 @@ class AbsUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(
         null=False,
-        upload_to='profilePictures',
+        upload_to='media/profilePictures',
         max_length=1000,
     )
 
@@ -149,6 +149,12 @@ class Artwork(models.Model):
     name = models.CharField(
         max_length=255,
     )
+    contentUrl = models.FileField(
+        null=True,
+        blank=True,
+        upload_to='media/audios',
+        max_length=1000,
+    )
     ratingCount = models.IntegerField()
     likesCount = models.IntegerField()
     dislikesCount = models.IntegerField()
@@ -163,6 +169,19 @@ class Artwork(models.Model):
     )
     created_at = models.DateTimeField(editable=False, default=timezone.now())
 
+    ALBUM = 'ALB'
+    SONG = 'SNG'
+    SOUND = 'SND'
+    ARTWORK_TYPE = (
+        (ALBUM, 'Album'),
+        (SONG, 'Canción'),
+        (SOUND, 'Sonido')
+    )
+
+    artwork_type = models.CharField(
+        max_length=3,
+        choices=ARTWORK_TYPE,
+    )
 
     def __str__(self):
         return ''.join([
