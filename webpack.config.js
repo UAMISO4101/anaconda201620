@@ -67,10 +67,35 @@ var config = module.exports = {
             'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
         ]
       },
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/,
+                query: {
+                    presets: ['es2015', 'react']
+
+                }
+            },
 			{
-				test: /\.(png|svg|woff|woff2|ttf|eot)$/,
+				test: /\.(png|woff2)$/,
 				loader: "url-loader"
-			}
+			},
+            {
+                test   : /\.woff/,
+                loader : 'url?prefix=font/&limit=10000&mimetype=application/font-woff'
+            }, {
+                test   : /\.ttf/,
+                loader : 'file?prefix=font/'
+            }, {
+                test   : /\.eot/,
+                loader : 'file?prefix=font/'
+            }, {
+                test   : /\.svg/,
+                loader : 'file?prefix=font/'
+            },{
+              test: /\.json$/,
+              loader: "json-loader"
+            }
         ]
     },
 
@@ -78,7 +103,7 @@ var config = module.exports = {
         //tells webpack where to look for modules
         modulesDirectories: ['node_modules'],
         //extensions that should be used to resolve modules
-        extensions: ['', '.js', '.jsx','scss']
+        extensions: ['', '.js', '.jsx','.scss','.css','.ttf','.svg','eot']
     }
 }
 
