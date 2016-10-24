@@ -90,10 +90,12 @@ WSGI_APPLICATION = 'sonidos_libres.wsgi.application'
 
 if os.environ.get('DJANGO_ENV') == 'production':
 
+    #Heroku Database
     DEBUG = True
     DATABASES = {'default': dj_database_url.config(default= os.environ.get('DATABASE_URL'))}
 else:
 
+    #Local Database
     DEBUG = True
     DATABASES = {
             'default': {
