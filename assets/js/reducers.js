@@ -86,7 +86,7 @@ export const notifications = (state=notificationsDefault,  action) => {
   }
 };
 
-const requestBlank = {name: "", features: ""};
+const requestBlank = {id: 1, name: "", features: ""};
 const notificationBlank  = { name: "", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "", publishingState: false, request: [requestBlank] };
 export const notification = (state=notificationBlank,  action) => {
   let notification = null;

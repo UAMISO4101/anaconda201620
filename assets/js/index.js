@@ -35,7 +35,7 @@ function run () {
             <Route path='convocatoria/:notificationId' component={NotificationFormEdit} />
             <Route path="convocatorias" component={NotificationContent} />
           </Route>
-          <Route path="artista" >
+          <Route path="artista/:artistId" >
             <IndexRedirect to="/convocatorias" />
             <Route path="convocatorias" component={NotificationArtist} />
           </Route>

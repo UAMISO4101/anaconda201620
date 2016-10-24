@@ -124,7 +124,7 @@ class NotificationForm extends Component{
               </div>
               <div className="col-sm-3">
                 <button onClick={this.openModal.bind(this)} type="button" className="btn btn-info pull-right">
-                  <span className="glyphicon glyphicon-comment" aria-hidden="true"></span> Solicitudes
+                  <span className="glyphicon glyphicon-comment" aria-hidden="true"></span>Solicitudes
                   </button>
                 </div>
               </div>

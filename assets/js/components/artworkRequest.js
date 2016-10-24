@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
+import {AU} from '../testData/states';
 
 
 class ArtworkRequest extends Component {
@@ -9,19 +11,89 @@ class ArtworkRequest extends Component {
     constructor(props) {
         super(props);
          this.state = {
+            country: 'AU',
+            clearable: true,
+      			disabled: false,
+            onFocus: '',
+      			searchable: true,
+      			selectValue: 'new-south-wales',
             show: false,
         };
+
     }
+
+    switchCountry (e) {
+  		var newCountry = e.target.value;
+  		console.log('Country changed to ' + newCountry);
+  		this.setState({
+  			country: newCountry,
+  			selectValue: null
+  		});
+  	}
+  	updateValue (newValue) {
+  		console.log('State changed to ' + newValue);
+  		this.setState({
+  			selectValue: newValue
+  		});
+  	}
+  	focusStateSelect () {
+  		this.refs.stateSelect.focus();
+  	}
+  	toggleCheckbox (e) {
+  		let newState = {};
+  		newState[e.target.name] = e.target.checked;
+  		this.setState(newState);
+  	}
 
     tableComponent(userType){
       switch (userType){
         case "artist":
-          return( null)
+          return( <TableHeaderColumn dataFormat={this.requestUpload.bind(this)}> Upload Artwork </TableHeaderColumn> )
         case "comercial_agent":
-          return null
+          return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
         default:
-          return null
+          return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
       }
+    }
+
+    buttonsComponent(userType){
+        switch (userType){
+            case "artist":
+                return (<div className="row" >
+                            <div className="col-sm-push-1 col-sm-5 col-xs-12 " >
+                              <button className='btn btn-primary'>Postularme</button>
+                            </div>
+                            <div className="col-sm-5 col-xs-12 " >
+                              <button className='btn btn-danger' onClick={()=>{
+                                    this.props.hideNotifictionModal();
+                                  }
+                                }
+                              >Cancelar</button>
+                            </div>
+                          </div>)
+            case "comercial_agent":
+                return null
+            default:
+                return null
+        }
+    }
+
+    requestUpload(cell, row){
+      return (
+        <div className="section artwork-selection">
+  				<Select ref="stateSelect"
+             autofocus
+             options={AU}
+             simpleValue
+             clearable={this.state.clearable}
+             name="selected-state"
+             disabled={this.state.disabled}
+             value={this.state.selectValue}
+             onChange={this.updateValue}
+             searchable={this.state.searchable}
+          />
+  			</div>
+      );
     }
 
     render() {
@@ -36,6 +108,7 @@ class ArtworkRequest extends Component {
               </BootstrapTable>
             </div>
           </div>
+          { this.buttonsComponent(this.props.userType) }
         </div>
         )
     }
