@@ -44,7 +44,7 @@ class Navbar extends Component{
                                     <span className="icon-bar"></span>
                                     <span className="icon-bar"></span>
                                 </button>
-                                <a className="navbar-brand" href="index.html">
+                                <a className="navbar-brand" href="#">
                                     <img className="img-responsive" src="images/logo.png" alt="logo"></img>
                                 </a>
                             </div>
