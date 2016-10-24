@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node_modules/webpack/bin/webpack.js --color --watch",
-    "prod": "node node_modules/webpack/bin/webpack.js"
+    "prod": "node node_modules/webpack/bin/webpack.js && python manage.py collectstatic --noinput"
   },
   "author": "jasmo2",
   "license": "ISC",
