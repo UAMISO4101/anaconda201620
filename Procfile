@@ -1,1 +1,1 @@
-web: node node_modules/webpack/bin/webpack.js & python manage.py collectstatic --noinput & python manage.py runserver 0.0.0.0:$PORT
+web: npm run prod & python manage.py collectstatic --noinput & python manage.py runserver 0.0.0.0:$PORT
