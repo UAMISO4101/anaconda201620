@@ -1,3 +1,13 @@
+const artworkBlank = 	{value: 1, label: "Default Artwork"};
+export const artworks = (state=[artworkBlank],  action) => {
+  switch (action.type) {
+    case 'GET_ARTIST_ARTWORKS':
+      return action.data || state;
+      break;
+    default:
+      return state ;
+  }
+}
 
 const requestBlank = {id: 1, name: "", features: ""};
 const notificationBlank  = { name: "", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "", publishingState: false, request: [requestBlank] };
@@ -30,7 +40,7 @@ export const notifications = (state=notificationsDefault,  action) => {
     case 'GET_ACTUAL_NOTIFICATION':
       let actualNotification = action.data.notifications.filter(notification => notification.id === parseInt(action.data.notificationId, 10))[0];
       actualNotification.request.map((request) => {
-        request["id"] = +new Date;
+        request["id"] = Math.floor((Math.random() * 1000) + 1); ;
       });
       let notification = Object.assign({}, action.data, {
         actualNotification: actualNotification
@@ -129,7 +139,6 @@ export const request = (state=[], action) => {
       return state ;
   }
 };
-
 
 export const userID = (state=null, action) => {
   switch (action.type) {
