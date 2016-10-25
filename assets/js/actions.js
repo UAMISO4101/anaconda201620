@@ -16,10 +16,12 @@ export const showNotifictionModal = (modalProps) => ({ type: 'SHOW_NOTIFICATION_
 export const hideNotifictionModal = () => ({ type: 'HIDE_NOTIFICATION_MODAL' });
 
 export const setActualUserType = (userType) => ({ type: 'SET_USER_TYPE', data: userType });
+export const setUserId = (id) => ({ type: 'SET_USER_ID', data: id});
 export const getActualNotification = (notifications,notificationId) => ({ type: 'GET_ACTUAL_NOTIFICATION', data: {notifications, notificationId} });
 
 export const getArtistArtworks = id => ({type: 'GET_ARTIST_ARTWORKS', data: id})
 
+export const getSoundTracksByArtist = id => ({type: 'GET_SOUNDTRACK_BY_ARTIST'})
 export const fetchSoundTracks = (filter, type) => {
   return dispatch => {
     jQuery.ajax({

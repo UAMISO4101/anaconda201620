@@ -1,6 +1,7 @@
 import artworkRequest from '../components/artworkRequest'
 import {
   editNotification,
+  getSoundTracksByArtist,
   hideNotifictionModal,
 } from '../actions';
 
@@ -14,8 +15,9 @@ const mapStateToProps = (state,  router) => {
 };
 
 const mapDispatchToProps = dispatch => ({
+  getSoundTracksByArtist: (id) => dispatch(getSoundTracksByArtist(id)),
   hideNotifictionModal: () => dispatch(hideNotifictionModal()),
-  selectRequest: (id,requestFile) => {dispatch(selectRequest(id,requestFile))},
-  uploadNotification: (id) => {dispatch(uploadNotification(id))}
+  selectRequest: (id,requestFile) => dispatch(selectRequest(id,requestFile)),
+  uploadNotification: (id) => dispatch(uploadNotification(id))
 })
 export default connect(mapStateToProps,mapDispatchToProps)(artworkRequest);
