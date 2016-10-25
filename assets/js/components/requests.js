@@ -14,7 +14,7 @@ import {
 } from 'react-bootstrap'
 import SweetAlert from 'sweetalert-react';
 import { connect } from 'react-redux';
-import RequestContent from './requestContent';
+import RequestContent from '../containers/requestContent';
 import { addRequest } from '../actions';
 
 

@@ -12,11 +12,19 @@ export const publishNotification = (id) => ({type: 'PUBLISH_NOTIFICATIONS',data:
 export const showSAModal = (modalProps) => ({ type: 'SHOW_SA_MODALS', data: modalProps });
 export const hideSAModal = () => ({ type: 'HIDE_SA_MODALS' });
 
-export const fetchSoundTracks = (filter) => {
+export const showNotifictionModal = (modalProps) => ({ type: 'SHOW_NOTIFICATION_MODAL', data: modalProps });
+export const hideNotifictionModal = () => ({ type: 'HIDE_NOTIFICATION_MODAL' });
+
+export const setActualUserType = (userType) => ({ type: 'SET_USER_TYPE', data: userType });
+export const getActualNotification = (notifications,notificationId) => ({ type: 'GET_ACTUAL_NOTIFICATION', data: {notifications, notificationId} });
+
+export const getArtistArtworks = id => ({type: 'GET_ARTIST_ARTWORKS', data: id})
+
+export const fetchSoundTracks = (filter, type) => {
   return dispatch => {
     jQuery.ajax({
         method: "GET",
-        url: `${SERVER_URL}/comercial_agent/sounds/${filter}`,
+        url: `${SERVER_URL}/comercial_agent/sounds/${type}/${filter}`,
         statusCode: {
         200: (data) => {
           dispatch(getSoundTracks(data))
