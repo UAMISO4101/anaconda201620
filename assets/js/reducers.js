@@ -29,6 +29,9 @@ export const notifications = (state=notificationsDefault,  action) => {
       break;
     case 'GET_ACTUAL_NOTIFICATION':
       let actualNotification = action.data.notifications.filter(notification => notification.id === parseInt(action.data.notificationId, 10))[0];
+      actualNotification.request.map((request) => {
+        request["id"] = +new Date;
+      });
       let notification = Object.assign({}, action.data, {
         actualNotification: actualNotification
       });
