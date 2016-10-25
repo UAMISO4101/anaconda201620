@@ -67,7 +67,7 @@ export const soundtracks = (state=soundtrackDefault,  action) => {
 };
 
 const requestDafault = {name: "requestDeafult", features: "Default Feature"};
-const notificationDefault  = { id: 1, name: "notification A", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "my description for notification A", publishingState: false, request: [requestDafault] };
+const notificationDefault  = { id: 1, cover: "",name: "notification A", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "my description for notification A", publishingState: false, request: [requestDafault] };
 const notificationsDefault = {"notifications":[notificationDefault]};
 export const notifications = (state=notificationsDefault,  action) => {
   switch (action.type) {
