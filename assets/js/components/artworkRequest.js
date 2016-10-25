@@ -9,17 +9,17 @@ import {AU} from '../testData/states';
 class ArtworkRequest extends Component {
 
     constructor(props) {
-        super(props);
-         this.state = {
-            country: 'AU',
-            clearable: true,
-      			disabled: false,
-            onFocus: '',
-      			searchable: true,
-      			selectValue: 'new-south-wales',
-            show: false,
-        };
-
+      super(props);
+       this.state = {
+          country: 'AU',
+          clearable: true,
+    			disabled: false,
+          onFocus: '',
+    			searchable: true,
+    			selectValue: 'new-south-wales',
+          show: false,
+      };
+      this.updateValue = this.updateValue.bind(this);
     }
 
     switchCountry (e) {
@@ -30,15 +30,18 @@ class ArtworkRequest extends Component {
   			selectValue: null
   		});
   	}
+
   	updateValue (newValue) {
   		console.log('State changed to ' + newValue);
   		this.setState({
   			selectValue: newValue
   		});
   	}
+
   	focusStateSelect () {
   		this.refs.stateSelect.focus();
   	}
+
   	toggleCheckbox (e) {
   		let newState = {};
   		newState[e.target.name] = e.target.checked;
@@ -59,18 +62,20 @@ class ArtworkRequest extends Component {
     buttonsComponent(userType){
         switch (userType){
             case "artist":
-                return (<div className="row" >
-                            <div className="col-sm-push-1 col-sm-5 col-xs-12 " >
-                              <button className='btn btn-primary'>Postularme</button>
-                            </div>
-                            <div className="col-sm-5 col-xs-12 " >
-                              <button className='btn btn-danger' onClick={()=>{
-                                    this.props.hideNotifictionModal();
-                                  }
-                                }
-                              >Cancelar</button>
-                            </div>
-                          </div>)
+                return (
+                  <div className="row" >
+                    <div className="col-sm-push-1 col-sm-5 col-xs-12" >
+                      <button className='btn btn-primary'>Postularme</button>
+                    </div>
+                    <div className="col-sm-5 col-xs-12 " >
+                      <button className='btn btn-danger' onClick={()=>{
+                            this.props.hideNotifictionModal();
+                          }
+                        }
+                      >Cancelar</button>
+                    </div>
+                  </div>
+                )
             case "comercial_agent":
                 return null
             default:
