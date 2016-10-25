@@ -10,35 +10,23 @@ class ArtworkRequest extends Component {
 
     constructor(props) {
       super(props);
-       this.state = {
-          country: 'AU',
+      let selectValue = {};
+      for (let request in this.props.request) {
+        selectValue[request.id] = null
+      }
+      this.state = {
           clearable: true,
     			disabled: false,
           onFocus: '',
     			searchable: true,
-    			selectValue: 'new-south-wales',
+    			selectValue: selectValue ,
           show: false,
       };
-      this.updateValue = this.updateValue.bind(this);
     }
 
-    switchCountry (e) {
-  		var newCountry = e.target.value;
-  		console.log('Country changed to ' + newCountry);
-  		this.setState({
-  			country: newCountry,
-  			selectValue: null
-  		});
-  	}
-
-  	updateValue (newValue) {
-  		console.log('State changed to ' + newValue);
-  		this.setState({
-  			selectValue: newValue
-  		});
-  	}
 
   	focusStateSelect () {
+      cosole.log("focus");
   		this.refs.stateSelect.focus();
   	}
 
@@ -51,7 +39,7 @@ class ArtworkRequest extends Component {
     tableComponent(userType){
       switch (userType){
         case "artist":
-          return( <TableHeaderColumn dataFormat={this.requestUpload.bind(this)}> Upload Artwork </TableHeaderColumn> )
+          return( <TableHeaderColumn dataField="id" dataFormat={this.requestUpload.bind(this)}> Upload Artwork </TableHeaderColumn> )
         case "comercial_agent":
           return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
         default:
@@ -84,17 +72,29 @@ class ArtworkRequest extends Component {
     }
 
     requestUpload(cell, row){
+      var self = this;
       return (
         <div className="section artwork-selection">
-  				<Select ref="stateSelect"
+          <div>
+            Seleccionado: { this.state.selectValue[cell] }
+          </div>
+  				<Select ref={cell}
              autofocus
              options={AU}
              simpleValue
              clearable={this.state.clearable}
              name="selected-state"
              disabled={this.state.disabled}
-             value={this.state.selectValue}
-             onChange={this.updateValue}
+             value={this.state.selectValue[cell]}
+             onChange={(newValue) => {
+                if(newValue != this.state.selectValue[cell]){
+                  let obj = this.state.selectValue;
+                  obj[cell] = newValue;
+                  this.setState({
+                    selectValue: obj
+                 });
+               }
+         	   }}
              searchable={this.state.searchable}
           />
   			</div>
