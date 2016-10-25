@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import {AU} from '../testData/states';
 
 
 class ArtworkRequest extends Component {
@@ -15,8 +14,6 @@ class ArtworkRequest extends Component {
         selectValue[request.id] = null
       }
       this.state = {
-          clearable: true,
-    			disabled: false,
           onFocus: '',
     			searchable: true,
     			selectValue: selectValue ,
@@ -24,27 +21,8 @@ class ArtworkRequest extends Component {
       };
     }
 
-
-  	focusStateSelect () {
-      cosole.log("focus");
-  		this.refs.stateSelect.focus();
-  	}
-
-  	toggleCheckbox (e) {
-  		let newState = {};
-  		newState[e.target.name] = e.target.checked;
-  		this.setState(newState);
-  	}
-
-    tableComponent(userType){
-      switch (userType){
-        case "artist":
-          return( <TableHeaderColumn dataField="id" dataFormat={this.requestUpload.bind(this)}> Upload Artwork </TableHeaderColumn> )
-        case "comercial_agent":
-          return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
-        default:
-          return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
-      }
+    componentDidMount(){
+      this.props.fetchArtistArtworks(this.props.userId);
     }
 
     buttonsComponent(userType){
@@ -71,8 +49,29 @@ class ArtworkRequest extends Component {
         }
     }
 
+  	focusStateSelect () {
+      cosole.log("focus");
+  		this.refs.stateSelect.focus();
+  	}
+
+  	toggleCheckbox (e) {
+  		let newState = {};
+  		newState[e.target.name] = e.target.checked;
+  		this.setState(newState);
+  	}
+
+    tableComponent(userType){
+      switch (userType){
+        case "artist":
+          return( <TableHeaderColumn dataField="id" dataFormat={this.requestUpload.bind(this)}> Upload Artwork </TableHeaderColumn> )
+        case "comercial_agent":
+          return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
+        default:
+          return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
+      }
+    }
+
     requestUpload(cell, row){
-      var self = this;
       return (
         <div className="section artwork-selection">
           <div>
@@ -80,11 +79,10 @@ class ArtworkRequest extends Component {
           </div>
   				<Select ref={cell}
              autofocus
-             options={AU}
+             options={this.props.artworks}
              simpleValue
-             clearable={this.state.clearable}
+             clearable
              name="selected-state"
-             disabled={this.state.disabled}
              value={this.state.selectValue[cell]}
              onChange={(newValue) => {
                 if(newValue != this.state.selectValue[cell]){
