@@ -18,8 +18,8 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state,  { params: { id }}) => ({
   notifications: state.notifications,
   saModal: state.saModal,
+  userId: id,
   userType: 'artist',
-  userId: id
 });
 
 const mapDispatchToProps = dispatch => ({
