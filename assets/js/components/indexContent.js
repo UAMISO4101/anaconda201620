@@ -60,7 +60,7 @@ class IndexContent extends Component{
 
   render(){
     return(
-      <div className="index-content">
+      <div id = "twitter" className="index-content">
 
           <SweetAlert
               show={this.props.saModal.show}

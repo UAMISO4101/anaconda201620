@@ -67,14 +67,14 @@ class NotificationForm extends Component{
 
   calendarEvent(event, picker) {
         this.setState({
-          initialDate: picker.startDate,
+          exploreinitialDate: picker.startDate,
           closingDate: picker.endDate
         })
   }
 
   render(){
     return(
-      <div className="sd notificationForm row">
+      <div id="notiform" className="sd notificationForm row">
         <SweetAlert
             show={this.state.show}
             type={this.state.type}

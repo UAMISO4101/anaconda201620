@@ -13,7 +13,7 @@ var config = module.exports = {
     entry: {
 		"main": [
 			'./assets/css/main.scss',
-			'./assets/js/index.js',
+			'./assets/js/index.js'
 		],
 	},
 
@@ -21,7 +21,7 @@ var config = module.exports = {
         //where you want your compiled bundle to be stored
         path: path.resolve('./assets/bundles/'),
         //naming convention webpack should use for your files
-        filename: '[name]-[hash].js',
+        filename: 'bundle.js',
     },
 
     plugins: [
@@ -61,7 +61,7 @@ var config = module.exports = {
 				loader: ExtractTextPlugin.extract("style", "css")
 			},
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
+        test: /\.(gif)$/i,
         loaders: [
             'file?hash=sha512&digest=hex&name=[hash].[ext]',
             'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
@@ -77,7 +77,7 @@ var config = module.exports = {
                 }
             },
 			{
-				test: /\.(png|woff2)$/,
+				test: /\.(woff2|png|svg|jpg)$/,
 				loader: "url-loader"
 			},
             {
@@ -103,7 +103,7 @@ var config = module.exports = {
         //tells webpack where to look for modules
         modulesDirectories: ['node_modules'],
         //extensions that should be used to resolve modules
-        extensions: ['', '.js', '.jsx','.scss','.css','.ttf','.svg','eot']
+        extensions: ['', '.js', '.jsx','.scss','.css','.ttf','.svg','eot','.jpg','.png']
     }
 }
 
