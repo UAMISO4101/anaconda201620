@@ -63,7 +63,7 @@ class ArtworkRequest extends Component {
     tableComponent(userType){
       switch (userType){
         case "artist":
-          return( <TableHeaderColumn dataField="id" dataFormat={this.requestUpload.bind(this)}> Upload Artwork </TableHeaderColumn> )
+          return( <TableHeaderColumn dataField="id" dataFormat={this.requestUpload.bind(this)}> Tipo & canción </TableHeaderColumn> )
         case "comercial_agent":
           return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
         default:
