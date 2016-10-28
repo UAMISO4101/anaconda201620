@@ -1,10 +1,29 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import {ARTIST_DASHBOARD} from '../utils/constants';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Select from 'react-select';
+import SweetAlert from 'sweetalert-react';
+
 import 'react-select/dist/react-select.css';
 
-
+function buildPairs(requests, {selectValue} ) {
+    let pairs = [];
+    for (let request of requests) {
+      let request_id = request.id;
+      pairs.push({id_artwork: selectValue[request_id], feature_id: request_id});
+    }
+  return pairs
+}
+function buildPropousal(props, state){
+  return {
+    proposal: {
+      id_usuario: props.userId,
+      id_convocatoria:  props.actualNotification.id,
+      pairs: buildPairs(props.request, state)
+    }
+  }
+}
 class ArtworkRequest extends Component {
 
     constructor(props) {
@@ -18,7 +37,13 @@ class ArtworkRequest extends Component {
     			searchable: true,
     			selectValue: selectValue ,
           show: false,
+          sweetAlertOnConfirm: () => {this.setState({ show: false })},
+          sweetAlertTitle: "",
+          sweetAlertMessage: "",
+          type: "warning",
       };
+      this.sendRequest = this.sendRequest.bind(this);
+      this.validateRequest = this.validateRequest.bind(this);
     }
 
     componentDidMount(){
@@ -31,7 +56,7 @@ class ArtworkRequest extends Component {
                 return (
                   <div className="row" >
                     <div className="col-sm-push-1 col-sm-5 col-xs-12" >
-                      <button className='btn btn-primary'>Postularme</button>
+                      <button className='btn btn-primary' onClick={this.sendRequest}>Postularme</button>
                     </div>
                     <div className="col-sm-5 col-xs-12 " >
                       <button className='btn btn-danger' onClick={()=>{
@@ -54,30 +79,14 @@ class ArtworkRequest extends Component {
   		this.refs.stateSelect.focus();
   	}
 
-  	toggleCheckbox (e) {
-  		let newState = {};
-  		newState[e.target.name] = e.target.checked;
-  		this.setState(newState);
-  	}
-
-    tableComponent(userType){
-      switch (userType){
-        case "artist":
-          return( <TableHeaderColumn dataField="id" dataFormat={this.requestUpload.bind(this)}> Tipo & canción </TableHeaderColumn> )
-        case "comercial_agent":
-          return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
-        default:
-          return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
-      }
-    }
-
     requestUpload(cell, row){
+      let selectLabel = this.state.selectValue[cell] ? this.props.artworks.filter((artwork)=>{return(artwork.value == this.state.selectValue[cell])})[0].label : "";
       return (
         <div className="section artwork-selection">
           <div>
-            Seleccionado: { this.state.selectValue[cell] }
+            Seleccionado: { selectLabel }
           </div>
-  				<Select ref={cell}
+  				<Select ref={`artwork-${cell}`}
              autofocus
              options={this.props.artworks}
              simpleValue
@@ -102,6 +111,13 @@ class ArtworkRequest extends Component {
     render() {
         return (
         <div className="artworkrequest-content">
+            <SweetAlert
+                show={this.state.show}
+                type={this.state.type}
+                title={this.state.sweetAlertTitle}
+                text={this.state.sweetAlertMessage}
+                onConfirm={this.state.sweetAlertOnConfirm}
+            />
             <div className="row" >
             <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
               <BootstrapTable data={this.props.request} striped={true} hover={true}>
@@ -114,6 +130,73 @@ class ArtworkRequest extends Component {
           { this.buttonsComponent(this.props.userType) }
         </div>
         )
+    }
+
+    sendRequest(){
+      if (this.validateRequest()){
+        let propousal = buildPropousal(this.props,this.state);
+        console.log('propousal');
+        console.log(propousal);
+        //// #ToDo Connect to BackEnd
+        // $.ajax({
+        //   method: 'POST',
+        //   url: `${SERVER_URL}/comercial_agent/XXXX`,
+        //   data: JSON.stringify(propousal),
+        // })
+        // .done(( msg ) => {
+        //     this.setState({
+        //       type: "success",
+        //       show: true,
+        //       showModal: false,
+        //       sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#/${ARTIST_DASHBOARD}/${this.props.userId}/convocatorias`; },
+        //       sweetAlertMessage: "Convocatoria creada exitosamente",
+        //       sweetAlertTitle: "Exito",
+        //     });
+        //   })
+        // .fail((err) => {
+        //   console.error(err);
+        //   this.setState({
+        //     show: true,
+        //     sweetAlertTitle: "Error Servidor",
+        //     type: "error",
+        //     sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
+        //   });
+        // })
+      }else {
+        this.setState({
+          sweetAlertMessage: "Por favor escoge una obra para cada solicitud.",
+          sweetAlertTitle: "Campos vacios",
+          type: "warning",
+          show: true
+        });
+      }
+    }
+
+    toggleCheckbox (e) {
+      let newState = {};
+      newState[e.target.name] = e.target.checked;
+      this.setState(newState);
+    }
+
+    tableComponent(userType){
+      switch (userType){
+        case "artist":
+          return( <TableHeaderColumn dataField="id" dataFormat={this.requestUpload.bind(this)}> Tipo & canción </TableHeaderColumn> )
+        case "comercial_agent":
+          return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
+        default:
+          return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
+      }
+    }
+
+    validateRequest(){
+      for (let request of this.props.request) {
+        if (this.state.selectValue[request.id] == null) {
+          return false;
+        }
+      }
+      return true;
+
     }
 }
 
