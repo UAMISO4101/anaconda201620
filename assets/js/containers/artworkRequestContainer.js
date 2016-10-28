@@ -10,8 +10,9 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state,  router) => {
   return {
-    request: state.notifications.actualNotification.request,
     artworks: state.artworks,
+    actualNotification: state.notifications.actualNotification,
+    request: state.notifications.actualNotification.request,
     userType: state.userType,
     userId: state.userID,
   }
