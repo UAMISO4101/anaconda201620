@@ -11,7 +11,6 @@ import SweetAlert from 'sweetalert-react';
 
 import FaCalendarCheckO from 'react-icons/lib/fa/calendar-check-o'
 import FaCalendarCheckMinusO from 'react-icons/lib/fa/calendar-minus-o'
-import Cookies from 'js-cookie'
 
 import Requests from './requests';
 import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
@@ -208,7 +207,6 @@ class NotificationForm extends Component{
         notificationId = `${this.props.notification.id}/`;
         ajaxMethod     = "PUT";
       }
-      setTimeout((()=>{
         $.ajax({
           method: ajaxMethod,
           url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}`,
@@ -233,8 +231,7 @@ class NotificationForm extends Component{
             sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
           });
         })
-      })()
-      , 400)
+
 
     }
 
