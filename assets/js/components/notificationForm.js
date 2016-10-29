@@ -95,6 +95,12 @@ class NotificationForm extends Component{
           <Modal.Footer>
           </Modal.Footer>
         </Modal>
+        <div className="border col-sm-12" >
+                <center>
+                <h3>Formulario de Convocatorias</h3>
+                    </center>
+                <br></br>
+            </div>
         <div className="col-md-3"></div>
         <div className="col-md-6 sd borderForm" >
           <form className="form-horizontal">
@@ -148,7 +154,7 @@ class NotificationForm extends Component{
               </div>
               <div className="form-group">
                 <div className="col-sm-push-4 col-sm-4 col-xs-12">
-                  <button onClick={this.onSave.bind(this)} type="submit" className="btn btn-success">Previsualizar</button>
+                  <button onClick={this.onSave.bind(this)} type="submit" className="btn btn-primary-about">Previsualizar</button>
                 </div>
               </div>
             </form>
