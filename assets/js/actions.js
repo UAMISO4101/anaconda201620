@@ -27,7 +27,12 @@ export const fetchArtistArtworks = (id) => {
   return dispatch => {
       //#ToDo should implement service
       // jQuery.ajax({})
-      dispatch(getArtistArtworks([{value: 1, label: "A"},{value:2, label: "B"}]))
+      dispatch(getArtistArtworks(
+        [
+          {value: 1, label: "A"},
+          {value: 2, label: "B"}
+        ])
+      )
   }
 }
 export const fetchSoundTracks = (filter, type) => {
