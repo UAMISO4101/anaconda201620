@@ -231,7 +231,7 @@ def edit_notification_state(request,notification_id):
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
-
+@csrf_exempt
 def get_artworks_by_artist(request,user_id):
     if request.method == 'GET':
         artworks_array = []
