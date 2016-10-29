@@ -25,14 +25,23 @@ export const getSoundTracksByArtist = id => ({type: 'GET_SOUNDTRACK_BY_ARTIST'})
 
 export const fetchArtistArtworks = (id) => {
   return dispatch => {
-      //#ToDo should implement service
-      // jQuery.ajax({})
-      dispatch(getArtistArtworks(
-        [
-          {value: 1, label: "A"},
-          {value: 2, label: "B"}
-        ])
-      )
+      jQuery.ajax({
+        method: "GET",
+        url: `${SERVER_URL}/comercial_agent/artists/${id}/artworks/`,
+        statusCode: {
+        200: (data) => {
+          dispatch(getArtistArtworks(data.artworks))
+        },
+        404: (err) => {
+          dispatch(showSAModal({
+            show: true,
+            type: "error",
+            title: "Error",
+            text: `status: ${err.status} \nstatusText: ${err.statusText}`
+          }))
+        }
+      }
+    });
   }
 }
 export const fetchSoundTracks = (filter, type) => {
@@ -61,6 +70,29 @@ export const fetchNotifications = () => {
     jQuery.ajax({
         method: "GET",
         url: `${SERVER_URL}/comercial_agent/notifications/`,
+        statusCode: {
+        200: (data) => {
+          localStorage.setItem("NOTIFICATIONS", JSON.stringify(data));
+          dispatch(getNotifications(data))
+        },
+        404: (err) => {
+          dispatch(showSAModal({
+            show: true,
+            type: "error",
+            title: "Error",
+            text: `status: ${err.status} \nstatusText: ${err.statusText}`
+          }))
+        }
+      }
+    });
+  }
+};
+
+export const fetchOpenNotifications = () => {
+  return dispatch => {
+    jQuery.ajax({
+        method: "GET",
+        url: `${SERVER_URL}/comercial_agent/notifications/open-notifications/`,
         statusCode: {
         200: (data) => {
           localStorage.setItem("NOTIFICATIONS", JSON.stringify(data));

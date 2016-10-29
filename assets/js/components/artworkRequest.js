@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import {ARTIST_DASHBOARD} from '../utils/constants';
+import {ARTIST_DASHBOARD, SERVER_URL} from '../utils/constants';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Select from 'react-select';
 import SweetAlert from 'sweetalert-react';
@@ -137,31 +137,30 @@ class ArtworkRequest extends Component {
         let propousal = buildPropousal(this.props,this.state);
         console.log('propousal');
         console.log(propousal);
-        //// #ToDo Connect to BackEnd
-        // $.ajax({
-        //   method: 'POST',
-        //   url: `${SERVER_URL}/comercial_agent/XXXX`,
-        //   data: JSON.stringify(propousal),
-        // })
-        // .done(( msg ) => {
-        //     this.setState({
-        //       type: "success",
-        //       show: true,
-        //       showModal: false,
-        //       sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#/${ARTIST_DASHBOARD}/${this.props.userId}/convocatorias`; },
-        //       sweetAlertMessage: "Convocatoria creada exitosamente",
-        //       sweetAlertTitle: "Exito",
-        //     });
-        //   })
-        // .fail((err) => {
-        //   console.error(err);
-        //   this.setState({
-        //     show: true,
-        //     sweetAlertTitle: "Error Servidor",
-        //     type: "error",
-        //     sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
-        //   });
-        // })
+         $.ajax({
+           method: 'POST',
+           url: `${SERVER_URL}/comercial_agent/notifications/postulate-artworks/`,
+           data: JSON.stringify(propousal),
+         })
+         .done(( msg ) => {
+             this.setState({
+               type: "success",
+               show: true,
+               showModal: false,
+               sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${ARTIST_DASHBOARD}/${this.props.userId}/convocatorias`; },
+               sweetAlertMessage: "Convocatoria creada exitosamente",
+               sweetAlertTitle: "Exito",
+             });
+           })
+         .fail((err) => {
+           console.error(err);
+           this.setState({
+             show: true,
+             sweetAlertTitle: "Error Servidor",
+             type: "error",
+             sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
+           });
+         })
       }else {
         this.setState({
           sweetAlertMessage: "Por favor escoge una obra para cada solicitud.",
@@ -181,7 +180,7 @@ class ArtworkRequest extends Component {
     tableComponent(userType){
       switch (userType){
         case "artist":
-          return( <TableHeaderColumn dataField="id" dataFormat={this.requestUpload.bind(this)}> Tipo & canción </TableHeaderColumn> )
+          return( <TableHeaderColumn dataField="id" dataFormat={this.requestUpload.bind(this)}> Tipo & Obra </TableHeaderColumn> )
         case "comercial_agent":
           return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
         default:

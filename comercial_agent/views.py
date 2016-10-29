@@ -242,20 +242,29 @@ def get_artworks_by_artist(request,user_id):
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
+
 @csrf_exempt
-def postulate_artwork(request,user_id,notification_id):
-    if request.method == 'PUT':
+def postulate_artwork(request):
+    if request.method == 'POST':
         postulation_json = json.loads(request.body.decode("utf-8"))
+
+        user_id = postulation_json['proposal']['id_user']
+        import pdb;pdb.set_trace()
+        notification_id = postulation_json['proposal']['id_notification']
+
         artist_info = Artist.objects.get(user_id=user_id)
-        notification_info = Notification.objects.get(id = notification_id)
-        postulation_info = Postulation(artist=artist_info,notification=notification_info)
+        notification_info = Notification.objects.get(id=notification_id)
+
+        postulation_info = Postulation(artist=artist_info, notification=notification_info)
         postulation_info.save()
 
         for artwork in postulation_json['proposal']['pairs']:
             id_feature = artwork['id_feature']
-            id_artwork =artwork['id_artwork']
+            id_artwork = artwork['id_artwork']
+
             feature_info=RequestedPiece.objects.get(id=id_feature)
             artwork_info=Artwork.objects.get(id=id_artwork)
+
             postulated_artwork= PostulatedArtwork(requestedPiece=feature_info,artwork=artwork_info,postulation=postulation_info)
             postulated_artwork.save()
 
