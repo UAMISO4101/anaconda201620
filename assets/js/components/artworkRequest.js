@@ -11,15 +11,15 @@ function buildPairs(requests, {selectValue} ) {
     let pairs = [];
     for (let request of requests) {
       let request_id = request.id;
-      pairs.push({id_artwork: selectValue[request_id], feature_id: request_id});
+      pairs.push({id_artwork: selectValue[request_id], id_feature: request_id});
     }
   return pairs
 }
 function buildPropousal(props, state){
   return {
     proposal: {
-      id_usuario: props.userId,
-      id_convocatoria:  props.actualNotification.id,
+      id_user: props.userId,
+      id_notification:  props.actualNotification.id,
       pairs: buildPairs(props.request, state)
     }
   }
