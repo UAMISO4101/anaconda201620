@@ -63,5 +63,5 @@
     "webpack": "^1.13.2",
     "webpack-bundle-tracker": "^0.0.93"
   },
-  "description": "description to package.json"
+  "description": "description to package.json "
 }
