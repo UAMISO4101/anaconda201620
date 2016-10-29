@@ -2,18 +2,15 @@ import json
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import generics
 from django.shortcuts import render
 from django.http import JsonResponse
-from datetime import datetime, timedelta
 
 
 # Create your views here.
 from rest_framework import status
 from .models import *
 
-from comercial_agent.models import Artwork, Notification, Sound, Song
-
+from comercial_agent.models import Notification, Sound, Song
 
 
 
@@ -21,12 +18,11 @@ def index(request):
     return render(request, 'comercial_agent/index.html')
 
 
-
 @csrf_exempt
 def edit_notification(request,notification_id):
     if request.method == 'PUT':
         notification_json = json.loads(request.body.decode("utf-8"))
-        notification_model = Notification.objects.filter(pk=notification_id).update(
+        Notification.objects.filter(pk=notification_id).update(
                               name=notification_json['name'],
                               initial_date=notification_json['initialDate'],
                               closing_date=notification_json['closingDate'],
@@ -34,7 +30,6 @@ def edit_notification(request,notification_id):
                               notification_type=notification_json['notificationType']
                             )
 
-        # import pdb; pdb.set_trace()
         RequestedPiece.objects.filter(notification_id=notification_id).delete()
         for piece in notification_json['request']:
             piece_model = RequestedPiece(name=piece['name'],
@@ -100,7 +95,7 @@ def get_open_notifications(request):
         dict_notification = notification.as_dict();
         dict_piece = []
         for piece in pieces_model:
-            dict_piece.append({'name': piece.name, 'features': piece.features})
+            dict_piece.append({'id_feature': piece.id, 'name': piece.name, 'features': piece.features})
 
         dict_notification['request'] = dict_piece
         notifications_array.append(dict_notification)
