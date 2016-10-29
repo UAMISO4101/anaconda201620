@@ -247,12 +247,12 @@ def get_artworks_by_artist(request,user_id):
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
+@csrf_exempt
 def postulate_artwork(request,user_id,notification_id):
     if request.method == 'PUT':
         postulation_json = json.loads(request.body.decode("utf-8"))
-        print(postulation_json)
         artist_info = Artist.objects.get(user_id=user_id)
-        notification_info = Notification.objects.get(notification_id = notification_id)
+        notification_info = Notification.objects.get(id = notification_id)
         postulation_info = Postulation(artist=artist_info,notification=notification_info)
         postulation_info.save()
 
