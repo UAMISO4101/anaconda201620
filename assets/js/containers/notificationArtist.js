@@ -8,17 +8,18 @@ import {
   hideNotifictionModal,
   publishNotification,
   setActualUserType,
+  setUserId,
   showNotifictionModal,
   showSAModal,
 } from '../actions';
 
 import { connect } from 'react-redux';
 
-const mapStateToProps = (state,  { params: { tipo }}) => ({
+const mapStateToProps = (state,  { params: { id }}) => ({
   notifications: state.notifications,
-  tipo : state.tipo,
   saModal: state.saModal,
-  userType: 'artist'
+  userId: id,
+  userType: 'artist',
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -28,6 +29,7 @@ const mapDispatchToProps = dispatch => ({
   hideSAModal: () => dispatch(hideSAModal()),
   publishNotification: (id) => {dispatch(publishNotification)},
   setActualUserType: (userType) => {dispatch(setActualUserType(userType))},
+  setUserId: (id) => {dispatch(setUserId(id))},
   showNotifictionModal: (modalProps) => {dispatch(showNotifictionModal(modalProps))}
 })
 export default connect(mapStateToProps,mapDispatchToProps)(Notifications);

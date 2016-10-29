@@ -11,7 +11,6 @@ import SweetAlert from 'sweetalert-react';
 
 import FaCalendarCheckO from 'react-icons/lib/fa/calendar-check-o'
 import FaCalendarCheckMinusO from 'react-icons/lib/fa/calendar-minus-o'
-import Cookies from 'js-cookie'
 
 import Requests from './requests';
 import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
@@ -38,16 +37,17 @@ class NotificationForm extends Component{
   constructor(props){
     super(props);
     this.state = {
+      closingDate: null,
+      description: null,
+      initialDate: null,
+      name: null,
+      notif : null,
       prev: false,
       showModal: false,
       sweetAlertMessage: "",
       sweetAlertTitle: "",
+      sweetAlertOnConfirm: () => {this.setState({ show: false })},
       type: "warning",
-      initialDate: null,
-      closingDate: null,
-      name: null,
-      description: null,
-      notif : null
     };
   }
   componentDidMount(){
@@ -80,7 +80,7 @@ class NotificationForm extends Component{
             type={this.state.type}
             title={this.state.sweetAlertTitle}
             text={this.state.sweetAlertMessage}
-            onConfirm={() => this.setState({ show: false })}
+            onConfirm={this.state.sweetAlertOnConfirm}
         />
         <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)}>
           <Modal.Header closeButton>
@@ -137,7 +137,6 @@ class NotificationForm extends Component{
                             <FaCalendarCheckO/>
                           </span>
                           <span> &nbsp; </span>
-
                           <span>
                             <FaCalendarCheckMinusO/>
                           </span>
@@ -158,10 +157,6 @@ class NotificationForm extends Component{
         </div>
       )}
 
-  csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
   onSave(event){
         event.preventDefault();
 
@@ -186,7 +181,6 @@ class NotificationForm extends Component{
             notificationType: vPublic || vPrivate,
             request: this.props.request
           }
-          // this.postServer(notificationObj);
           this.setState({notif:notificationObj});
           this.openPrevModal();
         }else{
@@ -199,13 +193,13 @@ class NotificationForm extends Component{
         }
       }
 
-
     formatDate(date){
         return new Date(new Date(date).valueOf() + new Date().getTimezoneOffset()*60000);
     }
 
+    postServer(event){
+      event.preventDefault();
 
-    postServer(){
       let notificationObj = this.state.notif;
       let notificationId = "";
       let ajaxMethod = "POST";
@@ -213,46 +207,48 @@ class NotificationForm extends Component{
         notificationId = `${this.props.notification.id}/`;
         ajaxMethod     = "PUT";
       }
-      var self = this;
-      $.ajax({
-        method: ajaxMethod,
-        url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}`,
-        data: JSON.stringify(notificationObj),
-
-      })
-      .done(( msg ) => {
-          this.setState({
-          show: true,
-          sweetAlertTitle: "Exito",
-          type: "success",
-          sweetAlertMessage: "Convocatoria creada exitosamente",
-          showModal: false
-        });
+        $.ajax({
+          method: ajaxMethod,
+          url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}`,
+          data: JSON.stringify(notificationObj),
         })
-      .fail((err) => {
-        console.error(err);
-        this.setState({
-          show: true,
-          sweetAlertTitle: "Error Servidor",
-          type: "error",
-          sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
-        });
+        .done(( msg ) => {
+            this.setState({
+              type: "success",
+              show: true,
+              showModal: false,
+              sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = "#/dashboard/agente-comercial/convocatorias"; },
+              sweetAlertMessage: "Convocatoria creada exitosamente",
+              sweetAlertTitle: "Exito",
+            });
+          })
+        .fail((err) => {
+          console.error(err);
+          this.setState({
+            show: true,
+            sweetAlertTitle: "Error Servidor",
+            type: "error",
+            sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
+          });
+        })
 
-      })
+
     }
 
   getNotifHTML() {
-    return(<div><h1>Información de convocatoria</h1>
-      <p>Nombre: {this.state.notif.name}</p>
-  <p>Descripción: {this.state.notif.description}</p>
-  <p>Inicio: {this.state.notif.initialDate}</p>
-  <p>Cierre: {this.state.notif.closingDate}</p>
-  <p>Tipo: {this.state.notif.notificationType}</p>
-      <h4>Solicitudes:</h4>
-     <ul className="list-group">
-                {this.state.notif.request.map( rq => <Request rq={rq} key={rq.id}/> )}
-              </ul>
-    <Form horizontal onSubmit={this.postServer.bind(this)} >
+    return(
+      <div>
+        <h1>Información de convocatoria</h1>
+          <p>Nombre: {this.state.notif.name}</p>
+          <p>Descripción: {this.state.notif.description}</p>
+          <p>Inicio: {this.state.notif.initialDate}</p>
+          <p>Cierre: {this.state.notif.closingDate}</p>
+          <p>Tipo: {this.state.notif.notificationType}</p>
+          <h4>Solicitudes:</h4>
+          <ul className="list-group">
+            {this.state.notif.request.map( rq => <Request rq={rq} key={rq.id}/> )}
+          </ul>
+          <Form horizontal onSubmit={this.postServer.bind(this)} >
             <FormGroup>
               <Col smOffset={2} sm={10}>
                 <Button  type="submit">
@@ -260,7 +256,8 @@ class NotificationForm extends Component{
                 </Button>
               </Col>
             </FormGroup>
-          </Form></div>);
+          </Form>
+      </div>);
   }
 }
 

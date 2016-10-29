@@ -49,6 +49,10 @@ const translator = (varToFilter) => {
 }
 
 class IndexContent extends Component{
+  constructor(props){
+    super(props);
+    this.coverImage = this.coverImage.bind(this);
+  }
   componentDidMount(){
     console.log("IndexContent Mounted!")
     this.props.fetchSoundTracks(SOUNDS_FILTER.ALL, SOUNDS_TYPE.SONG);
@@ -57,7 +61,10 @@ class IndexContent extends Component{
   closeModal() { this.setState({ showModal: false }); }
   openModal() { this.setState({ showModal: true }); }
 
-
+  coverImage(cell,row){
+    cell = cell != "" ? cell : 'http://orig02.deviantart.net/3d9c/f/2008/082/8/4/clave_de_sol_by_esepibe.png'; 
+    return (<img src={cell} alt={cell} className='coverImage'/>)
+  }
   render(){
     return(
       <div className="index-content">
@@ -89,6 +96,7 @@ class IndexContent extends Component{
               </DropdownButton>
               <BootstrapTable data={this.props.soundtracks.sounds } striped={true} hover={true}>
                  <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
+                 <TableHeaderColumn dataField="cover" dataFormat={this.coverImage} >Cover</TableHeaderColumn>
                  <TableHeaderColumn dataField="sound" dataAlign="center" dataSort={true}>Sonido</TableHeaderColumn>
                  <TableHeaderColumn dataField="type" dataSort={true}>Tipo</TableHeaderColumn>
                  <TableHeaderColumn dataField="artist">Artista</TableHeaderColumn>

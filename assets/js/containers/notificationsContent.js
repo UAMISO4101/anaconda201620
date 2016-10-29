@@ -8,6 +8,7 @@ import {
   hideSAModal,
   publishNotification,
   setActualUserType,
+  setUserId,
   setUsertype,
   showNotifictionModal,
   showSAModal,
@@ -15,11 +16,13 @@ import {
 
 import { connect } from 'react-redux';
 
-const mapStateToProps = (state,  { params: { tipo }}) => ({
+const mapStateToProps = (state,  { params: { id }}) => ({
   notifications: state.notifications,
   tipo : state.tipo,
   saModal: state.saModal,
-  userType: 'comercial_agent'
+  userId: id || "",
+  userType: 'comercial_agent',
+
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -29,6 +32,7 @@ const mapDispatchToProps = dispatch => ({
   hideSAModal: () => dispatch(hideSAModal()),
   publishNotification: (id) => {dispatch(publishNotification)},
   setActualUserType: (userType) => {dispatch(setActualUserType(userType))},
+  setUserId: (id) => {dispatch(setUserId(id))},
   setUsertype: (modalProps) => {dispatch(setUsertype(userType))},
   showNotifictionModal: (modalProps) => {dispatch(showNotifictionModal(modalProps))}
 })
