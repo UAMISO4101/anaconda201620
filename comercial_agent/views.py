@@ -53,7 +53,7 @@ def notification_json(request):
             dict_notification = notification.as_dict();
             dict_pieces = []
             for piece in pieces:
-                dict_pieces.append({'name': piece.name, 'features': piece.features})
+                dict_pieces.append({'id': piece.id, 'name': piece.name, 'features': piece.features})
 
             dict_notification['request'] = dict_pieces
             dict_notifications.append(dict_notification)
@@ -95,7 +95,7 @@ def get_open_notifications(request):
         dict_notification = notification.as_dict();
         dict_piece = []
         for piece in pieces_model:
-            dict_piece.append({'id_feature': piece.id, 'name': piece.name, 'features': piece.features})
+            dict_piece.append({'id': piece.id, 'name': piece.name, 'features': piece.features})
 
         dict_notification['request'] = dict_piece
         notifications_array.append(dict_notification)
@@ -249,7 +249,6 @@ def postulate_artwork(request):
         postulation_json = json.loads(request.body.decode("utf-8"))
 
         user_id = postulation_json['proposal']['id_user']
-        import pdb;pdb.set_trace()
         notification_id = postulation_json['proposal']['id_notification']
 
         artist_info = Artist.objects.get(user_id=user_id)
