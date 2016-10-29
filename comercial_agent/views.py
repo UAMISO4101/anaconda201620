@@ -230,3 +230,19 @@ def edit_notification_state(request,notification_id):
         return HttpResponse(status=status.HTTP_201_CREATED)
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+def get_artworks_by_artist(request,user_id):
+    if request.method == 'GET':
+        artworks_array = []
+        artist_id = Artist.objects.get(user_id=user_id).pk
+        artwork_collection_id = ArtworkCollection.objects.get(artist_id=artist_id).pk
+        artworks = Artwork.objects.filter(collection_id=artwork_collection_id).order_by('created_at').values_list('id',flat=True)
+        for artwork in artworks:
+            artwork_item = Artwork.objects.filter(id=artwork)
+            artwork_json ={"value": artwork, "label": artwork_item.artwork_type+' - '+artwork_item.name}
+            artworks_array.append(artwork_json)
+
+        return JsonResponse(dict(artworks=artworks_array))
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
