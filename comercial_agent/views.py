@@ -240,10 +240,30 @@ def get_artworks_by_artist(request,user_id):
         artworks = Artwork.objects.filter(collection_id=artwork_collection_id).order_by('created_at').values_list('id',flat=True)
         for artwork in artworks:
             artwork_item = Artwork.objects.get(id=artwork)
-            print(artwork_item)
             artwork_json ={"value": artwork, "label": artwork_item.artwork_type+' - '+artwork_item.name}
             artworks_array.append(artwork_json)
 
         return JsonResponse(dict(artworks=artworks_array))
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+def postulate_artwork(request,user_id,notification_id):
+    if request.method == 'PUT':
+        postulation_json = json.loads(request.body.decode("utf-8"))
+        print(postulation_json)
+        artist_info = Artist.objects.get(user_id=user_id)
+        notification_info = Notification.objects.get(notification_id = notification_id)
+        postulation_info = Postulation(artist=artist_info,notification=notification_info)
+        postulation_info.save()
+
+        for artwork in postulation_json['proposal']['pairs']:
+            id_feature = artwork['id_feature']
+            id_artwork =artwork['id_artwork']
+            feature_info=RequestedPiece.objects.get(id=id_feature)
+            artwork_info=Artwork.objects.get(id=id_artwork)
+            postulated_artwork= PostulatedArtwork(requestedPiece=feature_info,artwork=artwork_info,postulation=postulation_info)
+            postulated_artwork.save()
+
+        return HttpResponse(status=status.HTTP_201_CREATED)
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)

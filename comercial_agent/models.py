@@ -212,6 +212,7 @@ class Tag(models.Model):
 class PostulatedArtwork(models.Model):
     artwork = models.ForeignKey(Artwork, null=False)
     requestedPiece = models.ForeignKey(RequestedPiece, null=False)
+    postulation = models.ForeignKey(Postulation, null=False)
 
 
 class SoundType(models.Model):
