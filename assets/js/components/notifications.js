@@ -37,7 +37,7 @@ class Notifications extends Component {
   tableComponent(userType){
     switch (userType){
       case "artist":
-        return( <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Participar</TableHeaderColumn>)
+        return( <TableHeaderColumn dataField="request" dataFormat={this.formatRequestsUser.bind(this)} dataSort={false}>Participar</TableHeaderColumn>)
       case "comercial_agent":
         return([
           <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>,
@@ -56,9 +56,14 @@ class Notifications extends Component {
   }
 
   formatRequests(cell, row){
-    return (<button onClick={()=>{
+    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
       this.openModal(cell,row)
-    }}  type="submit">Ver</button>);
+    }}  type="submit">Ver Detalles</button>);
+  }
+  formatRequestsUser(cell, row){
+    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
+      this.openModal(cell,row)
+    }}  type="submit">Participar Ahora</button>);
   }
 
   formatEdit(cell, row){
@@ -108,7 +113,7 @@ class Notifications extends Component {
   }
   render(){
       return(
-        <div>
+        <div className="contact-section">
           <SweetAlert
             show={this.state.show}
             type={this.state.type}
@@ -124,7 +129,7 @@ class Notifications extends Component {
               </center>
             </div>
           </center>
-          <div className="row" >
+          <div className="row">
             <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
               <BootstrapTable data={ this.props.notifications.notifications } striped={true} hover={true} remote={true}>
                 <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>

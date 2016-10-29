@@ -669,10 +669,12 @@ h2 {
 .contact-section {
   background-color: #f7ab24;
   background-image: url("../images/contact-bg.jpg");
-  background-position:60% 0;
   background-size:contain;
-  background-repeat:no-repeat;  
+  background-repeat:no-repeat;
+  background-position: center bottom;
   position: relative;
+  overflow: hidden;
+  padding: 130px 0 100px;
 }
 
 .ear-piece {
@@ -735,6 +737,19 @@ h2 {
   padding: 6px 42px;
   margin-bottom: 110px;
   margin-top: 10px
+}
+ .btn-primary-participate {
+  background-color: #373737;
+  color: #f7ab24;
+  border: none;
+  font-size: 24px;
+  padding: 6px 42px;
+  margin-bottom: 110px;
+  margin-top: 10px
+}
+ .btn-primary-participate:hover {
+  background-color: #212020;
+  color: #fff
 }
 
 #contact-section .btn-primary:hover {
