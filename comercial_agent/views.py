@@ -239,7 +239,8 @@ def get_artworks_by_artist(request,user_id):
         artwork_collection_id = ArtworkCollection.objects.get(artist_id=artist_id).pk
         artworks = Artwork.objects.filter(collection_id=artwork_collection_id).order_by('created_at').values_list('id',flat=True)
         for artwork in artworks:
-            artwork_item = Artwork.objects.filter(id=artwork)
+            artwork_item = Artwork.objects.get(id=artwork)
+            print(artwork_item)
             artwork_json ={"value": artwork, "label": artwork_item.artwork_type+' - '+artwork_item.name}
             artworks_array.append(artwork_json)
 
