@@ -39,7 +39,7 @@ export const notifications = (state=notificationsDefault,  action) => {
       break;
     case 'GET_ACTUAL_NOTIFICATION':
       let actualNotification = action.data.notifications.filter(notification => notification.id === parseInt(action.data.notificationId, 10))[0];
-      //#ToDo remove when service gets id
+      // #ToDo remove when service gets id
       actualNotification.request.map((request) => {
         request["id"] = Math.floor((Math.random() * 1000) + 1); ;
       });
