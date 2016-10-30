@@ -1,6 +1,3 @@
-/**
- * Created by danielordonez on 10/29/16.
- */
 import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import shuffle from 'shuffle-array';
