@@ -17,7 +17,6 @@ import { connect } from 'react-redux';
 import RequestContent from '../containers/requestContent';
 import { addRequest } from '../actions';
 
-
 const mapStateToProps = (state, router) => ({
     request: state.request
 })
