@@ -67,7 +67,7 @@ class IndexContent extends Component{
   }
   render(){
     return(
-      <div className="index-content">
+      <div id = "twitter" className="index-content">
 
           <SweetAlert
               show={this.props.saModal.show}
@@ -77,9 +77,11 @@ class IndexContent extends Component{
               onConfirm={() => this.props.hideSAModal()}
           />
           <div className="row">
-            <div className="col-sm-push-3 col-sm-8 col-xs-12 " >
-                <h1>Nuestros Sonidos de Moda</h1>
-                <br/>  <br/>  <br/>
+            <div className="border col-sm-12" >
+                <center>
+                <h3>Nuestros Sonidos de Moda</h3>
+                    </center>
+                <br></br>
             </div>
           </div>
           <div className="row" >

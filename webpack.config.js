@@ -13,7 +13,7 @@ var config = module.exports = {
     entry: {
 		"main": [
 			'./assets/css/main.scss',
-			'./assets/js/index.js',
+			'./assets/js/index.js'
 		],
 	},
 
@@ -21,7 +21,7 @@ var config = module.exports = {
         //where you want your compiled bundle to be stored
         path: path.resolve('./assets/bundles/'),
         //naming convention webpack should use for your files
-        filename: '[name]-[hash].js',
+        filename: 'bundle.js',
     },
 
     plugins: [
@@ -61,16 +61,41 @@ var config = module.exports = {
 				loader: ExtractTextPlugin.extract("style", "css")
 			},
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
+        test: /\.(gif)$/i,
         loaders: [
             'file?hash=sha512&digest=hex&name=[hash].[ext]',
             'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
         ]
       },
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/,
+                query: {
+                    presets: ['es2015', 'react']
+
+                }
+            },
 			{
-				test: /\.(png|svg|woff|woff2|ttf|eot)$/,
+				test: /\.(woff2|png|svg|jpg)$/,
 				loader: "url-loader"
-			}
+			},
+            {
+                test   : /\.woff/,
+                loader : 'url?prefix=font/&limit=10000&mimetype=application/font-woff'
+            }, {
+                test   : /\.ttf/,
+                loader : 'file?prefix=font/'
+            }, {
+                test   : /\.eot/,
+                loader : 'file?prefix=font/'
+            }, {
+                test   : /\.svg/,
+                loader : 'file?prefix=font/'
+            },{
+              test: /\.json$/,
+              loader: "json-loader"
+            }
         ]
     },
 
@@ -78,7 +103,7 @@ var config = module.exports = {
         //tells webpack where to look for modules
         modulesDirectories: ['node_modules'],
         //extensions that should be used to resolve modules
-        extensions: ['', '.js', '.jsx','scss']
+        extensions: ['', '.js', '.jsx','.scss','.css','.ttf','.svg','eot','.jpg','.png']
     }
 }
 
