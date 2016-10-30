@@ -32,7 +32,10 @@ function run () {
         <Route path="dashboard">
           <Route path="agente-comercial" >
             <IndexRoute component={NotificationFormContent} />
-            <Route path='convocatoria/:notificationId' component={NotificationFormEdit} />
+            <Route path="convocatoria/:notificationId" >
+              <IndexRoute component={NotificationFormEdit} />
+              <Route path='votacion' component={NotificationFormEdit} />
+            </Route>
             <Route path="convocatorias" component={NotificationContent} />
           </Route>
           <Route path="artista/:id" >
