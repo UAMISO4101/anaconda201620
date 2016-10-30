@@ -64,6 +64,27 @@ export const notificationModal = (state={ showModal: false, modalRequest: [] }, 
   }
 }
 
+const proposalDefault = {
+  id: "proposalId",
+  artist:{
+    id: "artistId",
+    name: "name",
+  },
+  artworks:[
+    {
+      name: "name",
+      audio: "audio.mp3",
+      votes: "123"
+    }
+  ]
+}
+export const proposals = (state=[proposalDefault], action) => {
+  switch (action.type) {
+    default:
+      return state ;
+  }
+}
+
 const modalDefault = {show: false,type: "error", title: "",text: ""};
 export const saModal = (state=modalDefault, action) => {
   let modalAlert = {};
