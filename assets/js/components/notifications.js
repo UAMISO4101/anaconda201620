@@ -31,7 +31,7 @@ class Notifications extends Component {
   }
   componentDidMount(){
     this.props.fetchNotifications();
-    console.log("fetched Notifications");
+    this.props.setUserId(this.props.userId);
   }
 
   tableComponent(userType){

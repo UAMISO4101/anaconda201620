@@ -16,10 +16,34 @@ export const showNotifictionModal = (modalProps) => ({ type: 'SHOW_NOTIFICATION_
 export const hideNotifictionModal = () => ({ type: 'HIDE_NOTIFICATION_MODAL' });
 
 export const setActualUserType = (userType) => ({ type: 'SET_USER_TYPE', data: userType });
+export const setUserId = (id) => ({ type: 'SET_USER_ID', data: id});
 export const getActualNotification = (notifications,notificationId) => ({ type: 'GET_ACTUAL_NOTIFICATION', data: {notifications, notificationId} });
 
-export const getArtistArtworks = id => ({type: 'GET_ARTIST_ARTWORKS', data: id})
+export const getArtistArtworks = artworks => ({type: 'GET_ARTIST_ARTWORKS', data: artworks});
 
+export const getSoundTracksByArtist = id => ({type: 'GET_SOUNDTRACK_BY_ARTIST'})
+
+export const fetchArtistArtworks = (id) => {
+  return dispatch => {
+      jQuery.ajax({
+        method: "GET",
+        url: `${SERVER_URL}/comercial_agent/artists/${id}/artworks/`,
+        statusCode: {
+        200: (data) => {
+          dispatch(getArtistArtworks(data.artworks))
+        },
+        404: (err) => {
+          dispatch(showSAModal({
+            show: true,
+            type: "error",
+            title: "Error",
+            text: `status: ${err.status} \nstatusText: ${err.statusText}`
+          }))
+        }
+      }
+    });
+  }
+}
 export const fetchSoundTracks = (filter, type) => {
   return dispatch => {
     jQuery.ajax({
@@ -46,6 +70,29 @@ export const fetchNotifications = () => {
     jQuery.ajax({
         method: "GET",
         url: `${SERVER_URL}/comercial_agent/notifications/`,
+        statusCode: {
+        200: (data) => {
+          localStorage.setItem("NOTIFICATIONS", JSON.stringify(data));
+          dispatch(getNotifications(data))
+        },
+        404: (err) => {
+          dispatch(showSAModal({
+            show: true,
+            type: "error",
+            title: "Error",
+            text: `status: ${err.status} \nstatusText: ${err.statusText}`
+          }))
+        }
+      }
+    });
+  }
+};
+
+export const fetchOpenNotifications = () => {
+  return dispatch => {
+    jQuery.ajax({
+        method: "GET",
+        url: `${SERVER_URL}/comercial_agent/notifications/open-notifications/`,
         statusCode: {
         200: (data) => {
           localStorage.setItem("NOTIFICATIONS", JSON.stringify(data));

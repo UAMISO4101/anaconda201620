@@ -2,18 +2,15 @@ import json
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import generics
 from django.shortcuts import render
 from django.http import JsonResponse
-from datetime import datetime, timedelta
 
 
 # Create your views here.
 from rest_framework import status
 from .models import *
 
-from comercial_agent.models import Artwork, Notification, Sound, Song
-
+from comercial_agent.models import Notification, Sound, Song
 
 
 
@@ -21,12 +18,11 @@ def index(request):
     return render(request, 'comercial_agent/index.html')
 
 
-
 @csrf_exempt
 def edit_notification(request,notification_id):
     if request.method == 'PUT':
         notification_json = json.loads(request.body.decode("utf-8"))
-        notification_model = Notification.objects.filter(pk=notification_id).update(
+        Notification.objects.filter(pk=notification_id).update(
                               name=notification_json['name'],
                               initial_date=notification_json['initialDate'],
                               closing_date=notification_json['closingDate'],
@@ -34,7 +30,6 @@ def edit_notification(request,notification_id):
                               notification_type=notification_json['notificationType']
                             )
 
-        # import pdb; pdb.set_trace()
         RequestedPiece.objects.filter(notification_id=notification_id).delete()
         for piece in notification_json['request']:
             piece_model = RequestedPiece(name=piece['name'],
@@ -58,7 +53,7 @@ def notification_json(request):
             dict_notification = notification.as_dict();
             dict_pieces = []
             for piece in pieces:
-                dict_pieces.append({'name': piece.name, 'features': piece.features})
+                dict_pieces.append({'id': piece.id, 'name': piece.name, 'features': piece.features})
 
             dict_notification['request'] = dict_pieces
             dict_notifications.append(dict_notification)
@@ -100,7 +95,7 @@ def get_open_notifications(request):
         dict_notification = notification.as_dict();
         dict_piece = []
         for piece in pieces_model:
-            dict_piece.append({'name': piece.name, 'features': piece.features})
+            dict_piece.append({'id': piece.id, 'name': piece.name, 'features': piece.features})
 
         dict_notification['request'] = dict_piece
         notifications_array.append(dict_notification)
@@ -226,6 +221,51 @@ def edit_notification_state(request,notification_id):
         Notification.objects.filter(pk=notification_id).update(
             notification_state=notification_json['notificationState']
         )
+
+        return HttpResponse(status=status.HTTP_201_CREATED)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+def get_artworks_by_artist(request,user_id):
+    if request.method == 'GET':
+        artworks_array = []
+        artist_id = Artist.objects.get(user_id=user_id).pk
+        artwork_collection_id = ArtworkCollection.objects.get(artist_id=artist_id).pk
+        artworks = Artwork.objects.filter(collection_id=artwork_collection_id).order_by('created_at').values_list('id',flat=True)
+        for artwork in artworks:
+            artwork_item = Artwork.objects.get(id=artwork)
+            artwork_json ={"value": artwork, "label": artwork_item.artwork_type+' - '+artwork_item.name}
+            artworks_array.append(artwork_json)
+
+        return JsonResponse(dict(artworks=artworks_array))
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+def postulate_artwork(request):
+    if request.method == 'POST':
+        postulation_json = json.loads(request.body.decode("utf-8"))
+
+        user_id = postulation_json['proposal']['id_user']
+        notification_id = postulation_json['proposal']['id_notification']
+
+        artist_info = Artist.objects.get(user_id=user_id)
+        notification_info = Notification.objects.get(id=notification_id)
+
+        postulation_info = Postulation(artist=artist_info, notification=notification_info)
+        postulation_info.save()
+
+        for artwork in postulation_json['proposal']['pairs']:
+            id_feature = artwork['id_feature']
+            id_artwork = artwork['id_artwork']
+
+            feature_info=RequestedPiece.objects.get(id=id_feature)
+            artwork_info=Artwork.objects.get(id=id_artwork)
+
+            postulated_artwork= PostulatedArtwork(requestedPiece=feature_info,artwork=artwork_info,postulation=postulation_info)
+            postulated_artwork.save()
 
         return HttpResponse(status=status.HTTP_201_CREATED)
     else:
