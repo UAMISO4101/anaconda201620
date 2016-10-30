@@ -9,6 +9,14 @@ export const artworks = (state=[artworkBlank],  action) => {
   }
 }
 
+import {audiosDefault} from "./testData/audios";
+export const audios = (state=audiosDefault,action) => {
+  switch (action.type) {
+    default:
+      return state ;
+  }
+}
+
 const requestBlank = {id: 1, name: "", features: ""};
 const notificationBlank  = { name: "", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "", publishingState: false, request: [requestBlank] };
 export const notification = (state=notificationBlank,  action) => {
