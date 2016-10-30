@@ -4,18 +4,17 @@
 }
 
 .player-container {
-    width: 435px;
-    margin: 0 auto;
     overflow: hidden;
 
-    background-color: #EAEDEF;
+    background-color: rgba(256,256,256,0);
+  background-image: url("../images/twitter-bg.jpg");
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0,0,0,.2);
 }
 
 .player-cover {
     height: 160px;
-
+    width: 435px;
     background-position: top center;
     background-size: cover;
     transition: height .4s;

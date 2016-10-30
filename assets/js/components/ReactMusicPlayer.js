@@ -125,12 +125,14 @@ class ReactMusicPlayer extends Component {
             <div className="player-container">
                 <audio src={active.url} autoPlay={this.state.play} preload="auto" ref="player"></audio>
 
+                <center>
                 <div className={coverClass} style={{backgroundImage: 'url('+ active.cover +')'}}></div>
 
                 <div className="artist-info">
                     <h2 className="artist-name">{active.artist.name}</h2>
                     <h3 className="artist-song-name">{active.artist.song}</h3>
                 </div>
+                </center>
 
                 <div className="player-progress-container" onClick={this.setProgress.bind(this)}>
                     <span className="player-progress-value" style={{width: progress + '%'}}></span>

@@ -7,11 +7,11 @@ import ReactMusicPlayer from './ReactMusicPlayer';
 const App = ({children}) => {
     let songs = [
     {
-        url: 'http://tegos.kz/new/mp3_full/Redfoo_-_New_Thang.mp3',
-        cover: 'http://www.nossoarmario.com/blog/wp-content/uploads/2015/01/redfoo.jpg',
+        url: 'http://a.tumblr.com/tumblr_mlyactVSyX1qejx3lo1.mp3',
+        cover: 'http://www.tenhomaisdiscosqueamigos.com/wp-content/uploads/2015/06/daft-punk.jpg',
         artist: {
-            name: 'Redfoo',
-            song: 'New Thang'
+            name: 'Daft Punk',
+            song: 'Get Lucky'
         }
     },
     {
@@ -28,14 +28,6 @@ const App = ({children}) => {
         artist: {
             name: 'Justin Timberlake',
             song: 'Summer Love'
-        }
-    },
-    {
-        url: 'http://a.tumblr.com/tumblr_mlyactVSyX1qejx3lo1.mp3',
-        cover: 'http://www.tenhomaisdiscosqueamigos.com/wp-content/uploads/2015/06/daft-punk.jpg',
-        artist: {
-            name: 'Daft Punk',
-            song: 'Get Lucky'
         }
     },
     {
@@ -69,7 +61,11 @@ const App = ({children}) => {
             <div className="navbarMarginTopForContainer">
                 {children}
             </div>
+            <div className="twitter">
+
             <ReactMusicPlayer songs={songs} autoplay />
+            </div>
+
         </div>
     )
 }
