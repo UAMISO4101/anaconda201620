@@ -174,7 +174,7 @@ class Artwork(models.Model):
     SOUND = 'SND'
     ARTWORK_TYPE = (
         (ALBUM, 'Album'),
-        (SONG, 'Canción'),
+        (SONG, 'Cancion'),
         (SOUND, 'Sonido')
     )
 
@@ -235,6 +235,9 @@ class Genre(models.Model):
         return ''.join([
             self.name,
         ])
+
+    def upperName(self):
+        return self.name.upper()
 
 
 class Sound(Artwork):

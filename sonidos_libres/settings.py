@@ -93,9 +93,23 @@ if os.environ.get('DJANGO_ENV') == 'production':
     #Heroku Database
     DEBUG = True
     DATABASES = {'default': dj_database_url.config(default= os.environ.get('DATABASE_URL'))}
+elif os.environ.get('DJANGO_ENV') == 'testing':
+    #Autotesting Database
+    DEBUG = True
+    DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': 'test',
+                'HOST': '127.0.0.1',
+                'PORT': '5432',
+                'USER': os.environ.get('PGUSER'),
+                'PASSWORD': os.environ.get('PGPASSWORD'),
+            }
+        }
 else:
 
     #Local Database
+    #Production Database
     DEBUG = True
     DATABASES = {
             'default': {
