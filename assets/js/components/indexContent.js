@@ -5,9 +5,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import SweetAlert from 'sweetalert-react';
 import StarRatingComponent from 'react-star-rating-component';
 import FaApple from 'react-icons/lib/fa/apple';
-
-
-import { SERVER_URL, SOUNDS_FILTER, SOUNDS_TYPE} from '../utils/constants';
+import { DEFAULT_IMAGE, SERVER_URL, SOUNDS_FILTER, SOUNDS_TYPE} from '../utils/constants';
 
 const startsFormatter = (cell, row) => {
   return (<StarRatingComponent
@@ -62,8 +60,7 @@ class IndexContent extends Component{
   openModal() { this.setState({ showModal: true }); }
 
   coverImage(cell,row){
-    cell = cell != "" ? cell : 'http://orig02.deviantart.net/3d9c/f/2008/082/8/4/clave_de_sol_by_esepibe.png';
-    return (<img src={cell} alt={cell} className='coverImage'/>)
+    return (<img src={cell || DEFAULT_IMAGE} alt={cell} className='coverImage'/>)
   }
   render(){
     return(

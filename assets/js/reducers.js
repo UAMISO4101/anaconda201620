@@ -1,3 +1,4 @@
+import {DEFAULT_IMAGE} from "./utils/constants.js";
 const artworkBlank = 	{value: 1, label: "Default Artwork"};
 export const artworks = (state=[artworkBlank],  action) => {
   switch (action.type) {
@@ -78,13 +79,7 @@ const proposalDefault = {
     id: "artistId",
     name: "name",
   },
-  artworks:[
-    {
-      name: "name",
-      audio: "audio.mp3",
-      votes: "123"
-    }
-  ]
+  audios: audiosDefault
 }
 export const proposals = (state=[proposalDefault], action) => {
   switch (action.type) {
@@ -122,7 +117,7 @@ const soundtrackDefault = {"sounds":
       "artist": "Iron Maiden",
       "sound": "Aces High",
       "id": 2,
-      "cover": "covers/Aces_High_Iron_Maiden_single_-_cover_art.jpg"
+      "cover": DEFAULT_IMAGE
     }
   ]
 };

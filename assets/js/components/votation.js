@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { ListGroupItem } from 'react-bootstrap'
 import FaUserSecret from 'react-icons/lib/fa/user-secret'
+import {DEFAULT_IMAGE} from "../utils/constants.js";
 
 class Votations extends Component {
   constructor(props){
