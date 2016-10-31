@@ -174,7 +174,7 @@ class Artwork(models.Model):
     SOUND = 'SND'
     ARTWORK_TYPE = (
         (ALBUM, 'Album'),
-        (SONG, 'Canción'),
+        (SONG, 'Cancion'),
         (SOUND, 'Sonido')
     )
 
