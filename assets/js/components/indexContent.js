@@ -79,7 +79,7 @@ class IndexContent extends Component{
           <div className="row">
             <div className="border col-sm-12" >
                 <center>
-                <h3>Nuestros Sonidos de Moda</h3>
+                <h3>Nuestros Sonidos de Buena Onda</h3>
                     </center>
                 <br></br>
             </div>

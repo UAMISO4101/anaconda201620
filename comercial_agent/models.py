@@ -236,6 +236,9 @@ class Genre(models.Model):
             self.name,
         ])
 
+    def upperName(self):
+        return self.name.upper()
+
 
 class Sound(Artwork):
     type = models.ForeignKey(SoundType, null=False)
