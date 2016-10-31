@@ -13,7 +13,7 @@ class GenreTestCase(TestCase):
 
     def test_upper_name(self):
 
-        genre1 = Genre.objects.get(id=1)
-        genre2 = Genre.objects.get(id=2)
+        genre1 = Genre.objects.get(id=2)
+        genre2 = Genre.objects.get(id=3)
         self.assertEqual(genre1.upperName(), 'ALTERNATIVE ROCK')
         self.assertEqual(genre2.upperName(), 'PUNK')
