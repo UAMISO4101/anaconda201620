@@ -1,4 +1,5 @@
 import json
+import os
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -148,7 +149,7 @@ def get_artworks(request,artwork_type,artwork_filter):
                 song_rating = song.averageRating
                 song_likes = song.likesCount
                 song_length = song.length
-                song_cover = str(song.cover)
+                song_cover = os.environ.get('MEDIA_URL') + str(song.cover)
 
                 song_record = {"id": song_id, "sound": song_name, "type": song_type, "artist": song_artist,
                                "rating": song_rating, "likes": song_likes, "length": song_length, "cover": song_cover}
@@ -164,7 +165,7 @@ def get_artworks(request,artwork_type,artwork_filter):
                 sound_rating = sound.averageRating
                 sound_likes = sound.likesCount
                 sound_length = sound.length
-                sound_cover = str(sound.cover)
+                sound_cover = os.environ.get('MEDIA_URL') + str(sound.cover)
 
                 sound_record = {"id":sound_id,"sound":sound_name,"type":sound_type,"artist":sound_artist,"rating":sound_rating,"likes":sound_likes,"length":sound_length,"cover":sound_cover}
 
@@ -179,7 +180,7 @@ def get_artworks(request,artwork_type,artwork_filter):
                 album_rating = album.averageRating
                 album_likes = album.likesCount
                 album_length = album.length
-                album_cover = str(album.cover)
+                album_cover = os.environ.get('MEDIA_URL') + str(album.cover)
 
                 album_record = {"id": album_id, "sound": album_name, "type": album_type, "artist": album_artist,
                                "rating": album_rating, "likes": album_likes, "length": album_length, "cover": album_cover}
@@ -206,7 +207,7 @@ def to_songs_array(songs_model):
         song_rating = song.averageRating
         song_likes = song.likesCount
         song_length = song.length
-        song_cover = str(song.cover)
+        song_cover = os.environ.get('MEDIA_URL') + str(song.cover)
 
         song_record = {"id": song_id, "sound": song_name, "type": song_type, "artist": song_artist,
                        "rating": song_rating, "likes": song_likes, "length": song_length, "cover": song_cover}
