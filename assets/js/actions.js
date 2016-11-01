@@ -55,6 +55,8 @@ export const fetchSoundTracks = (filter, type) => {
         statusCode: {
         200: (data) => {
           dispatch(getSoundTracks(data))
+          dispatch(resetPlayerAudios())
+          dispatch(setPlayerAudios(data))
         },
         404: (err) => {
           dispatch(showSAModal({
@@ -127,6 +129,7 @@ export const fetchProposals = (id) => {
       }];
 
       dispatch(getProposals(proposals))
+      dispatch(resetPlayerAudios())
       dispatch(setPlayerAudios(proposals))
       // jQuery.ajax({
       //   method: "GET",
@@ -145,4 +148,5 @@ export const fetchProposals = (id) => {
   }
 }
 
+export const resetPlayerAudios = () => ({type: 'RESET_AUDIOS'})
 export const setPlayerAudios = proposals => ({type: 'SET_AUDIOS',data: proposals})

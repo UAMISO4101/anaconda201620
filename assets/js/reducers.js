@@ -11,8 +11,12 @@ export const artworks = (state=[artworkBlank],  action) => {
 }
 
 import {audiosDefault} from "./testData/audios";
-export const audios = (state={audios:audiosDefault, setted: false},action) => {
+export const audios = (state={audios:audiosDefault, setted: true},action) => {
   switch (action.type) {
+    case 'RESET_AUDIOS':
+      return Object.assign({}, state, {
+        setted: false
+      });
     case 'SET_AUDIOS':
       let audios = [];
       let proposals = action.data;
