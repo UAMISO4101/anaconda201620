@@ -118,33 +118,33 @@ export const fetchOpenNotifications = () => {
 import {audiosDefault} from "./testData/audios";
 export const fetchProposals = (id) => {
   return dispatch => {
-      let proposals = [{
-        id: "proposalId",
-        artist: "name",
-        audios: [audiosDefault[1],audiosDefault[2]]
-      },{
-        id: "proposalId2",
-        artist: "name2",
-        audios: [audiosDefault[0]]
-      }];
+      // let proposals = [{
+      //   id: "proposalId",
+      //   artist: "name",
+      //   audios: [audiosDefault[1],audiosDefault[2]]
+      // },{
+      //   id: "proposalId2",
+      //   artist: "name2",
+      //   audios: [audiosDefault[0]]
+      // }];
 
-      dispatch(getProposals(proposals))
-      dispatch(resetPlayerAudios())
-      dispatch(setPlayerAudios(proposals))
-      // jQuery.ajax({
-      //   method: "GET",
-      //   url: `${SERVER_URL}/comercial_agent/artists/${id}/artworks/`,
-      // .done(( data ) => {
-      //   dispatch(getProposals(data.proposals))
-      // })
-      // .fail((err) => {
-      //     dispatch(showSAModal({
-      //       show: true,
-      //       type: "error",
-      //       title: "Error",
-      //       text: `status: ${err.status} \nstatusText: ${err.statusText}`
-      //     }))
-      //  });
+      jQuery.ajax({
+        method: "GET",
+        url: `${SERVER_URL}/comercial_agent/notifications/${id}/publish/`,
+      .done(( data ) => {
+        debugger
+        dispatch(getProposals(proposals))
+        dispatch(resetPlayerAudios())
+        dispatch(setPlayerAudios(proposals))
+      })
+      .fail((err) => {
+          dispatch(showSAModal({
+            show: true,
+            type: "error",
+            title: "Error",
+            text: `status: ${err.status} \nstatusText: ${err.statusText}`
+          }))
+       });
   }
 }
 
