@@ -130,7 +130,8 @@ export const fetchProposals = (id) => {
 
       jQuery.ajax({
         method: "GET",
-        url: `${SERVER_URL}/comercial_agent/notifications/${id}/publish/`,
+        url: `${SERVER_URL}/comercial_agent/notifications/${id}/publish/`
+      })
       .done(( data ) => {
         debugger
         dispatch(getProposals(proposals))
