@@ -4,16 +4,16 @@ from django.test import TestCase
 
 # Create your tests here.
 from comercial_agent.models import Genre, Artist, ArtworkCollection, Album, Song, Notification, RequestedPiece, \
-    PostulatedArtwork
+    PostulatedArtwork, Postulation
 
 
-class Postulation(TestCase):
+class PostulationTest(TestCase):
 
     def setUp(self):
 
         user = django.contrib.auth.models.User.objects.create_user(username='usuario_test',
                                                                    password='test1234')
-        artist = Artist(
+        artist1 = Artist(
             user=user,
             profile_picture='',
             artistic_name='Test Artist',
@@ -23,10 +23,10 @@ class Postulation(TestCase):
             country='UK',
             telephone=784555,
         )
-        artist.save()
+        artist1.save()
 
         collection = ArtworkCollection(
-            artist=artist,
+            artist=artist1,
         )
         collection.save()
 
@@ -81,15 +81,23 @@ class Postulation(TestCase):
         )
         requested_piece.save()
 
-        postulation = Postulation(artist=artist, notification=notification,)
+        postulation = Postulation(
+            notification=notification,
+            artist=artist1,
+        )
         postulation.save()
 
-        postulated_artwork = PostulatedArtwork(artwork=song, requested_piece= requested_piece,postulation=postulation)
+        postulated_artwork = PostulatedArtwork(
+            artwork=song,
+            requestedPiece= requested_piece,
+            postulation=postulation,
+        )
         postulated_artwork.save()
 
     def test_postulation(self):
 
         c=Client()
-        response = c.get('notifications/?notification_id=1/postulations/')
-        print(response.json())
+        response = c.get('/comercial_agent/notifications/1/postulations/')
+        print(response)
 
+        self.assertEqual(len(response["proposals"]),1)
