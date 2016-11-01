@@ -11,7 +11,7 @@ export const artworks = (state=[artworkBlank],  action) => {
 }
 
 import {audiosDefault} from "./testData/audios";
-export const audios = (state=audiosDefault,action) => {
+export const audios = (state={audios:audiosDefault, setted: false},action) => {
   switch (action.type) {
     case 'SET_AUDIOS':
       let audios = [];
@@ -21,9 +21,11 @@ export const audios = (state=audiosDefault,action) => {
           audios.push(audio);
         });
       }
-      return audios || state;
+      return {audios: audios, setted: true} || state;
     default:
-      return state ;
+      return Object.assign({}, state, {
+        setted: false
+      });
   }
 }
 
@@ -84,11 +86,8 @@ export const notificationModal = (state={ showModal: false, modalRequest: [] }, 
 
 const proposalDefault = {
   id: "proposalId",
-  artist:{
-    id: "artistId",
-    name: "name",
-  },
-  audios: audiosDefault
+  artist: "artistId",
+  audios: [audiosDefault]
 }
 export const proposals = (state=[proposalDefault], action) => {
   switch (action.type) {

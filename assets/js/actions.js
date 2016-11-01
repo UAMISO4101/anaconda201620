@@ -118,17 +118,11 @@ export const fetchProposals = (id) => {
   return dispatch => {
       let proposals = [{
         id: "proposalId",
-        artist:{
-          id: "artistId",
-          name: "name",
-        },
+        artist: "name",
         audios: [audiosDefault[1],audiosDefault[2]]
       },{
         id: "proposalId2",
-        artist:{
-          id: "artistId",
-          name: "name",
-        },
+        artist: "name2",
         audios: [audiosDefault[0]]
       }];
 
