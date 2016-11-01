@@ -9,19 +9,22 @@ class Votations extends Component {
   constructor(props){
     super(props);
     this.state = {
-     active: 0
+        active: 0,
+        selectedAudio: null,
    };
   }
 
   render(){
-    let soundtrack = this.props.vt.soundtrack;
+    let artist = this.props.vt.artist;
     let artworks = this.props.vt.artworks;
     return (
       <div className="row">
         <hr/><hr/>
         <div className="col-sm-3" style={{textAlign: 'center'}}>
           <FaUserSecret size={60} color='#19708D' /><br/>
-          <h4>{soundtrack.name}</h4>
+          <h3>{artist}</h3>
+          <br/>
+          <h4 className="">{this.state.selectedAudio || 'Escoge una canción'}</h4>
         </div>
         <div className="col-sm-9">
           <div href="#" className="list-group-item list-group-item-action active">
@@ -35,8 +38,10 @@ class Votations extends Component {
                 active={this.state.active}
                 >
                 {this.props.vt.audios.map( audio => {
-                  return (<img src={audio.cover || DEFAULT_IMAGE} alt={audio.name} data-action={()=>{
-                    console.log(audio.song);
+                  return (<img src={audio.cover || DEFAULT_IMAGE} alt={artist} data-action={()=>{
+                    this.setState({
+                      selectedAudio: artist
+                    });
                   }} />)
                 })}
 
