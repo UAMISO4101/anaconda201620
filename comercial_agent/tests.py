@@ -98,6 +98,5 @@ class PostulationTest(TestCase):
 
         c=Client()
         response = c.get('/comercial_agent/notifications/1/postulations/')
-        print(response)
-
-        self.assertEqual(len(response["proposals"]),1)
+        print(response.json())
+        self.assertEqual(len(response.json()["proposals"]),1)

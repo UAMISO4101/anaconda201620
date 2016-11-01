@@ -274,5 +274,29 @@ def postulate_artwork(request):
 
 
 def get_postulations_by_notification(request,notification_id):
+    if request.method == 'GET':
+        postulation_array_json = []
+        postulation_array = Postulation.objects.filter(notification_id=notification_id).values_list('id',flat=True)
 
-    return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+        for postulation in postulation_array:
+            audio_array=[]
+            postulation_info = Postulation.objects.get(id=postulation)
+            #import pdb; pdb.set_trace()
+            artist_info = Artist.objects.get(id=postulation_info.artist.id)
+            artist_info_json = {"id":artist_info.id,"name":artist_info.artistic_name}
+
+            postulated_artwork_info = PostulatedArtwork.objects.filter(postulation_id= postulation)
+            for postulated_artwork in postulated_artwork_info:
+
+                artwork_info = Artwork.objects.get(id= postulated_artwork.artwork.id)
+                artist_info_artwork_json = {"name": artist_info.artistic_name, "song": artwork_info.name}
+                artwork_info_json = {"url": str(artwork_info.contentUrl), "cover": str(artwork_info.cover),"artist":artist_info_artwork_json}
+
+                audio_array.append(artwork_info_json)
+
+            postulation_info_json = {"id": postulation,"artist":artist_info_json,"audios":audio_array}
+            postulation_array_json.append(postulation_info_json)
+
+        return JsonResponse(dict(proposals=postulation_array_json))
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
