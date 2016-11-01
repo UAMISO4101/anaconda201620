@@ -1,3 +1,4 @@
+import {DEFAULT_IMAGE} from "./utils/constants.js";
 const artworkBlank = 	{value: 1, label: "Default Artwork"};
 export const artworks = (state=[artworkBlank],  action) => {
   switch (action.type) {
@@ -6,6 +7,25 @@ export const artworks = (state=[artworkBlank],  action) => {
       break;
     default:
       return state ;
+  }
+}
+
+import {audiosDefault} from "./testData/audios";
+export const audios = (state={audios:audiosDefault, setted: false},action) => {
+  switch (action.type) {
+    case 'SET_AUDIOS':
+      let audios = [];
+      let proposals = action.data;
+      for (let i=0, l=proposals.length; l>i; i+=1) {
+        proposals[i].audios.forEach(audio => {
+          audios.push(audio);
+        });
+      }
+      return {audios: audios, setted: true} || state;
+    default:
+      return Object.assign({}, state, {
+        setted: false
+      });
   }
 }
 
@@ -64,6 +84,20 @@ export const notificationModal = (state={ showModal: false, modalRequest: [] }, 
   }
 }
 
+const proposalDefault = {
+  id: "proposalId",
+  artist: "artistId",
+  audios: [audiosDefault]
+}
+export const proposals = (state=[proposalDefault], action) => {
+  switch (action.type) {
+    case 'GET_PROPOSALS':
+      return action.data || state;
+    default:
+      return state ;
+  }
+}
+
 const modalDefault = {show: false,type: "error", title: "",text: ""};
 export const saModal = (state=modalDefault, action) => {
   let modalAlert = {};
@@ -84,7 +118,7 @@ export const saModal = (state=modalDefault, action) => {
 };
 
 const soundtrackDefault = {"sounds":
-      [
+  [
     {
       "type": "Song",
       "rating": 4,
@@ -93,7 +127,7 @@ const soundtrackDefault = {"sounds":
       "artist": "Iron Maiden",
       "sound": "Aces High",
       "id": 2,
-      "cover": "covers/Aces_High_Iron_Maiden_single_-_cover_art.jpg"
+      "cover": DEFAULT_IMAGE
     }
   ]
 };
