@@ -151,10 +151,11 @@ def get_artworks(request,artwork_type,artwork_filter):
                 song_length = song.length
                 song_cover = os.environ.get('MEDIA_URL') + str(song.cover)
                 song_url = os.environ.get('MEDIA_URL') + str(song.contentUrl)
+                song_soundtrack = {"name":song_artist, "song":song_name}
 
                 song_record = {"id": song_id, "sound": song_name, "type": song_type, "artist": song_artist,
                                "rating": song_rating, "likes": song_likes, "length": song_length, "cover": song_cover,
-                               "url": song_url}
+                               "url": song_url, "soundtrack": song_soundtrack}
 
                 artworks_array.append(song_record)
 
@@ -169,9 +170,10 @@ def get_artworks(request,artwork_type,artwork_filter):
                 sound_length = sound.length
                 sound_cover = os.environ.get('MEDIA_URL') + str(sound.cover)
                 sound_url = os.environ.get('MEDIA_URL') + str(sound.contentUrl)
+                sound_soundtrack = {"name": sound_artist, "song": sound_name}
 
                 sound_record = {"id":sound_id,"sound":sound_name,"type":sound_type,"artist":sound_artist,"rating":sound_rating,
-                                "likes":sound_likes,"length":sound_length,"cover":sound_cover, "url": sound_url}
+                                "likes":sound_likes,"length":sound_length,"cover":sound_cover, "url": sound_url, "soundtrack": sound_soundtrack}
 
                 artworks_array.append(sound_record)
 
@@ -186,10 +188,11 @@ def get_artworks(request,artwork_type,artwork_filter):
                 album_length = album.length
                 album_cover = os.environ.get('MEDIA_URL') + str(album.cover)
                 album_url = os.environ.get('MEDIA_URL') + str(album.contentUrl)
+                album_soundtrack = {"name": album_artist, "song": album_name}
 
                 album_record = {"id": album_id, "sound": album_name, "type": album_type, "artist": album_artist,
                                "rating": album_rating, "likes": album_likes, "length": album_length, "cover": album_cover,
-                                "url": album_url}
+                                "url": album_url, "soundtrack": album_soundtrack}
 
                 artworks_array.append(album_record)
 
