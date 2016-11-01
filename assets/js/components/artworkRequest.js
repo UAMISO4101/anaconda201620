@@ -148,7 +148,7 @@ class ArtworkRequest extends Component {
                show: true,
                showModal: false,
                sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${ARTIST_DASHBOARD}/${this.props.userId}/convocatorias`; },
-               sweetAlertMessage: "Convocatoria creada exitosamente",
+               sweetAlertMessage: "Postulación enviada exitosamente",
                sweetAlertTitle: "Exito",
              });
            })
