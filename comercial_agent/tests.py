@@ -103,3 +103,7 @@ class PostulationTest(TestCase):
         self.assertEqual(len(response.json()["proposals"]), 1)
         self.assertGreaterEqual(len(response.json()["proposals"][0]["audios"][0]["url"]), 1)
 
+        c2 = Client()
+        response2 = c2.get('/comercial_agent/sounds/song/all/')
+        self.assertGreaterEqual(len(response2.json()["sounds"][0]["url"]), 1)
+
