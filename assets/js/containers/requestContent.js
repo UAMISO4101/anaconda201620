@@ -1,6 +1,3 @@
-/**
-* Created by danielordonez on 10/5/16.
-*/
 import Request from '../components/request'
 import { deleteRequest } from '../actions';
 

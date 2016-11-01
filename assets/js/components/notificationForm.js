@@ -67,7 +67,7 @@ class NotificationForm extends Component{
 
   calendarEvent(event, picker) {
         this.setState({
-          exploreinitialDate: picker.startDate,
+          initialDate: picker.startDate,
           closingDate: picker.endDate
         })
   }
