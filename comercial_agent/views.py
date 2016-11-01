@@ -150,9 +150,11 @@ def get_artworks(request,artwork_type,artwork_filter):
                 song_likes = song.likesCount
                 song_length = song.length
                 song_cover = os.environ.get('MEDIA_URL') + str(song.cover)
+                song_url = os.environ.get('MEDIA_URL') + str(song.contentUrl)
 
                 song_record = {"id": song_id, "sound": song_name, "type": song_type, "artist": song_artist,
-                               "rating": song_rating, "likes": song_likes, "length": song_length, "cover": song_cover}
+                               "rating": song_rating, "likes": song_likes, "length": song_length, "cover": song_cover,
+                               "url": song_url}
 
                 artworks_array.append(song_record)
 
@@ -166,8 +168,10 @@ def get_artworks(request,artwork_type,artwork_filter):
                 sound_likes = sound.likesCount
                 sound_length = sound.length
                 sound_cover = os.environ.get('MEDIA_URL') + str(sound.cover)
+                sound_url = os.environ.get('MEDIA_URL') + str(sound.contentUrl)
 
-                sound_record = {"id":sound_id,"sound":sound_name,"type":sound_type,"artist":sound_artist,"rating":sound_rating,"likes":sound_likes,"length":sound_length,"cover":sound_cover}
+                sound_record = {"id":sound_id,"sound":sound_name,"type":sound_type,"artist":sound_artist,"rating":sound_rating,
+                                "likes":sound_likes,"length":sound_length,"cover":sound_cover, "url": sound_url}
 
                 artworks_array.append(sound_record)
 
@@ -181,9 +185,11 @@ def get_artworks(request,artwork_type,artwork_filter):
                 album_likes = album.likesCount
                 album_length = album.length
                 album_cover = os.environ.get('MEDIA_URL') + str(album.cover)
+                album_url = os.environ.get('MEDIA_URL') + str(album.contentUrl)
 
                 album_record = {"id": album_id, "sound": album_name, "type": album_type, "artist": album_artist,
-                               "rating": album_rating, "likes": album_likes, "length": album_length, "cover": album_cover}
+                               "rating": album_rating, "likes": album_likes, "length": album_length, "cover": album_cover,
+                                "url": album_url}
 
                 artworks_array.append(album_record)
 
@@ -273,6 +279,7 @@ def postulate_artwork(request):
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 
+@csrf_exempt
 def get_postulations_by_notification(request,notification_id):
     if request.method == 'GET':
         postulation_array_json = []
@@ -281,7 +288,7 @@ def get_postulations_by_notification(request,notification_id):
         for postulation in postulation_array:
             audio_array=[]
             postulation_info = Postulation.objects.get(id=postulation)
-            #import pdb; pdb.set_trace()
+
             artist_info = Artist.objects.get(id=postulation_info.artist.id)
             artist_info_json = {"id":artist_info.id,"name":artist_info.artistic_name}
 
@@ -290,7 +297,7 @@ def get_postulations_by_notification(request,notification_id):
 
                 artwork_info = Artwork.objects.get(id= postulated_artwork.artwork.id)
                 artist_info_artwork_json = {"name": artist_info.artistic_name, "song": artwork_info.name}
-                artwork_info_json = {"url": str(artwork_info.contentUrl), "cover": str(artwork_info.cover),"artist":artist_info_artwork_json}
+                artwork_info_json = {"url": os.environ.get('MEDIA_URL') + str(artwork_info.contentUrl), "cover": os.environ.get('MEDIA_URL') + str(artwork_info.cover), "artist":artist_info_artwork_json}
 
                 audio_array.append(artwork_info_json)
 
