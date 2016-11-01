@@ -126,8 +126,8 @@ class ReactMusicPlayer extends Component {
           <div className={coverClass} style={{backgroundImage: 'url('+ active.cover +')'}}></div>
 
           <div className="artist-info">
-            <h2 className="artist-name">{active.artist.name}</h2>
-            <h3 className="artist-song-name">{active.artist.song}</h3>
+            <h2 className="artist-name">{active.soundtrack.name}</h2>
+            <h3 className="artist-song-name">{active.soundtrack.song}</h3>
           </div>
         </center>
 

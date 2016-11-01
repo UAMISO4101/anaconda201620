@@ -21,7 +21,10 @@ export const getActualNotification = (notifications,notificationId) => ({ type: 
 
 export const getArtistArtworks = artworks => ({type: 'GET_ARTIST_ARTWORKS', data: artworks});
 
+export const getProposals = proposals => ({type: 'GET_PROPOSALS', data: proposals});
+
 export const getSoundTracksByArtist = id => ({type: 'GET_SOUNDTRACK_BY_ARTIST'})
+
 
 export const fetchArtistArtworks = (id) => {
   return dispatch => {
@@ -87,7 +90,6 @@ export const fetchNotifications = () => {
     });
   }
 };
-
 export const fetchOpenNotifications = () => {
   return dispatch => {
     jQuery.ajax({
@@ -110,3 +112,43 @@ export const fetchOpenNotifications = () => {
     });
   }
 };
+
+import {audiosDefault} from "./testData/audios";
+export const fetchProposals = (id) => {
+  return dispatch => {
+      let proposals = [{
+        id: "proposalId",
+        artist:{
+          id: "artistId",
+          name: "name",
+        },
+        audios: [audiosDefault[1],audiosDefault[2]]
+      },{
+        id: "proposalId2",
+        artist:{
+          id: "artistId",
+          name: "name",
+        },
+        audios: [audiosDefault[0]]
+      }];
+
+      dispatch(getProposals(proposals))
+      dispatch(setPlayerAudios(proposals))
+      // jQuery.ajax({
+      //   method: "GET",
+      //   url: `${SERVER_URL}/comercial_agent/artists/${id}/artworks/`,
+      // .done(( data ) => {
+      //   dispatch(getProposals(data.proposals))
+      // })
+      // .fail((err) => {
+      //     dispatch(showSAModal({
+      //       show: true,
+      //       type: "error",
+      //       title: "Error",
+      //       text: `status: ${err.status} \nstatusText: ${err.statusText}`
+      //     }))
+      //  });
+  }
+}
+
+export const setPlayerAudios = proposals => ({type: 'SET_AUDIOS',data: proposals})

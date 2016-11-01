@@ -1,5 +1,5 @@
 import Proposals from '../components/proposals'
-import { getProposals } from '../actions';
+import { fetchProposals } from '../actions';
 
 import { connect } from 'react-redux';
 
@@ -13,7 +13,7 @@ const mapStateToProps = (state, { params: { notificationId }}) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getProposals: (artistId) => dispatch(getProposals(artistId))
+  fetchProposals: (notificationId) => dispatch(fetchProposals(notificationId))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(Proposals);

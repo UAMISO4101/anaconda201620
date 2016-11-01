@@ -4,13 +4,9 @@ import FaEraser from 'react-icons/lib/fa/eraser'
 import Votation from './votation'
 
 class Proposals extends Component {
-  constructor(props){
-    super(props);
-    this.deleteRequest = this.deleteRequest.bind(this);
-  }
 
-  deleteRequest(event){
-
+  componentDidMount(){
+    this.props.fetchProposals(this.props.notification.id);
   }
 
   render(){

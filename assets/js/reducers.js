@@ -13,6 +13,15 @@ export const artworks = (state=[artworkBlank],  action) => {
 import {audiosDefault} from "./testData/audios";
 export const audios = (state=audiosDefault,action) => {
   switch (action.type) {
+    case 'SET_AUDIOS':
+      let audios = [];
+      let proposals = action.data;
+      for (let i=0, l=proposals.length; l>i; i+=1) {
+        proposals[i].audios.forEach(audio => {
+          audios.push(audio);
+        });
+      }
+      return audios || state;
     default:
       return state ;
   }
@@ -83,6 +92,8 @@ const proposalDefault = {
 }
 export const proposals = (state=[proposalDefault], action) => {
   switch (action.type) {
+    case 'GET_PROPOSALS':
+      return action.data || state;
     default:
       return state ;
   }
@@ -108,7 +119,7 @@ export const saModal = (state=modalDefault, action) => {
 };
 
 const soundtrackDefault = {"sounds":
-      [
+  [
     {
       "type": "Song",
       "rating": 4,
