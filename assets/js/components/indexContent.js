@@ -5,9 +5,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import SweetAlert from 'sweetalert-react';
 import StarRatingComponent from 'react-star-rating-component';
 import FaApple from 'react-icons/lib/fa/apple';
-
-
-import { SERVER_URL, SOUNDS_FILTER, SOUNDS_TYPE} from '../utils/constants';
+import { DEFAULT_IMAGE, SERVER_URL, SOUNDS_FILTER, SOUNDS_TYPE} from '../utils/constants';
 
 const startsFormatter = (cell, row) => {
   return (<StarRatingComponent
@@ -62,8 +60,7 @@ class IndexContent extends Component{
   openModal() { this.setState({ showModal: true }); }
 
   coverImage(cell,row){
-    cell = cell != "" ? cell : 'http://orig02.deviantart.net/3d9c/f/2008/082/8/4/clave_de_sol_by_esepibe.png'; 
-    return (<img src={cell} alt={cell} className='coverImage'/>)
+    return (<img src={cell || DEFAULT_IMAGE} alt={cell} className='coverImage'/>)
   }
   render(){
     return(
@@ -85,7 +82,7 @@ class IndexContent extends Component{
             </div>
           </div>
           <div className="row" >
-            <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
+            <div className="col-sm-push-1 col-sm-10 col-xs-12 " >
               <DropdownButton id="soundsFilterDropdown" title={translator(filterVar)} onSelect={this.soundsFilterDropdownChange.bind(this)}>
                 <MenuItem eventKey={SOUNDS_FILTER.ALL}>{translator(SOUNDS_FILTER.ALL)}</MenuItem>
                 <MenuItem eventKey={SOUNDS_FILTER.RATING}>{translator(SOUNDS_FILTER.RATING)}</MenuItem>

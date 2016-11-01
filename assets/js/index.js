@@ -20,6 +20,7 @@ import NotificationArtist from './containers/notificationArtist';
 import Notification from './components/notifications';
 import SoundtracksContent from './containers/soundtracksContent';
 import NotificationContent from './containers/notificationsContent';
+import ProposalContent from './containers/proposalContent';
 import Page404 from './components/page404';
 
 function run () {
@@ -32,7 +33,10 @@ function run () {
         <Route path="dashboard">
           <Route path="agente-comercial" >
             <IndexRoute component={NotificationFormContent} />
-            <Route path='convocatoria/:notificationId' component={NotificationFormEdit} />
+            <Route path="convocatoria/:notificationId" >
+              <IndexRoute component={NotificationFormEdit} />
+              <Route path='votacion' component={ProposalContent} />
+            </Route>
             <Route path="convocatorias" component={NotificationContent} />
           </Route>
           <Route path="artista/:id" >

@@ -7,6 +7,7 @@ import { setRequest, getNotifications } from '../actions';
 
 const mapStateToProps = (state, { params: { notificationId }}) => {
     let actualNotification = state.notifications.notifications.filter(notification => notification.id === parseInt(notificationId, 10))[0];
+    actualNotification = actualNotification ? actualNotification : state.notifications.notifications[0];
     return {
       request: actualNotification.request,
       notification: actualNotification

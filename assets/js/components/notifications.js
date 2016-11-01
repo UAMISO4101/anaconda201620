@@ -42,7 +42,8 @@ class Notifications extends Component {
         return([
           <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>,
           <TableHeaderColumn dataField="publishingState" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>,
-          <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false}>Solicitudes</TableHeaderColumn>
+          <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false} dataAlign="left">Solicitudes</TableHeaderColumn>,
+          <TableHeaderColumn dataFormat={this.formatVotes.bind(this)} dataSort={false} dataAlign="left">Votaciones</TableHeaderColumn>
         ])
       default:
         return null
@@ -59,6 +60,13 @@ class Notifications extends Component {
     return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
       this.openModal(cell,row)
     }}  type="submit">Ver Detalles</button>);
+  }
+  formatVotes(cell, row){
+    return (
+      <Link  className="btn btn-primary-participate pull-right"
+        to={`${CA_DASHBOARD}/convocatoria/${row.id}/votacion`}>
+        Ir a votaciones</Link>
+    );
   }
   formatRequestsUser(cell, row){
     return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
@@ -130,11 +138,11 @@ class Notifications extends Component {
             </div>
           </center>
           <div className="row">
-            <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
-              <BootstrapTable data={ this.props.notifications.notifications } striped={true} hover={true} remote={true}>
-                <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
+            <div className="col-sm-12 col-xs-12 " >
+              <BootstrapTable data={ this.props.notifications.notifications } striped={true} hover={true} >
+                <TableHeaderColumn dataField="id" isKey={true} hidden={true}>ID</TableHeaderColumn>
                 <TableHeaderColumn dataField="name" dataSort={true}>Nombre</TableHeaderColumn>
-                <TableHeaderColumn dataField="description" dataAlign="center" dataSort={true}>Descripción</TableHeaderColumn>
+                <TableHeaderColumn dataField="description" >Descripción</TableHeaderColumn>
                 <TableHeaderColumn dataField="initial_date" dataSort={true}>Fecha de Inicio</TableHeaderColumn>
                 <TableHeaderColumn dataField="closing_date"  dataSort={true}  >Fecha de Cierre</TableHeaderColumn>
                 <TableHeaderColumn dataField="notification_type"  dataSort={true} >Tipo</TableHeaderColumn>

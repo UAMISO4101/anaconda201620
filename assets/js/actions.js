@@ -21,7 +21,10 @@ export const getActualNotification = (notifications,notificationId) => ({ type: 
 
 export const getArtistArtworks = artworks => ({type: 'GET_ARTIST_ARTWORKS', data: artworks});
 
+export const getProposals = proposals => ({type: 'GET_PROPOSALS', data: proposals});
+
 export const getSoundTracksByArtist = id => ({type: 'GET_SOUNDTRACK_BY_ARTIST'})
+
 
 export const fetchArtistArtworks = (id) => {
   return dispatch => {
@@ -52,6 +55,8 @@ export const fetchSoundTracks = (filter, type) => {
         statusCode: {
         200: (data) => {
           dispatch(getSoundTracks(data))
+          dispatch(resetPlayerAudios())
+          dispatch(setPlayerAudios(data))
         },
         404: (err) => {
           dispatch(showSAModal({
@@ -87,7 +92,6 @@ export const fetchNotifications = () => {
     });
   }
 };
-
 export const fetchOpenNotifications = () => {
   return dispatch => {
     jQuery.ajax({
@@ -110,3 +114,40 @@ export const fetchOpenNotifications = () => {
     });
   }
 };
+
+import {audiosDefault} from "./testData/audios";
+export const fetchProposals = (id) => {
+  return dispatch => {
+      // let proposals = [{
+      //   id: "proposalId",
+      //   artist: "name",
+      //   audios: [audiosDefault[1],audiosDefault[2]]
+      // },{
+      //   id: "proposalId2",
+      //   artist: "name2",
+      //   audios: [audiosDefault[0]]
+      // }];
+
+      jQuery.ajax({
+        method: "GET",
+        url: `${SERVER_URL}/comercial_agent/notifications/${id}/postulations/`
+      })
+      .done(( data ) => {
+        dispatch(getProposals(proposals))
+        dispatch(resetPlayerAudios())
+        dispatch(setPlayerAudios(proposals))
+      })
+      .fail((err) => {
+          console.error(`postulations: ${err}`);
+          dispatch(showSAModal({
+            show: true,
+            type: "error",
+            title: "Error",
+            text: `status: ${err.status} \nstatusText: ${err.statusText}`
+          }))
+       });
+  }
+}
+
+export const resetPlayerAudios = () => ({type: 'RESET_AUDIOS'})
+export const setPlayerAudios = proposals => ({type: 'SET_AUDIOS',data: proposals})
