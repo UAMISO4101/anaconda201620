@@ -270,3 +270,8 @@ def postulate_artwork(request):
         return HttpResponse(status=status.HTTP_201_CREATED)
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+def get_postulations_by_notification(request,notification_id):
+
+    return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
