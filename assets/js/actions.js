@@ -130,15 +130,15 @@ export const fetchProposals = (id) => {
 
       jQuery.ajax({
         method: "GET",
-        url: `${SERVER_URL}/comercial_agent/notifications/${id}/publish/`
+        url: `${SERVER_URL}/comercial_agent/notifications/${id}/postulations/`
       })
       .done(( data ) => {
-        debugger
         dispatch(getProposals(proposals))
         dispatch(resetPlayerAudios())
         dispatch(setPlayerAudios(proposals))
       })
       .fail((err) => {
+          console.error(`postulations: ${err}`);
           dispatch(showSAModal({
             show: true,
             type: "error",
