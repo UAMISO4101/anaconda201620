@@ -62,6 +62,8 @@ class PostulationTest(TestCase):
             song_album=album,
             length=271,
             artwork_type='SNG',
+            cover='http://url',
+            contentUrl='http://url'
         )
         song.save()
 
@@ -95,8 +97,9 @@ class PostulationTest(TestCase):
         postulated_artwork.save()
 
     def test_postulation(self):
-
-        c=Client()
+        c = Client()
         response = c.get('/comercial_agent/notifications/1/postulations/')
-        print(response.json())
-        self.assertEqual(len(response.json()["proposals"]),1)
+
+        self.assertEqual(len(response.json()["proposals"]), 1)
+        self.assertGreaterEqual(len(response.json()["proposals"][0]["audios"][0]["url"]), 1)
+
