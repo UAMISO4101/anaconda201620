@@ -290,7 +290,7 @@ def get_postulations_by_notification(request,notification_id):
 
                 artwork_info = Artwork.objects.get(id= postulated_artwork.artwork.id)
                 artist_info_artwork_json = {"name": artist_info.artistic_name, "song": artwork_info.name}
-                artwork_info_json = {"cover": str(artwork_info.cover),"artist":artist_info_artwork_json}
+                artwork_info_json = {"url": str(artwork_info.contentUrl), "cover": str(artwork_info.cover),"artist":artist_info_artwork_json}
 
                 audio_array.append(artwork_info_json)
 
