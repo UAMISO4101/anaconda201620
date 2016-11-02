@@ -134,6 +134,7 @@ export const fetchProposals = (id) => {
       })
       .done(( data ) => {
         let proposals = data.proposals;
+
         if(proposals.length> 0 ){
           dispatch(getProposals(proposals))
           dispatch(resetPlayerAudios())
