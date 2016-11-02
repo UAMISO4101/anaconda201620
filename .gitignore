@@ -9,3 +9,4 @@ assets/bundles
 comercial_agent/migrations
 profilePictures/
 *.exe
+npm-debug.log

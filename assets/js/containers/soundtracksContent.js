@@ -1,4 +1,4 @@
-import IndexContent from './indexContent'
+import IndexContent from '../components/indexContent'
 import { SERVER_URL } from '../utils/constants';
 import { fetchSoundTracks, showSAModal, hideSAModal } from '../actions';
 
@@ -10,7 +10,7 @@ const mapStateToProps = (state, router) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchSoundTracks: (filter) => dispatch(fetchSoundTracks(filter)),
+  fetchSoundTracks: (filter, type) => dispatch(fetchSoundTracks(filter, type)),
   hideSAModal: () => dispatch(hideSAModal())
 });
 
