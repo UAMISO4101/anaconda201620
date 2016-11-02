@@ -4,15 +4,15 @@ import ReactMusicPlayer from './ReactMusicPlayer'
 
 class SonidosLibresPlayer extends Component{
     render(){
-      //if (this.props.setted) {
+      if (this.props.setted) {
         return(
           <ReactMusicPlayer songs={this.props.audios}  />
         )
-      // } else {
-      //   return(
-      //     null
-      //   )
-      // }
+      } else {
+        return(
+          null
+        )
+      }
     }
 }
 export default SonidosLibresPlayer;
