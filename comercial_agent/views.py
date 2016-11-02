@@ -300,11 +300,11 @@ def get_postulations_by_notification(request,notification_id):
 
                 artwork_info = Artwork.objects.get(id= postulated_artwork.artwork.id)
                 artist_info_artwork_json = {"name": artist_info.artistic_name, "song": artwork_info.name}
-                artwork_info_json = {"url": os.environ.get('MEDIA_URL') + str(artwork_info.contentUrl), "cover": os.environ.get('MEDIA_URL') + str(artwork_info.cover), "artist":artist_info_artwork_json}
+                artwork_info_json = {"url": os.environ.get('MEDIA_URL') + str(artwork_info.contentUrl), "cover": os.environ.get('MEDIA_URL') + str(artwork_info.cover), "soundtrack": artist_info_artwork_json}
 
                 audio_array.append(artwork_info_json)
 
-            postulation_info_json = {"id": postulation,"artist":artist_info_json,"audios":audio_array}
+            postulation_info_json = {"id": postulation,"artist":artist_info.artistic_name,"audios":audio_array}
             postulation_array_json.append(postulation_info_json)
 
         return JsonResponse(dict(proposals=postulation_array_json))
