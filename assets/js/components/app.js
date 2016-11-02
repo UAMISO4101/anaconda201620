@@ -9,12 +9,11 @@ const App = ({children}) => {
         <div >
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css"/>
             <Navbar/>
-            <div className="navbarMarginTopForContainer">
+            <div  className="navbarMarginTopForContainer back">
                 {children}
             </div>
-            <div className="twitter">
               <SonidosLibresPlayerContent />
-            </div>
+
         </div>
     )
 }
