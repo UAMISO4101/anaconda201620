@@ -133,9 +133,19 @@ export const fetchProposals = (id) => {
         url: `${SERVER_URL}/comercial_agent/notifications/${id}/postulations/`
       })
       .done(( data ) => {
-        dispatch(getProposals(proposals))
-        dispatch(resetPlayerAudios())
-        dispatch(setPlayerAudios(proposals))
+        let proposals = data.proposals;
+        if(proposals.length) > 0 {
+          dispatch(getProposals(proposals))
+          dispatch(resetPlayerAudios())
+          dispatch(setPlayerAudios(proposals))
+        }else {
+          dispatch(showSAModal({
+            show: true,
+            type: "warning",
+            title: "Advertencia",
+            text: 'No hay propuestas en esta convocatoria'
+          }))
+        }
       })
       .fail((err) => {
           console.error(`postulations: ${err}`);
