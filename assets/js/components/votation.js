@@ -27,7 +27,7 @@ class Votations extends Component {
           <h4 className="">{this.state.selectedAudio || 'Escoge una canción'}</h4>
         </div>
         <div className="col-sm-9">
-          <div href="#" className="list-group-item list-group-item-action active">
+          <div href="#" className="">
             <div>
               <Coverflow
                 width={500}

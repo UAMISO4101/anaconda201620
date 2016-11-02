@@ -270,6 +270,7 @@ h2 {
 .fullwidth{
   margin: 0%;
   width:100%;
+  z-index: 99999;
 }
 #notiform {
   background-color: #75B46E;
