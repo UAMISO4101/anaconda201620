@@ -267,6 +267,10 @@ h2 {
   overflow: hidden;
   padding: 130px 0 100px;
 }
+.fullwidth{
+  margin: 0%;
+  width:100%;
+}
 #notiform {
   background-color: #75B46E;
   background-image: url("../images/about-bg.jpg");

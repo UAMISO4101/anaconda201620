@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import shuffle from 'shuffle-array';
-
+import {Row, Grid, Col} from 'react-bootstrap';
 class ReactMusicPlayer extends Component {
   constructor(props){
     super(props);
@@ -119,54 +119,70 @@ class ReactMusicPlayer extends Component {
     let randomClass = classnames('player-btn small random', {'active': this.state.random });
 
     return (
-      <div className="player-container">
+        <div className="fullwidth">
+          <Row>
+           <div className="player-container">
         <audio src={active.url} autoPlay={this.state.play} preload="auto" ref="player"></audio>
-
-        <center>
-          <div className={coverClass} style={{backgroundImage: 'url('+ active.cover +')'}}></div>
-
-          <div className="artist-info">
-            <h2 className="artist-name">{active.soundtrack.name}</h2>
-            <h3 className="artist-song-name">{active.soundtrack.song}</h3>
-          </div>
-        </center>
-
-        <div className="player-progress-container" onClick={this.setProgress.bind(this)}>
-          <span className="player-progress-value" style={{width: progress + '%'}}></span>
-        </div>
+            <Col md={3} xs={12}>
+                 <div className="player-buttons player-controls">
 
 
-        <div className="player-options">
-          <div className="player-buttons player-controls">
-            <button onClick={this.toggle.bind(this)} className="player-btn big" title="Play/Pause">
-              <i className={playPauseClass} />
-            </button>
+                    <button onClick={this.previous.bind(this)} className="player-btn medium" title="Previous Song">
+                      <i className="fa fa-backward" />
+                    </button>
+                    <button onClick={this.toggle.bind(this)} className="player-btn big" title="Play/Pause">
+                      <i className={playPauseClass} />
+                    </button>
+                    <button onClick={this.next.bind(this)} className="player-btn medium" title="Next Song">
+                      <i className="fa fa-forward" />
+                    </button>
+                  </div>
+               </Col>
+          <Col xs={1} md={1}>
+             <div className={coverClass} style={{backgroundImage: 'url('+ active.cover +')'}}></div>
+          </Col>
+             <Col  xs={10} md={8}>
+               <div className="artist-info">
+                 <div>
+                    <Col xs={5} md={5}>
+                   <h3 className="artist-song-name">{active.soundtrack.song}</h3>
+                 </Col>
+                    <Col xs={5} md={5}>
 
-            <button onClick={this.previous.bind(this)} className="player-btn medium" title="Previous Song">
-              <i className="fa fa-backward" />
-            </button>
+                   <h3 className="artist-name">{active.soundtrack.name}</h3>
+                 </Col>
+                 </div>
+               </div>
+               </Col>
+             <Row>
 
-            <button onClick={this.next.bind(this)} className="player-btn medium" title="Next Song">
-              <i className="fa fa-forward" />
-            </button>
-          </div>
+               <Col md={6} xs={12}>
+                <div className="player-progress-container" onClick={this.setProgress.bind(this)}>
+                  <span className="player-progress-value" style={{width: progress + '%'}}></span>
+                </div>
+               </Col>
+               <Col md={3} xs={12}>
+                    <div className="player-buttons">
+                      <button className="player-btn small volume" onClick={this.toggleMute.bind(this)} title="Mute/Unmute">
+                        <i className={volumeClass} />
+                      </button>
 
-          <div className="player-buttons">
-            <button className="player-btn small volume" onClick={this.toggleMute.bind(this)} title="Mute/Unmute">
-              <i className={volumeClass} />
-            </button>
+                      <button className={repeatClass} onClick={this.repeat.bind(this)} title="Repeat">
+                        <i className="fa fa-repeat" />
+                      </button>
 
-            <button className={repeatClass} onClick={this.repeat.bind(this)} title="Repeat">
-              <i className="fa fa-repeat" />
-            </button>
+                      <button className={randomClass} onClick={this.randomize.bind(this)} title="Shuffle">
+                        <i className="fa fa-random" />
+                      </button>
+                    </div>
+               </Col>
+             </Row>
 
-            <button className={randomClass} onClick={this.randomize.bind(this)} title="Shuffle">
-              <i className="fa fa-random" />
-            </button>
-          </div>
-
-        </div>
       </div>
+        </Row>
+        </div>
+
+
     );
   }
 }
