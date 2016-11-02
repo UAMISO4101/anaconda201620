@@ -6,6 +6,7 @@ import SweetAlert from 'sweetalert-react';
 import StarRatingComponent from 'react-star-rating-component';
 import FaApple from 'react-icons/lib/fa/apple';
 import { DEFAULT_IMAGE, SERVER_URL, SOUNDS_FILTER, SOUNDS_TYPE} from '../utils/constants';
+import Loading from 'react-loading';
 
 const startsFormatter = (cell, row) => {
   return (<StarRatingComponent
@@ -63,7 +64,7 @@ class IndexContent extends Component{
     return (<img src={cell || DEFAULT_IMAGE} alt={cell} className='coverImage'/>)
   }
   render(){
-    return(
+          return(
       <div id = "twitter" className="index-content">
 
           <SweetAlert
@@ -93,7 +94,7 @@ class IndexContent extends Component{
                 <MenuItem eventKey={SOUNDS_TYPE.SONG}>{translator(SOUNDS_TYPE.SONG)}</MenuItem>
                 <MenuItem eventKey={SOUNDS_TYPE.SOUND}>{translator(SOUNDS_TYPE.SOUND)}</MenuItem>
               </DropdownButton>
-              <BootstrapTable data={this.props.soundtracks.sounds } striped={true} hover={true}>
+                {this.props.soundtracks? <BootstrapTable data={this.props.soundtracks.sounds } striped={true} hover={true}>
                  <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
                  <TableHeaderColumn dataField="cover" dataFormat={this.coverImage} >Cover</TableHeaderColumn>
                  <TableHeaderColumn dataField="sound" dataAlign="center" dataSort={true}>Sonido</TableHeaderColumn>
@@ -101,11 +102,12 @@ class IndexContent extends Component{
                  <TableHeaderColumn dataField="artist">Artista</TableHeaderColumn>
                  <TableHeaderColumn dataField="rating"  dataSort={true} dataFormat={startsFormatter} >Rating</TableHeaderColumn>
                  <TableHeaderColumn dataField="likes"  dataSort={true} >Likes</TableHeaderColumn>
-             </BootstrapTable>
+             </BootstrapTable> : <center><h1>Cargando tus sonidos favoritos</h1><br></br><Loading type='bars' color='#1A237E'></Loading></center>}
+
             </div>
           </div>
         </div>
-      )
+      );
     }
 
     soundsFilterDropdownChange(selectedFilter){

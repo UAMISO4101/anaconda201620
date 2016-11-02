@@ -121,20 +121,7 @@ export const saModal = (state=modalDefault, action) => {
   }
 };
 
-const soundtrackDefault = {"sounds":
-  [
-    {
-      "type": "Song",
-      "rating": 4,
-      "length": 271,
-      "likes": 365,
-      "artist": "Iron Maiden",
-      "sound": "Aces High",
-      "id": 2,
-      "cover": DEFAULT_IMAGE
-    }
-  ]
-};
+const soundtrackDefault = null;
 export const soundtracks = (state=soundtrackDefault,  action) => {
   switch (action.type) {
     case 'GET_SOUNDTRACKS':

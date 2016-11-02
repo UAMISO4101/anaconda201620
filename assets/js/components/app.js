@@ -4,6 +4,7 @@ import Navbar from './navbar';
 import SonidosLibresPlayerContent from '../containers/sonidosLibresPlayerContent';
 import { StickyContainer, Sticky } from 'react-sticky';
 import Fixed from 'react-fixed';
+import  Loading from 'react-loading';
 const App = ({children}) => {
     return(
         <div>
