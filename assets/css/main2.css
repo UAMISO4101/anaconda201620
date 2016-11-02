@@ -142,6 +142,9 @@ h2 {
   position: fixed;
   top: 0;
 }
+.back{
+  z-index:1;
+}
 
 .fixed-menu .navbar-right {
   padding: 0;
@@ -263,6 +266,10 @@ h2 {
   position: relative;
   overflow: hidden;
   padding: 130px 0 100px;
+}
+.fullwidth{
+  margin: 0%;
+  width:100%;
 }
 #notiform {
   background-color: #75B46E;
