@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'webpack_loader',
     'corsheaders',
+    'storages',
+    's3_folder_storage',
     #local apps
     'comercial_agent',
 ]
@@ -88,10 +90,26 @@ WSGI_APPLICATION = 'sonidos_libres.wsgi.application'
 
 if os.environ.get('DJANGO_ENV') == 'production':
 
+    #Heroku Database
     DEBUG = True
     DATABASES = {'default': dj_database_url.config(default= os.environ.get('DATABASE_URL'))}
+elif os.environ.get('DJANGO_ENV') == 'testing':
+    #Autotesting Database
+    DEBUG = True
+    DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': 'test',
+                'HOST': '127.0.0.1',
+                'PORT': '5432',
+                'USER': os.environ.get('PGUSER'),
+                'PASSWORD': os.environ.get('PGPASSWORD'),
+            }
+        }
 else:
 
+    #Local Database
+    #Production Database
     DEBUG = True
     DATABASES = {
             'default': {
@@ -146,15 +164,64 @@ CORS_ALLOW_METHODS = (
 )
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
+if os.environ.get( 'DJANGO_ENV' ) == 'production':
+    #ASW-S3 credentials
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+    #AWS-S3 Settings
+    DEFAULT_FILE_STORAGE = os.environ.get('DEFAULTFILES_STORAGE')
+    DEFAULT_S3_PATH = 'media'
+    MEDIA_URL = os.environ.get('MEDIA_URL')
 
-STATICFILES_DIRS = (
-    #This lets Django's collectstatic store our bundles
-    os.path.join(BASE_DIR, 'assets'),
-    os.path.join(PROJECT_ROOT, 'static'),
-)
+    STATICFILES_STORAGE = os.environ.get('STATICFILES_STORAGE')
+    STATIC_S3_PATH = 'static'
+    STATIC_URL = os.environ.get('STATIC_URL')
+
+    ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+
+    STATICFILES_DIRS = (
+        # This lets Django's collectstatic store our bundles
+        os.path.join(BASE_DIR, 'assets'),
+        os.path.join(PROJECT_ROOT, 'static'),
+    )
+
+elif os.environ.get('DJANGO_ENV') == 'staging':
+    # ASW-S3 credentials
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+
+    # AWS-S3 Settings
+    DEFAULT_FILE_STORAGE = os.environ.get('DEFAULTFILES_STORAGE')
+    DEFAULT_S3_PATH = 'media'
+    MEDIA_URL = os.environ.get('MEDIA_URL')
+
+    #STATICFILES_STORAGE = os.environ.get('STATICFILES_STORAGE')
+    STATIC_S3_PATH = 'static'
+    STATIC_URL = '/static/'
+
+    ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+
+    STATICFILES_DIRS = (
+        # This lets Django's collectstatic store our bundles
+        os.path.join(BASE_DIR, 'assets'),
+        os.path.join(PROJECT_ROOT, 'static'),
+    )
+
+else:
+    #Local Storage Settings
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+
+    STATICFILES_DIRS = (
+        #This lets Django's collectstatic store our bundles
+        os.path.join(BASE_DIR, 'assets'),
+        os.path.join(PROJECT_ROOT, 'static'),
+    )
+
 
 WEBPACK_LOADER = {
     'DEFAULT': {
