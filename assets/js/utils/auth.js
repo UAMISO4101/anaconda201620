@@ -1,8 +1,17 @@
 // cb == callback
 export const auth = {
+  artist(){
+    return getRole("artist");
+  },
+  comercial_agent(){
+    return getRole("comercial_agent");
+  },
+  onChange() {},
+  getToken() {
+    return localStorage.token
+  },
   login(credentials, cb) {
     cb = arguments[arguments.length - 1]
-
     /*
     $.ajax({
       method: 'POST',
@@ -29,10 +38,6 @@ export const auth = {
     })
   },
 
-  getToken() {
-    return localStorage.token
-  },
-
   logout(cb) {
     delete localStorage.token
     if (cb) cb()
@@ -42,13 +47,11 @@ export const auth = {
   loggedIn() {
     return !!localStorage.token
   },
-
-  onChange() {}
 }
 
 function notAuthorize(nextState,replace){
   replace({
-    pathname: '/login',
+    pathname: '/',
     state: { nextPathname: nextState.location.pathname }
   })
 }
@@ -73,24 +76,22 @@ function pretendRequest(email, pass, cb) {
     }
   }, 0)
 }
-
+function getRole(role){
+  return localStorage.role == role ? true : false;
+}
 export const requireAuth = (nextState, replace) => {
   if (!auth.loggedIn()) {
     notAuthorize(nextState,replace);
   }
 }
 
-export const role = (nextState, replace) => {notAuthorize
-  return {
-    artist: () => {
-      if (!auth.artist()){
-        notAuthorize();
-      }
-    },
-    comercialAgent: () => {
-      if (!auth.comercialAgent()) {
-        notAuthorize();
-      }
-    },
+export const isArtist = (nextState, replace) => {
+  if (!auth.artist()) {
+    notAuthorize(nextState, replace);
+  }
+}
+export const isComercialAgent = (nextState, replace) => {
+  if (!auth.comercial_agent()) {
+    notAuthorize(nextState, replace);
   }
 }

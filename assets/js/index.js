@@ -1,5 +1,5 @@
 import * as reducers from './reducers';
-import { requireAuth, role } from './utils/auth';
+import { requireAuth, isArtist, isComercialAgent } from './utils/auth';
 import { CA_DASHBOARD } from './utils/constants';
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux';
@@ -35,15 +35,16 @@ function run () {
         <Route path='login' component={LoginContent} />
 
         <Route path="dashboard" onEnter={requireAuth}>
-          <Route path="agente-comercial"  onEnter={role.comercialAgent}>
+          <Route path="agente-comercial" onEnter={isComercialAgent}>
             <IndexRoute component={NotificationFormContent} />
             <Route path="convocatoria/:notificationId" >
               <IndexRoute component={NotificationFormEdit} />
               <Route path='votacion' component={ProposalContent} />
             </Route>
+
             <Route path="convocatorias" component={NotificationContent} />
           </Route>
-          <Route path="artista/:id" onEnter={role.artist}>
+          <Route path="artista/:id" onEnter={isArtist}>
             <IndexRedirect to="/convocatorias" />
             <Route path="convocatorias" component={NotificationArtist} />
           </Route>
