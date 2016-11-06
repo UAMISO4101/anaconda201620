@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
 import { ListGroupItem } from 'react-bootstrap'
 import FaUserSecret from 'react-icons/lib/fa/user-secret'
-
+let $divForms = null;
+let modalAnimateTime = 300;
+let msgAnimateTime = 150;
+let msgShowTime = 2000;
 class Login extends Component {
   constructor(props){
     super(props);
   }
-
+  componentDidMount(){
+    $divForms = $(this.refs.divForms);
+  }
   render(){
     return(
       <div className="col-sm-push-3 col-sm-6" id="login-modal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
@@ -15,10 +20,10 @@ class Login extends Component {
   			<div className="modal-header" className="text-center">
   				<img className="img-circle" id="img_logo" src="http://bootsnipp.com/img/logo.jpg" />
   			</div>
-        <div id="div-forms" >
+        <div id="div-forms" ref="divForms" >
           <h2 className='text-center'>Registro y Login</h2>
           { /* Begin # Login Form */ }
-          <form id="login-form">
+          <form id="login-form" ref="loginForm">
             <div className="modal-body">
               <div id="div-login-msg">
                 <div id="icon-login-msg" className="glyphicon glyphicon-chevron-right"></div>
@@ -37,73 +42,42 @@ class Login extends Component {
                 <button type="submit" className="btn btn-primary btn-lg btn-block">Login</button>
               </div>
               <div>
-                <button id="login_lost_btn" type="button" className="btn btn-link">Lost Password?</button>
-                <button id="login_register_btn" type="button" className="btn btn-link">Register</button>
+                <button id="login_register_btn" type="button" className="btn btn-link" onClick={ () => {modalAnimate(this.refs.loginForm, this.refs.registerForm)}}>Register</button>
               </div>
             </div>
           </form>
           { /* End # Login Form */ }
-
-          { /* Begin | Lost Password Form */ }
-          <form id="lost-form" style={{display:'none'}}>
+          { /* Begin | Register Form */ }
+          <form id="register-form" ref="registerForm" style={{display:'none'}}>
             <div className="modal-body">
-              <div id="div-lost-msg">
-                <div id="icon-lost-msg" className="glyphicon glyphicon-chevron-right"></div>
-                <span id="text-lost-msg">Type your e-mail.</span>
+              <div id="div-register-msg">
+                <div id="icon-register-msg" className="glyphicon glyphicon-chevron-right"></div>
+                <span id="text-register-msg">Register an account.</span>
               </div>
-              <input id="lost_email" className="form-control" type="text" placeholder="E-Mail (type ERROR for error effect)" required />
+              <input id="register_username" className="form-control" type="text" placeholder="Username (type ERROR for error effect)" required />
+                <input id="register_email" className="form-control" type="text" placeholder="E-Mail" required />
+                <input id="register_password" className="form-control" type="password" placeholder="Password" required />
             </div>
             <div className="modal-footer">
               <div>
-                <button type="submit" className="btn btn-primary btn-lg btn-block">Send</button>
+                <button type="submit" className="btn btn-primary btn-lg btn-block">Register</button>
               </div>
               <div>
-                <button id="lost_login_btn" type="button" className="btn btn-link">Log In</button>
-                <button id="lost_register_btn" type="button" className="btn btn-link">Register</button>
+                <button id="register_login_btn" type="button" className="btn btn-link" onClick={ () => {modalAnimate(this.refs.registerForm,this.refs.loginForm)} }>Log In</button>
               </div>
             </div>
-            </form>
-            { /* End | Lost Password Form */ }
-
-            { /* Begin | Register Form */ }
-            <form id="register-form" style={{display:'none'}}>
-              <div className="modal-body">
-                <div id="div-register-msg">
-                  <div id="icon-register-msg" className="glyphicon glyphicon-chevron-right"></div>
-                  <span id="text-register-msg">Register an account.</span>
-                </div>
-                <input id="register_username" className="form-control" type="text" placeholder="Username (type ERROR for error effect)" required />
-                  <input id="register_email" className="form-control" type="text" placeholder="E-Mail" required />
-                  <input id="register_password" className="form-control" type="password" placeholder="Password" required />
-              </div>
-              <div className="modal-footer">
-                <div>
-                  <button type="submit" className="btn btn-primary btn-lg btn-block">Register</button>
-                </div>
-                <div>
-                  <button id="register_login_btn" type="button" className="btn btn-link">Log In</button>
-                  <button id="register_lost_btn" type="button" className="btn btn-link">Lost Password?</button>
-                </div>
-              </div>
-            </form>
-            {/* End | Register Form */}
-          </div>
+          </form>
+          {/* End | Register Form */}
         </div>
+      </div>
     </div>
     </div>
   )}
 
 };
 
-let $formLogin = $('#login-form');
-let $formLost = $('#lost-form');
-let $formRegister = $('#register-form');
-let $divForms = $('#div-forms');
-let $modalAnimateTime = 300;
-let $msgAnimateTime = 150;
-let $msgShowTime = 2000;
-
-$("form").submit(function () {
+$("form").submit(function (event) {
+   event.preventDefault();
    switch(this.id) {
        case "login-form":
            let $lg_username=$('#login_username').val();
@@ -140,24 +114,8 @@ $("form").submit(function () {
    }
    return false;
 });
-/*
-$('#login_register_btn').click( function () { modalAnimate($formLogin, $formRegister) });
-$('#register_login_btn').click( function () { modalAnimate($formRegister, $formLogin); });
-$('#login_lost_btn').click( function () { modalAnimate($formLogin, $formLost); });
-$('#lost_login_btn').click( function () { modalAnimate($formLost, $formLogin); });
-$('#lost_register_btn').click( function () { modalAnimate($formLost, $formRegister); });
-$('#register_lost_btn').click( function () { modalAnimate($formRegister, $formLost); });
 
-function modalAnimate ($oldForm, $newForm) {
-   let $oldH = $oldForm.height();
-   let $newH = $newForm.height();
-   $divForms.css("height",$oldH);
-   $oldForm.fadeToggle($modalAnimateTime, function(){
-       $divForms.animate({height: $newH}, $modalAnimateTime, function(){
-           $newForm.fadeToggle($modalAnimateTime);
-       });
-   });
-}
+
 
 function msgFade ($msgId, $msgText) {
    $msgId.fadeOut($msgAnimateTime, function() {
@@ -178,6 +136,18 @@ function msgChange($divTag, $iconTag, $textTag, $divClass, $iconClass, $msgText)
        $iconTag.removeClass($iconClass + " " + $divClass);
  }, $msgShowTime);
 }
-*/
+
+function modalAnimate (oldForm, newForm) {
+   let $oldForm = $(oldForm);
+   let $newForm = $(newForm);
+   let $oldH = $oldForm.height();
+   let $newH = $newForm.height()+ 70;
+   $divForms.css("height",$oldH);
+   $oldForm.fadeToggle(modalAnimateTime, function(){
+       $divForms.animate({height: $newH}, modalAnimateTime, function(){
+           $newForm.fadeToggle(modalAnimateTime);
+       });
+   });
+}
 
 export default Login;
