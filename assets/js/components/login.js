@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { ListGroupItem } from 'react-bootstrap'
 import { auth } from '../utils/auth'
+import { AUTH_TYPE } from '../utils/constants'
 import FaUserSecret from 'react-icons/lib/fa/user-secret'
 let $divForms = null;
 let modalAnimateTime = 300;
@@ -9,12 +10,23 @@ let msgShowTime = 2000;
 class Login extends Component {
   constructor(props){
     super(props);
+    this.state = { authText: AUTH_TYPE.REGISTER };
+    this.changeAuth = this.changeAuth.bind(this);
     this._onLogin = this._onLogin.bind(this);
     this._onRegister = this._onRegister.bind(this);
     this._onSubmit = this._onSubmit.bind(this);
   }
   componentDidMount(){
     $divForms = $(this.refs.divForms);
+  }
+  changeAuth(){
+    if(this.state.authText == AUTH_TYPE.REGISTER){
+      this.setState({ authText: AUTH_TYPE.LOGIN });
+      modalAnimate(this.state.authText,this.refs.registerForm, this.refs.loginForm);
+    }else {
+      this.setState({ authText: AUTH_TYPE.REGISTER });
+      modalAnimate(this.state.authText,this.refs.loginForm, this.refs.registerForm);
+    }
   }
   _onLogin(event){ this._onSubmit(event) }
   _onRegister(event){ this._onSubmit(event) }
@@ -25,7 +37,7 @@ class Login extends Component {
            let username = this.refs.login_username.value; let password = this.refs.login_password.value;
            let credentials = { username, password }
            auth.login(credentials,(bool,res)=>{
-             if (bool) {
+              if (bool) {
                msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "success", "glyphicon-ok", "Login OK, redirecting...");
                  setTimeout(() => {
                    if(res.role == "artist"){
@@ -66,6 +78,7 @@ class Login extends Component {
   			</div>
         <div id="div-forms" ref="divForms" >
           <h2 className='text-center'>Registro y Login</h2>
+          <h3 className='text-center btn-link' onClick={ this.changeAuth }>{this.state.authText}</h3>
           { /* Begin # Login Form */ }
           <form onSubmit={this._onLogin} id="login-form" ref="loginForm" noValidate>
             <div className="modal-body">
@@ -82,7 +95,7 @@ class Login extends Component {
                 <button type="submit" className="btn btn-primary btn-lg btn-block">Login</button>
               </div>
               <div>
-                <button id="login_register_btn" type="button" className="btn btn-link" onClick={ () => {modalAnimate(this.refs.loginForm, this.refs.registerForm)}}>Register</button>
+                <button id="login_register_btn" type="button" className="btn btn-link" onClick={ this.changeAuth }>Ir a Registro</button>
               </div>
             </div>
           </form>
@@ -103,7 +116,7 @@ class Login extends Component {
                 <button type="submit" className="btn btn-primary btn-lg btn-block">Register</button>
               </div>
               <div>
-                <button id="register_login_btn" type="button" className="btn btn-link" onClick={ () => {modalAnimate(this.refs.registerForm,this.refs.loginForm)} }>Log In</button>
+                <button id="register_login_btn" type="button" className="btn btn-link" onClick={ this.changeAuth }>Log In</button>
               </div>
             </div>
           </form>
@@ -136,11 +149,12 @@ function msgChange($divTag, $iconTag, $textTag, $divClass, $iconClass, $msgText)
  }, msgShowTime);
 }
 
-function modalAnimate (oldForm, newForm) {
+function modalAnimate (authText,oldForm, newForm) {
    let $oldForm = $(oldForm);
    let $newForm = $(newForm);
    let $oldH = $oldForm.height();
-   let $newH = $newForm.height()+ 60; // needed for margin top on styles
+   let extraHeigth = authText == AUTH_TYPE.REGISTER ? 140 : 60 ;
+   let $newH = $newForm.height()+ extraHeigth; // needed for margin top on styles
    $divForms.css("height",$oldH);
    $oldForm.fadeToggle(modalAnimateTime, function(){
        $divForms.animate({height: $newH}, modalAnimateTime, function(){
