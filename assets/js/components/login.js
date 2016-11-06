@@ -31,11 +31,7 @@ class Login extends Component {
               </div>
               <input id="login_username" className="form-control" type="text" placeholder="Username (type ERROR for error effect)" required />
               <input id="login_password" className="form-control" type="password" placeholder="Password" required />
-              <div className="checkbox">
-                <label>
-                  <input type="checkbox" /> Remember me
-                  </label>
-                </div>
+            
             </div>
             <div className="modal-footer">
               <div>
