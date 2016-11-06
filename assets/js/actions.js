@@ -118,16 +118,6 @@ export const fetchOpenNotifications = () => {
 import {audiosDefault} from "./testData/audios";
 export const fetchProposals = (id) => {
   return dispatch => {
-      // let proposals = [{
-      //   id: "proposalId",
-      //   artist: "name",
-      //   audios: [audiosDefault[1],audiosDefault[2]]
-      // },{
-      //   id: "proposalId2",
-      //   artist: "name2",
-      //   audios: [audiosDefault[0]]
-      // }];
-
       jQuery.ajax({
         method: "GET",
         url: `${SERVER_URL}/comercial_agent/notifications/${id}/postulations/`
