@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import Navbar from './navbar';
 import SonidosLibresPlayerContent from '../containers/sonidosLibresPlayerContent';
-import { StickyContainer, Sticky } from 'react-sticky';
 
 import  Loading from 'react-loading';
 const App = ({children}) => {
@@ -13,7 +12,7 @@ const App = ({children}) => {
             <div  className="navbarMarginTopForContainer back">
                 {children}
             </div>
-              <SonidosLibresPlayerContent />
+            <SonidosLibresPlayerContent />
 
         </div>
 
