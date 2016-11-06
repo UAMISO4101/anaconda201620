@@ -5,7 +5,7 @@ import { Modal, OverlayTrigger, Button, Form,
   FormControl,
   FormGroup,Col,
   ControlLabel, } from 'react-bootstrap';
-import moment from 'moment';
+// import moment from 'moment';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import SweetAlert from 'sweetalert-react';
 
@@ -15,6 +15,8 @@ import FaCalendarCheckMinusO from 'react-icons/lib/fa/calendar-minus-o'
 import Requests from './requests';
 import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
 import Request from './request';
+
+var moment = require('moment');
 
 const setWarning = (name=null, description=null, initialDate=null, closingDate=null, request=0) => {
   let warning = "Llenar campos: \n";
@@ -54,6 +56,10 @@ class NotificationForm extends Component{
     if (this.props.setRequest){
       this.props.getNotifications();
       this.props.setRequest(this.props.notification.request)
+      this.setState({
+        closingDate: moment(moment(this.props.notification.closingDate).format("MM/DD/YYYY")),
+        initialDate: moment(moment(this.props.notification.initialDate).format("MM/DD/YYYY")),
+      });
     }
   }
 
@@ -136,8 +142,8 @@ class NotificationForm extends Component{
               </div>
               <div className="form-group">
                 <div className="col-sm-9">
-                  <h4><span className="label label-default" />Fecha Inicio Y Final<span/></h4>
-                    <DateRangePicker onEvent={this.calendarEvent.bind(this)} >
+                  <h4><span className="label label-default" />Fecha Inicio <i>{`${this.formatDate(this.state.initialDate) || ""}`}</i> <br/>Fecha Final <i>{`${this.formatDate(this.state.closingDate) || ""}`}</i><span/></h4>
+                    <DateRangePicker startDate={ this.state.initialDate || moment().add(1, 'days') } endDate={ this.state.closingDate || moment().add(2, 'days')} onEvent={this.calendarEvent.bind(this)} >
                         <h2>
                           <span>
                             <FaCalendarCheckO/>
@@ -200,7 +206,9 @@ class NotificationForm extends Component{
       }
 
     formatDate(date){
-        return new Date(new Date(date).valueOf() + new Date().getTimezoneOffset()*60000);
+        if(date){
+          return new Date(new Date(date).valueOf() + new Date().getTimezoneOffset()*60000);
+        }
     }
 
     postServer(event){
