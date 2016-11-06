@@ -1,17 +1,26 @@
 // cb == callback
-const auth = {
-  login(email, pass, cb) {
+export const auth = {
+  login(credentials, cb) {
     cb = arguments[arguments.length - 1]
-    if (localStorage.token) {
-      if (cb) cb(true)
-      this.onChange(true)
-      return
-    }
-    pretendRequest(email, pass, (res) => {
+
+    /*
+    $.ajax({
+      method: 'POST',
+      url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}`,
+      data: JSON.stringify(notificationObj),
+    })
+    .done(( msg ) => {
+      auth.login()
+    })
+    .fail((err) => {
+      console.error(err);
+    })
+    */
+    pretendRequest(credentials.username, credentials.password, (res) => {
       if (res.authenticated) {
         localStorage.token = res.token
         localStorage.role = res.role
-        if (cb) cb(true)
+        if (cb) cb(true,res)
         this.onChange(true)
       } else {
         if (cb) cb(false)
@@ -54,6 +63,7 @@ function pretendRequest(email, pass, cb) {
       })
     }else if (email === 'artist@example.com' && pass === '12345678') {
       cb({
+        id: 1,
         role: "artist",
         authenticated: true,
         token: Math.random().toString(36).substring(7)
