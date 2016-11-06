@@ -57,8 +57,8 @@ class NotificationForm extends Component{
     }
   }
 
-  handleName(event){ this.setState({name: event.target.value}); }
-  handleDescription(event){ this.setState({description: event.target.value}); }
+  handleName(event){ this.setState({name: event.target.value == "" ? " " : event.target.value}); }
+  handleDescription(event){ this.setState({description: event.target.value == "" ? " " : event.target.value }); }
 
   closeModal() { this.setState({ showModal: false , prev: false}); }
   openModal() { this.setState({ showModal: true , prev:false }); }
@@ -106,7 +106,7 @@ class NotificationForm extends Component{
           <form className="form-horizontal">
             <div className="form-group">
               <div className="col-sm-12">
-                <input ref="name" type="text" className="form-control" placeholder="Nombre de convocatoria" value={this.state.name || this.props.notification.name} onChange={ this.handleName.bind(this)}/>
+                <input ref="name" type="text" className="form-control" placeholder="Nombre de convocatoria" value={ this.state.name || this.props.notification.name} onChange={ this.handleName.bind(this)}/>
               </div>
             </div>
             <div className="form-group">
