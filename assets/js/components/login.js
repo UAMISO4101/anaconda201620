@@ -3,6 +3,7 @@ import { ListGroupItem } from 'react-bootstrap'
 import { auth } from '../utils/auth'
 import { ARTIST_DASHBOARD, CA_DASHBOARD, AUTH_TYPE } from '../utils/constants'
 import FaUserSecret from 'react-icons/lib/fa/user-secret'
+import SweetAlert from 'sweetalert-react'
 let $divForms = null;
 let modalAnimateTime = 300;
 let msgAnimateTime = 150;
@@ -10,7 +11,14 @@ let msgShowTime = 2000;
 class Login extends Component {
   constructor(props){
     super(props);
-    this.state = { authText: AUTH_TYPE.REGISTER };
+    this.state = {
+      authText: AUTH_TYPE.REGISTER,
+      show: false,
+      sweetAlertOnConfirm: () => {this.setState({ show: false })},
+      sweetAlertTitle: "",
+      sweetAlertMessage: "",
+      type: "warning",
+    };
     this.changeAuth = this.changeAuth.bind(this);
     this._onLogin = this._onLogin.bind(this);
     this._onRegister = this._onRegister.bind(this);
@@ -32,38 +40,45 @@ class Login extends Component {
   _onRegister(event){ this._onSubmit(event) }
   _onSubmit(event){
     event.preventDefault();
+    let username = null; let password  = null;
     switch(event.currentTarget.id) {
-       case "login-form":
-           let username = this.refs.login_username.value; let password = this.refs.login_password.value;
-           let credentials = { username, password }
-           auth.login(credentials,(bool,res)=>{
-              if (bool) {
-               msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "success", "glyphicon-ok", "Login OK, redirecting...");
-                 setTimeout(() => {
-                   if(res.role == "artist"){
-                     window.location = `#${ARTIST_DASHBOARD}/${res.id}/convocatorias`;
-                   }else {
-                     window.location = `#${CA_DASHBOARD}/convocatorias`;
-                   }
-                 }, 800);
-             } else {
-               msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "error", "glyphicon-remove", "Login error");
-             }
-           })
-           return false;
-           break;
-       case "register-form":
-           let $rg_username=$('#register_username').val();
-           let $rg_email=$('#register_email').val();
-           let $rg_password=$('#register_password').val();
-           if ($rg_username == "ERROR") {
-               msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "error", "glyphicon-remove", "Register error");
-           } else {
-               msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "success", "glyphicon-ok", "Register OK");
-           }
-           return false;
-           break;
-       default:
+    case "login-form":
+       username = this.refs.login_username.value; password = this.refs.login_password.value;
+       let credentials = { username, password }
+       auth.login(credentials,(bool,res)=>{
+          if (bool) {
+           msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "success", "glyphicon-ok", "Login OK, redirecting...");
+             setTimeout(() => {
+               if(res.role == "artist"){
+                 window.location = `#${ARTIST_DASHBOARD}/${res.id}/convocatorias`;
+               }else {
+                 window.location = `#${CA_DASHBOARD}/convocatorias`;
+               }
+             }, 800);
+         } else {
+           msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "error", "glyphicon-remove", "Login error");
+         }
+       })
+       return false;
+       break;
+    case "register-form":
+         let username = this.refs.register_username.value; let email = this.refs.register_email.value; let names = this.refs.register_names.value; let surname = this.refs.register_surname.value; let photo = this.refs.register_photo.value; let nickname = this.refs.register_nickname.value; let accountNumber = this.refs.register_accountNumber.value; let city = this.refs.register_city.value; let country = this.refs.register_country.value; let phone = this.refs.register_phone.value; let password = this.refs.register_password.value; let confirm_password = this.refs.register_confirm_password.value;
+         let warningText = setWarning({username , email , names , surname , photo , nickname , accountNumber , city , country , phone , password , confirm_password});
+         if ( username && email && names && surname && photo && nickname && accountNumber && city && country && phone && password && confirm_password == password ) {
+           msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "error", "glyphicon-remove", "Register advertencia, llenar todos los campos");
+           msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "success", "glyphicon-ok", "Register OK");
+         } else {
+           msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "error", "glyphicon-remove", "Register advertencia, llenar todos los campos");
+           this.setState({
+             show: true,
+             sweetAlertTitle: "Registro Incompleto",
+             type: "warning",
+             sweetAlertMessage: warningText
+           });
+         }
+         return false;
+         break;
+     default:
            return false;
     }
     return false;
@@ -71,6 +86,13 @@ class Login extends Component {
   render(){
     return(
       <div className="col-sm-push-3 col-sm-6" id="login-modal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <SweetAlert
+            show={this.state.show}
+            type={this.state.type}
+            title={this.state.sweetAlertTitle}
+            text={this.state.sweetAlertMessage}
+            onConfirm={this.state.sweetAlertOnConfirm}
+        />
       	<div className="modal-dialog">
   			<div className="modal-content">
   			<div className="modal-header" className="text-center">
@@ -107,9 +129,19 @@ class Login extends Component {
                 <div id="icon-register-msg" className="glyphicon glyphicon-chevron-right"></div>
                 <span id="text-register-msg">Register an account.</span>
               </div>
-              <input id="register_username" className="form-control" type="text" placeholder="Username (type ERROR for error effect)" required />
-                <input id="register_email" className="form-control" type="text" placeholder="E-Mail" required />
-                <input id="register_password" className="form-control" type="password" placeholder="Password" required />
+                <input ref="register_username" className="form-control" type="text" placeholder="Nombre de Usuario" required />
+                <input ref="register_email" className="form-control" type="text" placeholder="E-Mail" required />
+                <input ref="register_names" className="form-control" type="text" placeholder="Nombres" required />
+                <input ref="register_surname" className="form-control" type="text" placeholder="Apellidos" required />
+                <label>Escoger una foto de perfil</label>
+                <input ref="register_photo" className="form-control" type="file" placeholder="Foto" required />
+                <input ref="register_nickname" className="form-control" type="text" placeholder="Nombre Artistico" required />
+                <input ref="register_accountNumber" className="form-control" type="number" placeholder="Número de cuenta" required />
+                <input ref="register_city" className="form-control" type="text" placeholder="Cuidad" required />
+                <input ref="register_country" className="form-control" type="text" placeholder="País" required />
+                <input ref="register_phone" className="form-control" type="tel" placeholder="Teléfono" required />
+                <input ref="register_password" className="form-control" type="password" placeholder="Contraseña" required />
+                <input ref="register_confirm_password" className="form-control" type="password" placeholder="Confirmar Contraseña" required />
             </div>
             <div className="modal-footer">
               <div>
@@ -149,11 +181,11 @@ function msgChange($divTag, $iconTag, $textTag, $divClass, $iconClass, $msgText)
  }, msgShowTime);
 }
 
-function modalAnimate (authText,oldForm, newForm) {
+function modalAnimate (authText, newForm,oldForm) {
    let $oldForm = $(oldForm);
    let $newForm = $(newForm);
    let $oldH = $oldForm.height();
-   let extraHeigth = authText == AUTH_TYPE.REGISTER ? 140 : 60 ;
+   let extraHeigth = 90;
    let $newH = $newForm.height()+ extraHeigth; // needed for margin top on styles
    $divForms.css("height",$oldH);
    $oldForm.fadeToggle(modalAnimateTime, function(){
@@ -163,4 +195,20 @@ function modalAnimate (authText,oldForm, newForm) {
    });
 }
 
+function setWarning(obj){
+  let warning = ["Completar: "];
+  !obj.username ? warning.push("Usuario") : null ;
+  !obj.email ? warning.push(" Correo Electrónico") : null ;
+  !obj.names ? warning.push(" Nombres") : null ;
+  !obj.surname ? warning.push(" Apellidos") : null ;
+  !obj.photo ? warning.push(" Imagen") : null ;
+  !obj.nickname ? warning.push(" Nombre Artistico") : null ;
+  !obj.accountNumber ? warning.push(" # de cuenta") : null ;
+  !obj.city ? warning.push(" Cuidad") : null ;
+  !obj.country ? warning.push(" País") : null ;
+  !obj.phone ? warning.push(" Teléfono") : null ;
+  !obj.password ? warning.push(" Contraseña") : null ;
+  !obj.password !== !obj.confirm_password ? warning.push(" Contreseñas NO coinciden") : null;
+  return warning.join(",")
+}
 export default Login;
