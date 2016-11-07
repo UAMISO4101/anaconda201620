@@ -1,6 +1,7 @@
 import json
 import os
 
+import django
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -9,6 +10,8 @@ from django.http import JsonResponse
 
 # Create your views here.
 from rest_framework import status
+from rest_framework.authtoken.models import Token
+
 from .models import *
 
 from comercial_agent.models import Notification, Sound, Song
@@ -17,6 +20,31 @@ from comercial_agent.models import Notification, Sound, Song
 
 def index(request):
     return render(request, 'comercial_agent/index.html')
+
+
+def create_artist_user(request):
+    if request.method == 'POST':
+        user_json = json.loads(request.body.decode("utf-8"))
+        user = django.contrib.auth.models.User.objects.create_user(username=user_json['username'],
+                                                                   password=user_json['password'],
+                                                                   first_name=user_json['names'],
+                                                                   last_name=user_json['surname'],
+                                                                   email=user_json['email'])
+
+        token = Token.objects.create(user=user['username'])
+        print(token)
+
+        artist = Artist(
+            user=user,
+            profile_picture=user_json['photo'],
+            artistic_name=user_json['nickname'],
+            account_number=user_json['accountNumber'],
+            address=user_json['address'],
+            city=user_json['city'],
+            country=user_json['country'],
+            telephone=user_json['phone']
+        )
+        artist.save()
 
 
 @csrf_exempt
@@ -87,21 +115,24 @@ def notification_json(request):
 
 @csrf_exempt
 def get_open_notifications(request):
-    notifications_model = Notification.objects.filter(notification_state=Notification.PUBLISHED)
+    if request.method == 'GET':
+        notifications_model = Notification.objects.filter(notification_state=Notification.PUBLISHED)
 
-    notifications_array = []
+        notifications_array = []
 
-    for notification in notifications_model:
-        pieces_model = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
-        dict_notification = notification.as_dict();
-        dict_piece = []
-        for piece in pieces_model:
-            dict_piece.append({'id': piece.id, 'name': piece.name, 'features': piece.features})
+        for notification in notifications_model:
+            pieces_model = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
+            dict_notification = notification.as_dict();
+            dict_piece = []
+            for piece in pieces_model:
+                dict_piece.append({'id': piece.id, 'name': piece.name, 'features': piece.features})
 
-        dict_notification['request'] = dict_piece
-        notifications_array.append(dict_notification)
+            dict_notification['request'] = dict_piece
+            notifications_array.append(dict_notification)
 
-    return JsonResponse({'notifications': notifications_array}, safe=False)
+        return JsonResponse({'notifications': notifications_array}, safe=False)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 
 @csrf_exempt
