@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { ListGroupItem } from 'react-bootstrap'
 import { auth } from '../utils/auth'
-import { AUTH_TYPE } from '../utils/constants'
+import { ARTIST_DASHBOARD, CA_DASHBOARD, AUTH_TYPE } from '../utils/constants'
 import FaUserSecret from 'react-icons/lib/fa/user-secret'
 let $divForms = null;
 let modalAnimateTime = 300;
@@ -41,9 +41,9 @@ class Login extends Component {
                msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "success", "glyphicon-ok", "Login OK, redirecting...");
                  setTimeout(() => {
                    if(res.role == "artist"){
-                     window.location = `#/dashboard/artista/${res.id}/convocatorias`;
+                     window.location = `#${ARTIST_DASHBOARD}/${res.id}/convocatorias`;
                    }else {
-                     window.location = `#/dashboard/agente-comercial/convocatorias`;
+                     window.location = `#${CA_DASHBOARD}/convocatorias`;
                    }
                  }, 800);
              } else {
