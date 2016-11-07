@@ -32,7 +32,7 @@ function run () {
       <Route path='/' component={App} >
         <IndexRedirect to='/' />
         <IndexRoute component={SoundtracksContent} />
-        <Route path='login' component={LoginContent} />
+        <Route path='auth' component={LoginContent} />
 
         <Route path="dashboard" onEnter={requireAuth}>
           <Route path="agente-comercial" onEnter={isComercialAgent}>

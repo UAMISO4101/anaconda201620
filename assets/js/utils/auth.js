@@ -10,6 +10,9 @@ export const auth = {
   getToken() {
     return localStorage.token
   },
+  getUserRole(){
+    return localStorage.role
+  },
   login(credentials, cb) {
     cb = arguments[arguments.length - 1]
     /*
@@ -40,6 +43,7 @@ export const auth = {
 
   logout(cb) {
     delete localStorage.token
+    delete localStorage.role
     if (cb) cb()
     this.onChange(false)
   },
