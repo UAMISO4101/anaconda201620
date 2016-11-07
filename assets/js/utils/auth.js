@@ -22,10 +22,15 @@ export const auth = {
       data: JSON.stringify(notificationObj),
     })
     .done(( msg ) => {
-      auth.login()
+      localStorage.token = res.token;
+      localStorage.role = res.role;
+      if (cb) cb(true,res);
+      this.onChange(true);
     })
     .fail((err) => {
       console.error(err);
+      if (cb) cb(false)
+      this.onChange(false;)
     })
     */
     pretendRequest(credentials.username, credentials.password, (res) => {
@@ -51,6 +56,25 @@ export const auth = {
   loggedIn() {
     return !!localStorage.token
   },
+
+  register(credentials, cb){
+    console.log(credentials);
+    cb(true,{id: 1});
+    /*
+    $.ajax({
+      method: 'POST',
+      url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}`,
+      data: JSON.stringify(notificationObj),
+    })
+    .done(( msg ) => {
+      if (cb) cb(true,res);
+    })
+    .fail((err) => {
+      console.error(err);
+      if (cb) cb(false,err)
+    })
+    */
+  }
 }
 
 function notAuthorize(nextState,replace){
@@ -80,9 +104,11 @@ function pretendRequest(email, pass, cb) {
     }
   }, 0)
 }
+
 function getRole(role){
   return localStorage.role == role ? true : false;
 }
+
 export const requireAuth = (nextState, replace) => {
   if (!auth.loggedIn()) {
     notAuthorize(nextState,replace);
@@ -94,6 +120,7 @@ export const isArtist = (nextState, replace) => {
     notAuthorize(nextState, replace);
   }
 }
+
 export const isComercialAgent = (nextState, replace) => {
   if (!auth.comercial_agent()) {
     notAuthorize(nextState, replace);

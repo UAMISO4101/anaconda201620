@@ -40,11 +40,11 @@ class Login extends Component {
   _onRegister(event){ this._onSubmit(event) }
   _onSubmit(event){
     event.preventDefault();
-    let username = null; let password  = null;
+    let username = null; let password  = null; let credentials = null;
     switch(event.currentTarget.id) {
     case "login-form":
        username = this.refs.login_username.value; password = this.refs.login_password.value;
-       let credentials = { username, password }
+       credentials = { username, password }
        auth.login(credentials,(bool,res)=>{
           if (bool) {
            msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "success", "glyphicon-ok", "Login OK, redirecting...");
@@ -62,22 +62,34 @@ class Login extends Component {
        return false;
        break;
     case "register-form":
-         let username = this.refs.register_username.value; let email = this.refs.register_email.value; let names = this.refs.register_names.value; let surname = this.refs.register_surname.value; let photo = this.refs.register_photo.value; let nickname = this.refs.register_nickname.value; let accountNumber = this.refs.register_accountNumber.value; let city = this.refs.register_city.value; let country = this.refs.register_country.value; let phone = this.refs.register_phone.value; let password = this.refs.register_password.value; let confirm_password = this.refs.register_confirm_password.value;
-         let warningText = setWarning({username , email , names , surname , photo , nickname , accountNumber , city , country , phone , password , confirm_password});
-         if ( username && email && names && surname && photo && nickname && accountNumber && city && country && phone && password && confirm_password == password ) {
-           msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "error", "glyphicon-remove", "Register advertencia, llenar todos los campos");
-           msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "success", "glyphicon-ok", "Register OK");
-         } else {
-           msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "error", "glyphicon-remove", "Register advertencia, llenar todos los campos");
-           this.setState({
-             show: true,
-             sweetAlertTitle: "Registro Incompleto",
-             type: "warning",
-             sweetAlertMessage: warningText
-           });
-         }
-         return false;
-         break;
+       let username = this.refs.register_username.value; let email = this.refs.register_email.value; let names = this.refs.register_names.value; let surname = this.refs.register_surname.value; let photo = this.refs.register_photo.value; let nickname = this.refs.register_nickname.value; let accountNumber = this.refs.register_accountNumber.value; let city = this.refs.register_city.value; let country = this.refs.register_country.value; let phone = this.refs.register_phone.value; let password = this.refs.register_password.value; let confirm_password = this.refs.register_confirm_password.value;
+       credentials = {username , email , names , surname , photo , nickname , accountNumber , city , country , phone , password , confirm_password};
+       if ( username && email && names && surname && photo && nickname && accountNumber && city && country && phone && password && confirm_password == password ) {
+         auth.register(credentials,(bool,res)=>{
+          if (bool) {
+            msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "success", "glyphicon-ok", "Register OK, redirecting...");
+             setTimeout(() => {
+               window.location = `#${ARTIST_DASHBOARD}/${res.id}/convocatorias`;
+             }, 800);
+           } else {
+             msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "error", "glyphicon-remove", "Register advertencia, llenar todos los campos");
+           }
+         })
+       } else {
+         let warningText = setWarning(credentials);
+         this.setState({
+           show: true,
+           sweetAlertTitle: "Registro Incompleto",
+           sweetAlertOnConfirm: () => {
+             this.setState({ show: false });
+             msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "error", "glyphicon-remove", "Register advertencia, llenar todos los campos");
+           },
+           type: "warning",
+           sweetAlertMessage: warningText
+         });
+       }
+       return false;
+       break;
      default:
            return false;
     }
@@ -134,7 +146,7 @@ class Login extends Component {
                 <input ref="register_names" className="form-control" type="text" placeholder="Nombres" required />
                 <input ref="register_surname" className="form-control" type="text" placeholder="Apellidos" required />
                 <label>Escoger una foto de perfil</label>
-                <input ref="register_photo" className="form-control" type="file" placeholder="Foto" required />
+                <input ref="register_photo" className="form-control" type="file" accept="image/jpg, image/png, image/jpeg" placeholder="Foto" required />
                 <input ref="register_nickname" className="form-control" type="text" placeholder="Nombre Artistico" required />
                 <input ref="register_accountNumber" className="form-control" type="number" placeholder="Número de cuenta" required />
                 <input ref="register_city" className="form-control" type="text" placeholder="Cuidad" required />
@@ -208,7 +220,7 @@ function setWarning(obj){
   !obj.country ? warning.push(" País") : null ;
   !obj.phone ? warning.push(" Teléfono") : null ;
   !obj.password ? warning.push(" Contraseña") : null ;
-  !obj.password !== !obj.confirm_password ? warning.push(" Contreseñas NO coinciden") : null;
+  !obj.password == !obj.confirm_password ? warning.push(" Contreseñas NO coinciden") : null;
   return warning.join(",")
 }
 export default Login;
