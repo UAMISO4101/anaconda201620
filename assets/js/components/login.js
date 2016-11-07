@@ -62,8 +62,8 @@ class Login extends Component {
        return false;
        break;
     case "register-form":
-       let username = this.refs.register_username.value; let email = this.refs.register_email.value; let names = this.refs.register_names.value; let surname = this.refs.register_surname.value; let photo = this.refs.register_photo.value; let nickname = this.refs.register_nickname.value; let accountNumber = this.refs.register_accountNumber.value; let city = this.refs.register_city.value; let country = this.refs.register_country.value; let phone = this.refs.register_phone.value; let password = this.refs.register_password.value; let confirm_password = this.refs.register_confirm_password.value;
-       credentials = {username , email , names , surname , photo , nickname , accountNumber , city , country , phone , password , confirm_password};
+       let username = this.refs.register_username.value; let email = this.refs.register_email.value; let names = this.refs.register_names.value; let surname = this.refs.register_surname.value; let photo = this.refs.register_photo.value; let nickname = this.refs.register_nickname.value; let accountNumber = this.refs.register_accountNumber.value; let city = this.refs.register_city.value; let country = this.refs.register_country.value; let phone = this.refs.register_phone.value; let password = this.refs.register_password.value; let confirm_password = this.refs.register_confirm_password.value; let address = this.refs.register_address;
+       credentials = {address, username , email , names , surname , photo , nickname , accountNumber , city , country , phone , password , confirm_password};
        if ( username && email && names && surname && photo && nickname && accountNumber && city && country && phone && password && confirm_password == password ) {
          auth.register(credentials,(bool,res)=>{
           if (bool) {
@@ -151,6 +151,7 @@ class Login extends Component {
                 <input ref="register_accountNumber" className="form-control" type="number" placeholder="Número de cuenta" required />
                 <input ref="register_city" className="form-control" type="text" placeholder="Cuidad" required />
                 <input ref="register_country" className="form-control" type="text" placeholder="País" required />
+                <input ref="register_address" className="form-control" type="text" placeholder="Dirección" required />
                 <input ref="register_phone" className="form-control" type="tel" placeholder="Teléfono" required />
                 <input ref="register_password" className="form-control" type="password" placeholder="Contraseña" required />
                 <input ref="register_confirm_password" className="form-control" type="password" placeholder="Confirmar Contraseña" required />
@@ -208,19 +209,20 @@ function modalAnimate (authText, newForm,oldForm) {
 }
 
 function setWarning(obj){
-  let warning = ["Completar: "];
-  !obj.username ? warning.push("Usuario") : null ;
-  !obj.email ? warning.push(" Correo Electrónico") : null ;
-  !obj.names ? warning.push(" Nombres") : null ;
-  !obj.surname ? warning.push(" Apellidos") : null ;
-  !obj.photo ? warning.push(" Imagen") : null ;
-  !obj.nickname ? warning.push(" Nombre Artistico") : null ;
+  let warning = [];
+  !obj.address ? warning.push(" Dirección") : null ;
   !obj.accountNumber ? warning.push(" # de cuenta") : null ;
   !obj.city ? warning.push(" Cuidad") : null ;
   !obj.country ? warning.push(" País") : null ;
-  !obj.phone ? warning.push(" Teléfono") : null ;
+  !obj.email ? warning.push(" Correo Electrónico") : null ;
   !obj.password ? warning.push(" Contraseña") : null ;
   !obj.password == !obj.confirm_password ? warning.push(" Contreseñas NO coinciden") : null;
-  return warning.join(",")
+  !obj.photo ? warning.push(" Imagen") : null ;
+  !obj.names ? warning.push(" Nombres") : null ;
+  !obj.nickname ? warning.push(" Nombre Artistico") : null ;
+  !obj.phone ? warning.push(" Teléfono") : null ;
+  !obj.surname ? warning.push(" Apellidos") : null ;
+  !obj.username ? warning.push("Usuario") : null ;
+  return `Completar: ${warning.join(",")}`
 }
 export default Login;
