@@ -98,6 +98,7 @@ class Login extends Component {
   render(){
     return(
         <div className="loginBG">
+            <div className="loginBanner"></div>
       <div className="col-sm-push-3 col-sm-6" id="login-modal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <SweetAlert
             show={this.state.show}

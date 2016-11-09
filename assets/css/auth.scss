@@ -12,8 +12,19 @@
    background-attachment: scroll;
   position: absolute;
 }
+.loginBanner {
+  width: 100%;
+    height: 116px;
+    margin-top: 50px;
+  background-image: url("../images/footer-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat:no-repeat;
+   background-attachment: scroll;
+  position: absolute;
+}
 #login-modal{
-  margin-top: 10rem
+  margin-top: 16rem
 }
 
 #login-modal .modal-dialog {
