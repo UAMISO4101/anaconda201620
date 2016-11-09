@@ -97,6 +97,7 @@ class Login extends Component {
   }
   render(){
     return(
+        <div className="loginBG">
       <div className="col-sm-push-3 col-sm-6" id="login-modal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <SweetAlert
             show={this.state.show}
@@ -108,17 +109,17 @@ class Login extends Component {
       	<div className="modal-dialog">
   			<div className="modal-content">
   			<div className="modal-header text-center">
-  				<img className="img-circle" id="img_logo" src="http://bootsnipp.com/img/logo.jpg" />
+  				<img  id="img_logo" src={require('../../images/logo.png')} />
   			</div>
         <div id="div-forms" ref="divForms" >
-          <h2 className='text-center'>Registro y Login</h2>
+          <h2 className='text-center'>Maneja Tu Cuenta</h2>
           <h3 className='text-center btn-link' onClick={ this.changeAuth }>{this.state.authText}</h3>
           { /* Begin # Login Form */ }
           <form onSubmit={this._onLogin} id="login-form" ref="loginForm" noValidate>
             <div className="modal-body">
               <div id="div-login-msg">
                 <div id="icon-login-msg" className="glyphicon glyphicon-chevron-right"></div>
-                <span id="text-login-msg">Type your username and password.</span>
+                <span id="text-login-msg">Accede con tu usuario y contraseña</span>
               </div>
               <input ref="login_username" id="login_username" className="form-control" type="text" placeholder="Username (type ERROR for error effect)" required />
               <input ref="login_password" id="login_password" className="form-control" type="password" placeholder="Password" required />
@@ -139,7 +140,7 @@ class Login extends Component {
             <div className="modal-body">
               <div id="div-register-msg">
                 <div id="icon-register-msg" className="glyphicon glyphicon-chevron-right"></div>
-                <span id="text-register-msg">Register an account.</span>
+                <span id="text-register-msg">Crea una cuenta nueva</span>
               </div>
                 <input ref="register_username" className="form-control" type="text" placeholder="Nombre de Usuario" required />
                 <input ref="register_email" className="form-control" type="text" placeholder="E-Mail" required />
@@ -170,6 +171,8 @@ class Login extends Component {
       </div>
     </div>
     </div>
+
+        </div>
   )}
 
 };

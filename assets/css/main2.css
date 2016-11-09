@@ -541,6 +541,15 @@ h2 {
   padding: 95px 0 90px;
   overflow: hidden;
 }
+#loginBG {
+  background-image: url("../images/slider/bg2.jpg");
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat:no-repeat;
+   background-attachment: fixed;
+}
 
 .twit {
   position: absolute;
