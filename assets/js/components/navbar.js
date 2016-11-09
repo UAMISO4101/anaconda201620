@@ -20,7 +20,7 @@ const authComponent = () => {
   } else {
     return(
       <li className="scroll active">
-        <Link to='/auth'>authenticación</Link>
+        <Link to='/auth'>Cuenta</Link>
       </li>
     )
   }
