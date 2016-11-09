@@ -107,7 +107,7 @@ class Login extends Component {
         />
       	<div className="modal-dialog">
   			<div className="modal-content">
-  			<div className="modal-header" className="text-center">
+  			<div className="modal-header text-center">
   				<img className="img-circle" id="img_logo" src="http://bootsnipp.com/img/logo.jpg" />
   			</div>
         <div id="div-forms" ref="divForms" >
@@ -149,7 +149,7 @@ class Login extends Component {
                 <input ref="register_photo" className="form-control" type="file" accept="image/jpg, image/png, image/jpeg" placeholder="Foto" required />
                 <input ref="register_nickname" className="form-control" type="text" placeholder="Nombre Artistico" required />
                 <input ref="register_accountNumber" className="form-control" type="number" placeholder="Número de cuenta" required />
-                <input ref="register_city" className="form-control" type="text" placeholder="Cuidad" required />
+                <input ref="register_city" className="form-control" type="text" placeholder="Ciudad" required />
                 <input ref="register_country" className="form-control" type="text" placeholder="País" required />
                 <input ref="register_address" className="form-control" type="text" placeholder="Dirección" required />
                 <input ref="register_phone" className="form-control" type="tel" placeholder="Teléfono" required />
