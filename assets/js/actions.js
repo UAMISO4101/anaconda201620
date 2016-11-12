@@ -2,7 +2,6 @@ import {SERVER_URL} from './utils/constants';
 
 
 export const addRequest = request => ({ type: 'ADD_REQUEST', data: request });
-export const addToSelectedProposals = (notificationId, proposalId) => ({ type: 'ADD_PROPOSAL', data: {notificationId, proposalId} })
 export const choosedProposal = (proposalId) => ({ type: 'CHOOSED_PROPOSAL', data: proposalId })
 export const deleteRequest = (requestId) => ({ type: 'DELETE_REQUEST', data: requestId });
 

@@ -187,17 +187,3 @@ export const userType = (state=[], action) => {
       return state ;
   }
 }
-
-export const votation = (state={notification: {selectedProposals: []}},action) => {
-  switch (action.type) {
-    case 'ADD_PROPOSAL':
-      let selectedProposals = state.notification.selectedProposals;
-      let proposals = Object.assign({}, {
-        id: action.data.notificationId,
-        selectedProposals: selectedProposals.concat(action.data.proposalId)
-      })
-      return proposals
-    default:
-      return state ;
-  }
-}

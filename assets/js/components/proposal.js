@@ -65,7 +65,6 @@ class Proposal extends Component {
     if(this.state.selectedAudio) {
       return (
         <button className="btn btn-primary" onClick={ ()=>{
-          this.props.addToSelectedProposals(this.props.notificationId, this.props.proposal.id);
           this.props.choosedProposal(this.props.proposal.id);
           this.setState({ selectedProposal:true}) } } >
           Escoger esta obra como ganadora
