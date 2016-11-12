@@ -6,8 +6,7 @@ import {StyleRoot} from 'radium';
 import {DEFAULT_IMAGE} from "../utils/constants.js";
 
 
-
-class Votations extends Component {
+class Proposal extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -19,8 +18,8 @@ class Votations extends Component {
   }
 
   render(){
-    let artist = this.props.vt.artist;
-    let artworks = this.props.vt.artworks;
+    let artist = this.props.proposal.artist;
+    let artworks = this.props.proposal.artworks;
     return (
       <div className={`row ${this.state.selectedProposal ? "selectedProposal" : ""}`}>
         <hr/><hr/>
@@ -43,7 +42,7 @@ class Votations extends Component {
                 enableHeading={false}
                 active={this.state.active}
                 >
-                {this.props.vt.audios.map( audio => {
+                {this.props.proposal.audios.map( audio => {
                   return (<img src={audio.cover || DEFAULT_IMAGE} alt={artist} data-action={()=>{
                     this.setState({
                       choosedAudio: audio,
@@ -65,6 +64,7 @@ class Votations extends Component {
     if(this.state.selectedAudio) {
       return (
         <button onClick={ ()=>{
+          this.props.setSelectedProposal(this.props.notificationId, this.props.proposal);  
           this.setState({ selectedProposal:true}) } } >
           Escoger esta obra como ganadora
         </button>
@@ -75,4 +75,4 @@ class Votations extends Component {
   }
 };
 
-export default Votations;
+export default Proposal;

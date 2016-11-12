@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { ListGroupItem } from 'react-bootstrap';
 import FaEraser from 'react-icons/lib/fa/eraser';
-import Votation from './votation';
+import ProposalContent from '../containers/proposalContent';
 import SweetAlert from 'sweetalert-react';
 import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
 
@@ -12,6 +12,7 @@ class Proposals extends Component {
   }
 
   render(){
+    debugger
     return (
       <div >
         <SweetAlert
@@ -27,7 +28,7 @@ class Proposals extends Component {
         />
         <br/><br/><br/><br/>
         <div className="list-group">
-          { this.props.proposals.map( vt => <Votation vt={vt} key={vt.id}/> )}
+          { this.props.proposals.map( proposal => <ProposalContent proposal={proposal} notificationId={this.props.notification.id} key={proposal.id}/> )}
         </div>
       </div>
     );
