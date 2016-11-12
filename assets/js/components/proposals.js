@@ -12,7 +12,6 @@ class Proposals extends Component {
   }
 
   render(){
-    debugger
     return (
       <div >
         <SweetAlert

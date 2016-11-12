@@ -94,9 +94,18 @@ const proposalDefault = {
   audios: [audiosDefault]
 }
 export const proposals = (state=[proposalDefault], action) => {
+  let proposals = null
   switch (action.type) {
     case 'GET_PROPOSALS':
-      return action.data || state;
+      proposals = action.data.map(proposal => {
+        return Object.assign({}, proposal, {choosed: false})
+      });
+      return proposals || state;
+    case 'CHOOSED_PROPOSAL':
+      proposals = state.map(proposal => {
+        return (proposal.id==action.data) ? Object.assign({}, proposal, { choosed: true }) : proposal;
+      });
+      return proposals
     default:
       return state ;
   }
@@ -174,6 +183,20 @@ export const userType = (state=[], action) => {
   switch (action.type) {
     case 'SET_USER_TYPE':
       return action.data
+    default:
+      return state ;
+  }
+}
+
+export const votation = (state={notification: {selectedProposals: []}},action) => {
+  switch (action.type) {
+    case 'ADD_PROPOSAL':
+      let selectedProposals = state.notification.selectedProposals;
+      let proposals = Object.assign({}, {
+        id: action.data.notificationId,
+        selectedProposals: selectedProposals.concat(action.data.proposalId)
+      })
+      return proposals
     default:
       return state ;
   }

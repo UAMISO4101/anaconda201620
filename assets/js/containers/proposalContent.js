@@ -1,10 +1,10 @@
 import Proposal from '../components/proposal'
-import { setSelectedProposal } from '../actions';
-
+import { addToSelectedProposals, choosedProposal } from '../actions';
 import { connect } from 'react-redux';
 
 const mapDispatchToProps = dispatch => ({
-  setSelectedProposal: (notificationId, proposalId) => dispatch(setSelectedProposal(notificationId, proposalId)),
+  choosedProposal: (proposalId) => dispatch(choosedProposal(proposalId)),
+  addToSelectedProposals: (notificationId, proposalId) => dispatch(addToSelectedProposals(notificationId, proposalId)),
 })
 
 export default connect(()=>({}),mapDispatchToProps)(Proposal);
