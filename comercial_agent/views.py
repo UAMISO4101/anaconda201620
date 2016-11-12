@@ -10,13 +10,23 @@ from django.http import JsonResponse
 
 # Create your views here.
 from rest_framework import status
+from rest_framework import viewsets
 from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
 
 from .models import *
 
 from comercial_agent.models import Notification, Sound, Song
 
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
+    def retrieve(self, request, pk=None):
+        if pk == 'i':
+            return Response(UserSerializer(request.user,
+                    context={'request':request}).data)
+        return super(UserViewSet, self).retrieve(request, pk)
 
 def index(request):
     return render(request, 'comercial_agent/index.html')
@@ -30,9 +40,6 @@ def create_artist_user(request):
                                                                    first_name=user_json['names'],
                                                                    last_name=user_json['surname'],
                                                                    email=user_json['email'])
-
-        token = Token.objects.create(user=user['username'])
-        print(token)
 
         artist = Artist(
             user=user,
