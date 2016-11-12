@@ -11,9 +11,9 @@ from django.http import JsonResponse
 # Create your views here.
 from rest_framework import status
 from rest_framework import viewsets
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 
+from comercial_agent.serializers import UserSerializer
 from .models import *
 
 from comercial_agent.models import Notification, Sound, Song
