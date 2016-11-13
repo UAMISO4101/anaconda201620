@@ -29,9 +29,9 @@ class Navbar extends Component{
                             <div className="collapse navbar-collapse">
                                 <ul className="nav navbar-nav navbar-right">
                                     <li><a href="#">Home</a></li>
-                                    <li><a href={`#${CA_DASHBOARD}`}>Crear Convocatoria</a></li>
-                                    <li><a href={`#${CA_DASHBOARD}/convocatorias`}>Convocatorias</a></li>
-                                    <li><a href={`#${ARTIST_DASHBOARD}/1/convocatorias`}>Participar</a></li>
+                                    <li><a href={`#${CA_DASHBOARD}/${this.props.user_id}/`}>Crear Convocatoria</a></li>
+                                    <li><a href={`#${CA_DASHBOARD}/${this.props.user_id}/convocatorias`}>Convocatorias</a></li>
+                                    <li><a href={`#${ARTIST_DASHBOARD}/${this.props.user_id}/convocatorias`}>Participar</a></li>
                                     {/*<li className="scroll active"><a href="#home">Home</a></li>*/}
                                     {/*<li className="scroll"><a href="#explore">Explore</a></li>*/}
                                     {/*<li className="scroll"><a href="#event">Event</a></li>*/}
