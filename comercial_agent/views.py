@@ -75,6 +75,44 @@ def login_view(request):
         return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
 
 
+@csrf_exempt
+def logout_view(request):
+    if request.method == 'POST':
+        try:
+            logout(request)
+            return HttpResponse(status=status.HTTP_200_OK)
+        except:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+def is_logged_view(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated():
+            return JsonResponse({"isLogged": True})
+        else:
+            return JsonResponse({"isLogged": False})
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+def get_authenticated_user(request):
+    if request.method == 'POST':
+        if request.user is not None:
+            user = User.objects.get_by_natural_key(request.user)
+            if user.is_authenticated():
+                return JsonResponse({"user":user})
+            else:
+                return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
 def create_artist_user(request):
     if request.method == 'POST':
         user_json = json.loads(request.body.decode("utf-8"))
