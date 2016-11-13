@@ -263,12 +263,23 @@ def agents_creator():
     )
     business_agent.save()
 
+    user = django.contrib.auth.models.User.objects.create_user(username='ca_user_02', password='causer021234')
+    business_agent = BusinessAgent(
+        user=user,
+        profile_picture='media/profilePictures/ironmaiden2015bandwlogo_638.jpg',
+        company_name='RTI',
+        address='Lambda St 456',
+        city='Arcade',
+        country='NZ',
+        telephone=985555,
+    )
+    business_agent.save()
+
 
 def users_tokens():
-    django.contrib.auth.models.User.objects.create_user(username='judaspriest_user', password='judaspriest1234')
-
     for user in User.objects.all():
         Token.objects.get_or_create(user=user)
+
 
 
 songs_creator()
