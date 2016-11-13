@@ -7,5 +7,4 @@ from rest_framework.authtoken.models import Token
 @receiver(post_save, sender=User)
 def init_new_user(sender, instance, signal, created, **kwargs):
     if created:
-        token=Token.objects.create(user=instance)
-        print(token)
+        Token.objects.create(user=instance)
