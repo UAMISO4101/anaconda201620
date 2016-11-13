@@ -51,18 +51,19 @@ def login_view(request):
             user_role = 'not-associated'
 
             try:
-                artist_user = Artist.objects.get(pk=user.pk)
+                artist_user = Artist.objects.get(user_id=user.pk)
                 print(artist_user)
                 user_role = 'artist'
             except:
                 print('User is not Artist')
 
             try:
-                business_agent_user = BusinessAgent.objects.get(pk=user.pk)
+                business_agent_user = BusinessAgent.objects.get(user_id=user.pk)
                 print(business_agent_user)
                 user_role = 'commercial-agent'
             except:
                 print('User is not Business Agent')
+                return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
 
             user_json = {"id": user.pk,
                          "token": token.key,
