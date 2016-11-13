@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^notifications/(?P<notification_id>\w+)/publish/$', views.edit_notification_state, name='publish_notification'),
     url(r'^artists/(?P<user_id>\w+)/artworks/$',views.get_artworks_by_artist, name='get_artworks_by_artist'),
     url(r'^notifications/postulate-artworks/$',views.postulate_artwork, name='postulate_artwork'),
-    url(r'^notifications/(?P<notification_id>\w+)/postulations/$',views.get_postulations_by_notification,name='get_postulations_by_notification')
+    url(r'^notifications/(?P<notification_id>\w+)/postulations/$',views.get_postulations_by_notification,name='get_postulations_by_notification'),
+    url(r'^auth/create-artist/$',views.create_artist_user,name='create-artist-user'),
 ]

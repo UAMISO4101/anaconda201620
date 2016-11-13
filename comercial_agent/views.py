@@ -1,6 +1,7 @@
 import json
 import os
 
+import django
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -17,6 +18,28 @@ from comercial_agent.models import Notification, Sound, Song
 
 def index(request):
     return render(request, 'comercial_agent/index.html')
+
+
+def create_artist_user(request):
+    if request.method == 'POST':
+        user_json = json.loads(request.body.decode("utf-8"))
+        user = django.contrib.auth.models.User.objects.create_user(username=user_json['username'],
+                                                                   password=user_json['password'],
+                                                                   first_name=user_json['names'],
+                                                                   last_name=user_json['surname'],
+                                                                   email=user_json['email'])
+
+        artist = Artist(
+            user=user,
+            profile_picture=user_json['photo'],
+            artistic_name=user_json['nickname'],
+            account_number=user_json['accountNumber'],
+            address=user_json['address'],
+            city=user_json['city'],
+            country=user_json['country'],
+            telephone=user_json['phone']
+        )
+        artist.save()
 
 
 @csrf_exempt
