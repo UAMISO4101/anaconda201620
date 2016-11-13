@@ -41,6 +41,10 @@ def create_artist_user(request):
         )
         artist.save()
 
+        return HttpResponse(status=status.HTTP_201_CREATED)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
 
 @csrf_exempt
 def edit_notification(request,notification_id):
