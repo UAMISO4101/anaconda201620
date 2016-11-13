@@ -3,6 +3,8 @@
 import os
 
 import django
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
 from comercial_agent.models import Artist, ArtworkCollection, SoundType, Genre, Album, Song, Sound, Notification, \
     RequestedPiece
@@ -248,6 +250,14 @@ def notifications_creator():
     )
     requested_piece.save()
 
+def users_tokens():
+    django.contrib.auth.models.User.objects.create_user(username='judaspriest_user', password='judaspriest1234')
+
+    for user in User.objects.all():
+        Token.objects.get_or_create(user=user)
+
 songs_creator()
 sounds_creator()
 notifications_creator()
+
+users_tokens()
