@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
 from comercial_agent.models import Artist, ArtworkCollection, SoundType, Genre, Album, Song, Sound, Notification, \
-    RequestedPiece
+    RequestedPiece, BusinessAgent
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sonidos_libres.settings")
 
@@ -250,14 +250,30 @@ def notifications_creator():
     )
     requested_piece.save()
 
+def agents_creator():
+    user = django.contrib.auth.models.User.objects.create_user(username='ca_user_01', password='causer011234')
+    business_agent = BusinessAgent(
+        user=user,
+        profile_picture='media/profilePictures/ironmaiden2015bandwlogo_638.jpg',
+        company_name='Producciones JES',
+        address='Fake St 123',
+        city='Springfield',
+        country='USA',
+        telephone=123456,
+    )
+    business_agent.save()
+
+
 def users_tokens():
     django.contrib.auth.models.User.objects.create_user(username='judaspriest_user', password='judaspriest1234')
 
     for user in User.objects.all():
         Token.objects.get_or_create(user=user)
 
+
 songs_creator()
 sounds_creator()
 notifications_creator()
+agents_creator()
 
 users_tokens()
