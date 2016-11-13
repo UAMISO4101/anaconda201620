@@ -74,7 +74,7 @@ export const fetchNotifications = (id) => {
   return dispatch => {
     jQuery.ajax({
         method: "GET",
-        url: `${SERVER_URL}/comercial_agent/notifications/`,//user/${id}`,
+        url: `${SERVER_URL}/comercial_agent/notifications/user/${id}/`,
         statusCode: {
         200: (data) => {
           localStorage.setItem("NOTIFICATIONS", JSON.stringify(data));
