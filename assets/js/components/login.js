@@ -43,7 +43,7 @@ class Login extends Component {
                    if(res.role == "artist"){
                      window.location = `#/dashboard/artista/${res.id}/convocatorias`;
                    }else {
-                     window.location = `#/dashboard/agente-comercial/convocatorias`;
+                     window.location = `#/dashboard/agente-comercial/${res.id}/convocatorias`;
                    }
                  }, 800);
              } else {

@@ -71,7 +71,6 @@ export const fetchSoundTracks = (filter, type) => {
   }
 };
 export const fetchNotifications = (id) => {
-  debugger
   return dispatch => {
     jQuery.ajax({
         method: "GET",
