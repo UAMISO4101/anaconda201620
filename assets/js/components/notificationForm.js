@@ -207,15 +207,15 @@ class NotificationForm extends Component{
       event.preventDefault();
 
       let notificationObj = this.state.notif;
-      let notificationId = "";
+      let _url = `${SERVER_URL}/comercial_agent/notifications/user/${this.props.userId}/`;
       let ajaxMethod = "POST";
       if (this.props.notification.id){
-        notificationId = `${this.props.notification.id}/`;
-        ajaxMethod     = "PUT";
+        _url        = `${SERVER_URL}/comercial_agent/notifications/${this.props.notification.id}/`;
+        ajaxMethod  = "PUT";
       }
         $.ajax({
           method: ajaxMethod,
-          url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}`,
+          url: _url,
           data: JSON.stringify(notificationObj),
         })
         .done(( msg ) => {

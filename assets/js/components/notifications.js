@@ -30,7 +30,7 @@ class Notifications extends Component {
     };
   }
   componentDidMount(){
-    this.props.fetchNotifications();
+    this.props.fetchNotifications(this.props.userId);
     this.props.setUserId(this.props.userId);
   }
 
