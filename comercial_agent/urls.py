@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^notifications/(?P<notification_id>\w+)/postulations/$',views.get_postulations_by_notification,name='get_postulations_by_notification'),
     url(r'^obtain-auth-token/', obtain_auth_token),
     url(r'^auth/login/', views.login_view, name="login"),
+    url(r'^auth/logout/', views.logout_view, name="logout"),
 ]
