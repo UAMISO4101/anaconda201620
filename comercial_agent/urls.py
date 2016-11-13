@@ -17,4 +17,6 @@ urlpatterns = [
     url(r'^obtain-auth-token/', obtain_auth_token),
     url(r'^auth/login/', views.login_view, name="login"),
     url(r'^auth/logout/', views.logout_view, name="logout"),
+    url(r'^auth/is-logged/', views.is_logged_view, name="is_logged"),
+    url(r'^auth/get-logged-user/', views.get_authenticated_user, name="get_logged_user"),
 ]

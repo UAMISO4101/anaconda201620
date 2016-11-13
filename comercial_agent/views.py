@@ -88,7 +88,7 @@ def logout_view(request):
 
 @csrf_exempt
 def is_logged_view(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         if request.user.is_authenticated():
             return JsonResponse({"isLogged": True})
         else:
@@ -99,7 +99,7 @@ def is_logged_view(request):
 
 @csrf_exempt
 def get_authenticated_user(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         if request.user is not None:
             user = User.objects.get_by_natural_key(request.user)
             if user.is_authenticated():
