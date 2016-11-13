@@ -61,6 +61,7 @@ function pretendRequest(email, pass, cb) {
     if (email === 'comercial_agent@example.com' && pass === '12345678') {
       cb({
         role: "comercial_agent",
+        id: 1,
         authenticated: true,
         token: Math.random().toString(36).substring(7)
       })
