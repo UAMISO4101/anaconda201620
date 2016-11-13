@@ -59,21 +59,18 @@ export const auth = {
 
   register(credentials, cb){
     console.log(credentials);
-    cb(true,{id: 1});
-    /*
     $.ajax({
       method: 'POST',
-      url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}`,
-      data: JSON.stringify(notificationObj),
+      url: `${SERVER_URL}/comercial_agent/auth/create-artist/`,
+      data: JSON.stringify(credentials),
     })
-    .done(( msg ) => {
-      if (cb) cb(true,res);
+    .done( res  => {
+      cb(true);
     })
     .fail((err) => {
       console.error(err);
-      if (cb) cb(false,err)
+      cb(false,err)
     })
-    */
   }
 }
 
