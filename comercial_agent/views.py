@@ -160,9 +160,10 @@ def edit_notification(request,notification_id):
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
-def notification_json(request):
+def notification_json(request, user_id):
     if request.method == 'GET':
-        notifications = Notification.objects.order_by(('initial_date'))
+        business_agent = BusinessAgent.objects.get(user_id=user_id)
+        notifications = Notification.objects.filter(business_agent_id=business_agent.pk).order_by(('initial_date'))
         dict_notifications = []
 
         for notification in notifications:
@@ -179,12 +180,14 @@ def notification_json(request):
     elif request.method == 'POST':
             notification_json = json.loads(request.body.decode("utf-8"))
 
-            print(notification_json)
+            business_agent = BusinessAgent.objects.get(user_id=user_id)
+
             notification_model = Notification(name=notification_json['name'],
                                               initial_date=notification_json['initialDate'],
                                               closing_date=notification_json['closingDate'],
                                               description=notification_json['description'],
-                                              notification_type=notification_json['notificationType'])
+                                              notification_type=notification_json['notificationType'],
+                                              business_agent=business_agent)
 
             notification_model.save()
 
@@ -412,7 +415,6 @@ def get_postulations_by_notification(request,notification_id):
             postulation_info = Postulation.objects.get(id=postulation)
 
             artist_info = Artist.objects.get(id=postulation_info.artist.id)
-            artist_info_json = {"id":artist_info.id,"name":artist_info.artistic_name}
 
             postulated_artwork_info = PostulatedArtwork.objects.filter(postulation_id= postulation)
             for postulated_artwork in postulated_artwork_info:
