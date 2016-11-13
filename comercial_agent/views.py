@@ -2,6 +2,7 @@ import json
 import os
 
 import django
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -11,6 +12,7 @@ from django.http import JsonResponse
 # Create your views here.
 from rest_framework import status
 from rest_framework import viewsets
+from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 
 from comercial_agent.serializers import UserSerializer
@@ -18,6 +20,8 @@ from .models import *
 
 from comercial_agent.models import Notification, Sound, Song
 
+
+#AUTH
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -28,8 +32,47 @@ class UserViewSet(viewsets.ModelViewSet):
                     context={'request':request}).data)
         return super(UserViewSet, self).retrieve(request, pk)
 
+
 def index(request):
     return render(request, 'comercial_agent/index.html')
+
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        user_json = json.loads(request.body.decode("utf-8"))
+        username = user_json['username']
+        password = user_json['password']
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            token = Token.objects.get(user=user)
+
+            user_role = 'not-associated'
+
+            try:
+                artist_user = Artist.objects.get(pk=user.pk)
+                print(artist_user)
+                user_role = 'artist'
+            except:
+                print('User is not Artist')
+
+            try:
+                business_agent_user = BusinessAgent.objects.get(pk=user.pk)
+                print(business_agent_user)
+                user_role = 'commercial-agent'
+            except:
+                print('User is not Business Agent')
+
+            user_json = {"id": user.pk,
+                         "token": token.key,
+                         "role": user_role}
+
+            return JsonResponse ({"user":user_json}, safe=False)
+        else:
+            return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
 
 
 def create_artist_user(request):
