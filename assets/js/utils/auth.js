@@ -58,7 +58,7 @@ function notAuthorize(nextState,replace){
 // #ToDo delete below function, is just for dev proposes
 function pretendRequest(email, pass, cb) {
   setTimeout(() => {
-    if (email === 'coemrcial_agent@example.com' && pass === '12345678') {
+    if (email === 'comercial_agent@example.com' && pass === '12345678') {
       cb({
         role: "comercial_agent",
         authenticated: true,
