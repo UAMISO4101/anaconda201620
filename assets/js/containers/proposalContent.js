@@ -1,5 +1,5 @@
 import Proposal from '../components/proposal'
-import { addToSelectedProposals, choosedProposal } from '../actions';
+import {  choosedProposal } from '../actions';
 import { connect } from 'react-redux';
 
 const mapDispatchToProps = dispatch => ({

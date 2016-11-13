@@ -36,6 +36,7 @@ class Proposals extends Component {
         />
       )
     }else{
+      let tie = false;
       return (
         <div >
           <SweetAlert
