@@ -12,7 +12,7 @@ let msgAnimateTime = 150;
 let msgShowTime = 2000;
 const componentConfig = {
     iconFiletypes: ['.jpg', '.png', '.gif'],
-    postUrl: `${SERVER_URL}/comercial_agent/auth/create-artist/`,
+    postUrl: `${SERVER_URL}/comercial_agent/auth/upload-artist-photo/`,
     showFiletypeIcon: true,
 };
 const djsConfig = {

@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^notifications/postulate-artworks/$',views.postulate_artwork, name='postulate_artwork'),
     url(r'^notifications/(?P<notification_id>\w+)/postulations/$',views.get_postulations_by_notification,name='get_postulations_by_notification'),
     url(r'^auth/create-artist/$',views.create_artist_user,name='create-artist-user'),
+    url(r'^auth/upload-artist-photo/$',views.upload_artist_photo,name='upload-artist-photo'),
 ]
