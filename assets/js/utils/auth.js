@@ -1,7 +1,6 @@
-import {SERVER_URL} from '../utils/constants'
-
 // cb == callback
 import {SERVER_URL} from './constants';
+
 export const auth = {
   artist(){
     return getRole("artist");
