@@ -67,7 +67,7 @@ class Login extends Component {
     let username = null; let password  = null; let credentials = null;
     switch(event.currentTarget.id) {
        case "login-form":
-           let username = this.refs.login_username.value; let password = this.refs.login_password.value;
+           username = this.refs.login_username.value; password = this.refs.login_password.value;
            let credentials = { username, password }
            auth.login(credentials,(bool,res)=>{
               if (bool) {
@@ -86,7 +86,7 @@ class Login extends Component {
            return false;
            break;
     case "register-form":
-       let username = this.refs.register_username.value; let email = this.refs.register_email.value; let names = this.refs.register_names.value; let surname = this.refs.register_surname.value; let nickname = this.refs.register_nickname.value; let accountNumber = this.refs.register_accountNumber.value; let city = this.refs.register_city.value; let country = this.refs.register_country.value; let phone = this.refs.register_phone.value; let password = this.refs.register_password.value; let confirm_password = this.refs.register_confirm_password.value; let address = this.refs.register_address.value;
+       username = this.refs.register_username.value; let email = this.refs.register_email.value; let names = this.refs.register_names.value; let surname = this.refs.register_surname.value; let nickname = this.refs.register_nickname.value; let accountNumber = this.refs.register_accountNumber.value; let city = this.refs.register_city.value; let country = this.refs.register_country.value; let phone = this.refs.register_phone.value; password = this.refs.register_password.value; let confirm_password = this.refs.register_confirm_password.value; let address = this.refs.register_address.value;
        let photo = this.state.register_photo;
        credentials = {address, username , email , names , surname , photo , nickname , accountNumber , city , country , phone , password , confirm_password};
        if ( username && email && names && surname && photo && nickname && accountNumber && city && country && phone && password && confirm_password == password ) {
