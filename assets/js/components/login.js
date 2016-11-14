@@ -1,14 +1,26 @@
 import React, {Component} from 'react';
 import { ListGroupItem } from 'react-bootstrap'
 import { auth } from '../utils/auth'
-import { ARTIST_DASHBOARD, CA_DASHBOARD, AUTH_TYPE } from '../utils/constants'
+import { ARTIST_DASHBOARD, CA_DASHBOARD, AUTH_TYPE, SERVER_URL } from '../utils/constants'
 import FaUserSecret from 'react-icons/lib/fa/user-secret'
 import SweetAlert from 'sweetalert-react';
+import DropzoneComponent from 'react-dropzone-component';
 
 let $divForms = null;
 let modalAnimateTime = 300;
 let msgAnimateTime = 150;
 let msgShowTime = 2000;
+const componentConfig = {
+    iconFiletypes: ['.jpg', '.png', '.gif'],
+    maxFiles: 1,
+    postUrl: `${SERVER_URL}/comercial_agent/auth/create-artist/`,
+    showFiletypeIcon: true,
+};
+const djsConfig = {
+  addRemoveLinks: true,
+  acceptedFiles: "image/jpeg,image/png,image/gif"
+}
+
 class Login extends Component {
   constructor(props){
     super(props);
@@ -39,13 +51,14 @@ class Login extends Component {
     }
   }
   _onChangePhoto(event){
-    let FR= new FileReader();
-    FR.onload = (e) => {
-      this.setState({
-        register_photo: e.target.result,
-      })
-    };
-    FR.readAsDataURL( event.target.files[0] );
+    console.debug("changed");
+    // let FR= new FileReader();
+    // FR.onload = (e) => {
+    //   this.setState({
+    //     register_photo: e.target.result,
+    //   })
+    // };
+    // FR.readAsDataURL( this.refs.register_photo.files[0] );
   }
   _onLogin(event){ this._onSubmit(event) }
   _onRegister(event){ this._onSubmit(event) }
@@ -74,6 +87,7 @@ class Login extends Component {
        break;
     case "register-form":
        let username = this.refs.register_username.value; let email = this.refs.register_email.value; let names = this.refs.register_names.value; let surname = this.refs.register_surname.value; let nickname = this.refs.register_nickname.value; let accountNumber = this.refs.register_accountNumber.value; let city = this.refs.register_city.value; let country = this.refs.register_country.value; let phone = this.refs.register_phone.value; let password = this.refs.register_password.value; let confirm_password = this.refs.register_confirm_password.value; let address = this.refs.register_address.value;
+       //  let photo = {data: this.state.register_photo ,name: this.refs.register_photo.files[0].name, type: this.refs.register_photo.files[0].type};
        let photo = this.state.register_photo;
        credentials = {address, username , email , names , surname , photo , nickname , accountNumber , city , country , phone , password , confirm_password};
        if ( username && email && names && surname && photo && nickname && accountNumber && city && country && phone && password && confirm_password == password ) {
@@ -176,7 +190,10 @@ class Login extends Component {
                 <input ref="register_names" className="form-control" type="text" placeholder="Nombres" required />
                 <input ref="register_surname" className="form-control" type="text" placeholder="Apellidos" required />
                 <label>Escoger una foto de perfil</label>
-                <input onChange={this._onChangePhoto.bind(this)} ref="register_photo" className="form-control" type="file" accept="image/jpg, image/png, image/jpeg" placeholder="Foto" required />
+                <DropzoneComponent config={componentConfig}
+                       eventHandlers={this._onChangePhoto.bind(this)}
+                     djsConfig={djsConfig} />
+                {/* <input onChange={this._onChangePhoto.bind(this)} ref="register_photo" className="form-control" type="file" accept="image/jpg, image/png, image/jpeg" placeholder="Foto" required /> */}
                 <input ref="register_nickname" className="form-control" type="text" placeholder="Nombre Artistico" required />
                 <input ref="register_accountNumber" className="form-control" type="number" placeholder="Número de cuenta" required />
                 <input ref="register_city" className="form-control" type="text" placeholder="Ciudad" required />
