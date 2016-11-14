@@ -110,7 +110,7 @@ class ArtworkRequest extends Component {
 
     render() {
         return (
-        <div className="artworkrequest-content">
+        <div className="contact-section">
             <SweetAlert
                 show={this.state.show}
                 type={this.state.type}
@@ -120,9 +120,9 @@ class ArtworkRequest extends Component {
             />
             <div className="row" >
             <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
-              <BootstrapTable data={this.props.request} striped={true} hover={true}>
-                  <TableHeaderColumn dataField="name"  isKey={true}  dataAlign="center" dataSort={true}>Name</TableHeaderColumn>
-                  <TableHeaderColumn dataField="features" dataSort={true}>Features</TableHeaderColumn>
+              <BootstrapTable data={this.props.request} striped={true} hover={false}>
+                  <TableHeaderColumn dataField="name" isKey={true}  dataAlign="center" dataSort={true}>Obra Solicitada</TableHeaderColumn>
+                  <TableHeaderColumn dataField="features" dataSort={true}>Características</TableHeaderColumn>
                   { this.tableComponent(this.props.userType) }
               </BootstrapTable>
             </div>

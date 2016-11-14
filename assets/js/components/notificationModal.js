@@ -14,7 +14,7 @@ class NotificationModal extends Component {
         <Modal.Header closeButton>
           {
             this.props.userType!=='artist' ?
-              <Modal.Title>Detalle solicitudes</Modal.Title> :
+              <Modal.Title>Detalle de las obras solicitadas</Modal.Title> :
               <Modal.Title>Postular Sonido</Modal.Title>
           }
         </Modal.Header>
