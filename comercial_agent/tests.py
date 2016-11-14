@@ -66,6 +66,7 @@ class PostulationTest(TestCase):
             contentUrl='http://url'
         )
         song.save()
+        
 
         notification = Notification(
             name='Notification Test',
