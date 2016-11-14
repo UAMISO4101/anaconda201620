@@ -68,7 +68,7 @@ class Login extends Component {
     switch(event.currentTarget.id) {
        case "login-form":
            username = this.refs.login_username.value; password = this.refs.login_password.value;
-           let credentials = { username, password }
+           credentials = { username, password }
            auth.login(credentials,(bool,res)=>{
               if (bool) {
                  setTimeout(() => {
