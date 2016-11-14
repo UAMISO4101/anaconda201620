@@ -19,7 +19,7 @@ from comercial_agent.models import Notification, Sound, Song
 def index(request):
     return render(request, 'comercial_agent/index.html')
 
-
+@csrf_exempt
 def create_artist_user(request):
     if request.method == 'POST':
         user_json = json.loads(request.body.decode("utf-8"))
