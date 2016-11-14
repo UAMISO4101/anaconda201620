@@ -1,3 +1,5 @@
+import {SERVER_URL} from '../utils/constants'
+
 // cb == callback
 export const auth = {
   artist(){
