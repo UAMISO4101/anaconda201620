@@ -35,7 +35,7 @@ function run () {
         <Route path='auth' component={LoginContent} />
 
         <Route path="dashboard" onEnter={requireAuth}>
-          <Route path="agente-comercial" onEnter={isComercialAgent}>
+          <Route path="agente-comercial/:id" onEnter={isComercialAgent}>
             <IndexRoute component={NotificationFormContent} />
             <Route path="convocatoria/:notificationId" >
               <IndexRoute component={NotificationFormEdit} />

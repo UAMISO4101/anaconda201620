@@ -2,6 +2,7 @@ import json
 import os
 
 import django
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -10,14 +11,107 @@ from django.http import JsonResponse
 
 # Create your views here.
 from rest_framework import status
+from rest_framework import viewsets
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+
+from comercial_agent.serializers import UserSerializer
 from .models import *
 
 from comercial_agent.models import Notification, Sound, Song
 
 
+#AUTH
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def retrieve(self, request, pk=None):
+        if pk == 'i':
+            return Response(UserSerializer(request.user,
+                    context={'request':request}).data)
+        return super(UserViewSet, self).retrieve(request, pk)
+
 
 def index(request):
     return render(request, 'comercial_agent/index.html')
+
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        user_json = json.loads(request.body.decode("utf-8"))
+        username = user_json['username']
+        password = user_json['password']
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            token = Token.objects.get(user=user)
+
+            user_role = 'not-associated'
+
+            try:
+                artist_user = Artist.objects.get(user_id=user.pk)
+                print(artist_user)
+                user_role = 'artist'
+            except:
+                print('User is not Artist')
+
+            try:
+                business_agent_user = BusinessAgent.objects.get(user_id=user.pk)
+                print(business_agent_user)
+                user_role = 'commercial-agent'
+            except:
+                print('User is not Business Agent')
+                return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+
+            user_json = {"id": user.pk,
+                         "token": token.key,
+                         "role": user_role}
+
+            return JsonResponse ({"user":user_json}, safe=False)
+        else:
+            return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+
+
+@csrf_exempt
+def logout_view(request):
+    if request.method == 'POST':
+        try:
+            logout(request)
+            return HttpResponse(status=status.HTTP_200_OK)
+        except:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+def is_logged_view(request):
+    if request.method == 'GET':
+        if request.user.is_authenticated():
+            return JsonResponse({"isLogged": True})
+        else:
+            return JsonResponse({"isLogged": False})
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+def get_authenticated_user(request):
+    if request.method == 'GET':
+        if request.user is not None:
+            user = User.objects.get_by_natural_key(request.user)
+            if user.is_authenticated():
+                return JsonResponse({"user":user})
+            else:
+                return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
 
 @csrf_exempt
 def create_artist_user(request):
@@ -40,6 +134,7 @@ def create_artist_user(request):
             telephone=user_json['phone']
         )
         artist.save()
+
 
         return HttpResponse(status=status.HTTP_201_CREATED)
     else:
@@ -71,9 +166,10 @@ def edit_notification(request,notification_id):
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
-def notification_json(request):
+def notification_json(request, user_id):
     if request.method == 'GET':
-        notifications = Notification.objects.order_by(('initial_date'))
+        business_agent = BusinessAgent.objects.get(user_id=user_id)
+        notifications = Notification.objects.filter(business_agent_id=business_agent.pk).order_by(('initial_date'))
         dict_notifications = []
 
         for notification in notifications:
@@ -90,12 +186,14 @@ def notification_json(request):
     elif request.method == 'POST':
             notification_json = json.loads(request.body.decode("utf-8"))
 
-            print(notification_json)
+            business_agent = BusinessAgent.objects.get(user_id=user_id)
+
             notification_model = Notification(name=notification_json['name'],
                                               initial_date=notification_json['initialDate'],
                                               closing_date=notification_json['closingDate'],
                                               description=notification_json['description'],
-                                              notification_type=notification_json['notificationType'])
+                                              notification_type=notification_json['notificationType'],
+                                              business_agent=business_agent)
 
             notification_model.save()
 
@@ -114,21 +212,24 @@ def notification_json(request):
 
 @csrf_exempt
 def get_open_notifications(request):
-    notifications_model = Notification.objects.filter(notification_state=Notification.PUBLISHED)
+    if request.method == 'GET':
+        notifications_model = Notification.objects.filter(notification_state=Notification.PUBLISHED)
 
-    notifications_array = []
+        notifications_array = []
 
-    for notification in notifications_model:
-        pieces_model = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
-        dict_notification = notification.as_dict();
-        dict_piece = []
-        for piece in pieces_model:
-            dict_piece.append({'id': piece.id, 'name': piece.name, 'features': piece.features})
+        for notification in notifications_model:
+            pieces_model = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
+            dict_notification = notification.as_dict();
+            dict_piece = []
+            for piece in pieces_model:
+                dict_piece.append({'id': piece.id, 'name': piece.name, 'features': piece.features})
 
-        dict_notification['request'] = dict_piece
-        notifications_array.append(dict_notification)
+            dict_notification['request'] = dict_piece
+            notifications_array.append(dict_notification)
 
-    return JsonResponse({'notifications': notifications_array}, safe=False)
+        return JsonResponse({'notifications': notifications_array}, safe=False)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 
 @csrf_exempt
@@ -320,7 +421,6 @@ def get_postulations_by_notification(request,notification_id):
             postulation_info = Postulation.objects.get(id=postulation)
 
             artist_info = Artist.objects.get(id=postulation_info.artist.id)
-            artist_info_json = {"id":artist_info.id,"name":artist_info.artistic_name}
 
             postulated_artwork_info = PostulatedArtwork.objects.filter(postulation_id= postulation)
             for postulated_artwork in postulated_artwork_info:

@@ -4,7 +4,7 @@ import { auth } from '../utils/auth';
 import { USER_ROLES } from '../utils/constants';
 import { Link } from 'react-router'
 
-const ArtistNavBarComponent = <li><a href={`#${ARTIST_DASHBOARD}/1/convocatorias`}>Participar</a></li> ;
+const ArtistNavBarComponent = (userId) => {return <li><a href={`#${ARTIST_DASHBOARD}/${userId}/convocatorias`}>Participar</a></li>} ;
 
 const authComponent = () => {
   if (auth.loggedIn()) {
@@ -25,17 +25,18 @@ const authComponent = () => {
     )
   }
 }
-const ComercialAgentNavBarComponent = [
-    <li><a href={`#${CA_DASHBOARD}`}>Crear Convocatoria</a></li>,
-    <li><a href={`#${CA_DASHBOARD}/convocatorias`}>Convocatorias</a></li>
-]
-const userTypeComponent = () => {
+const ComercialAgentNavBarComponent = (userId) => {
+  return [
+    <li><a href={`#${CA_DASHBOARD}/${userId}/`}>Crear Convocatoria</a></li>,
+    <li><a href={`#${CA_DASHBOARD}/${userId}/convocatorias`}>Convocatorias</a></li>
+]}
+const userTypeComponent = (userId) => {
   switch (auth.getUserRole()) {
     case USER_ROLES.ARTIST :
-        return ArtistNavBarComponent;
+        return ArtistNavBarComponent(userId);
       break;
     case USER_ROLES.COMERCIAL_AGENT :
-        return ComercialAgentNavBarComponent;
+        return ComercialAgentNavBarComponent(userId);
       break;
     default:
       return null
@@ -44,6 +45,7 @@ const userTypeComponent = () => {
 
 class Navbar extends Component{
     render(){
+        let userId = window.localStorage.userId;
         return(
             <header id="header" role="banner">
                 <div className="main-nav fixed-menu">
@@ -71,7 +73,7 @@ class Navbar extends Component{
                             <div className="collapse navbar-collapse">
                                 <ul className="nav navbar-nav navbar-right">
                                     <li><a href="#">Home</a></li>
-                                    { userTypeComponent() }
+                                    { userTypeComponent(userId) }
                                     { authComponent() }
                                 </ul>
                             </div>

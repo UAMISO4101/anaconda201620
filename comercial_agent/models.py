@@ -95,6 +95,8 @@ class Notification(models.Model):
         choices=NOTIFICATION_STATE,
         default=CREATED,
     )
+    business_agent = models.ForeignKey(BusinessAgent, null=False)
+
 
     def as_dict(self):
         return {

@@ -53,25 +53,25 @@ class Login extends Component {
     event.preventDefault();
     let username = null; let password  = null; let credentials = null;
     switch(event.currentTarget.id) {
-    case "login-form":
-       username = this.refs.login_username.value; password = this.refs.login_password.value;
-       credentials = { username, password }
-       auth.login(credentials,(bool,res)=>{
-          if (bool) {
-           msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "success", "glyphicon-ok", "Login OK, redirecting...");
-             setTimeout(() => {
-               if(res.role == "artist"){
-                 window.location = `#${ARTIST_DASHBOARD}/${res.id}/convocatorias`;
-               }else {
-                 window.location = `#${CA_DASHBOARD}/convocatorias`;
-               }
-             }, 800);
-         } else {
-           msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "error", "glyphicon-remove", "Login error");
-         }
-       })
-       return false;
-       break;
+       case "login-form":
+           let username = this.refs.login_username.value; let password = this.refs.login_password.value;
+           let credentials = { username, password }
+           auth.login(credentials,(bool,res)=>{
+              if (bool) {
+                 setTimeout(() => {
+               msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "success", "glyphicon-ok", "Login OK, redirecting...");
+                   if(res.role == "artist"){
+                     window.location = `#${ARTIST_DASHBOARD}/${res.id}/convocatorias`;
+                   }else {
+                     window.location = `#${CA_DASHBOARD}/${res.id}/convocatorias`;
+                   }
+                 }, 800);
+             } else {
+               msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "error", "glyphicon-remove", "Login error");
+             }
+           })
+           return false;
+           break;
     case "register-form":
        let username = this.refs.register_username.value; let email = this.refs.register_email.value; let names = this.refs.register_names.value; let surname = this.refs.register_surname.value; let nickname = this.refs.register_nickname.value; let accountNumber = this.refs.register_accountNumber.value; let city = this.refs.register_city.value; let country = this.refs.register_country.value; let phone = this.refs.register_phone.value; let password = this.refs.register_password.value; let confirm_password = this.refs.register_confirm_password.value; let address = this.refs.register_address.value;
        let photo = this.state.register_photo;
