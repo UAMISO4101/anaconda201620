@@ -54,8 +54,6 @@ def upload_artist_photo(request):
             imageFile = request.FILES['file']
             path = "media/profilePictures/" + imageFile.name
             extension = imageFile.name.split(".")[-1]
-            print(path)
-            print(extension)
 
             conn = boto.connect_s3(os.environ.get('AWS_ACCESS_KEY_ID'), os.environ.get('AWS_SECRET_ACCESS_KEY'))
             bucket = conn.get_bucket(os.environ.get('AWS_STORAGE_BUCKET_NAME'))
@@ -63,8 +61,11 @@ def upload_artist_photo(request):
             k.key = path
             k.set_metadata('Content-Type', 'image/' + extension)
             k.set_contents_from_file(imageFile)
+            k.set_acl('public-read')
 
-            return JsonResponse({'img_url': path}, safe=False)
+            print("photo " + path + " uploaded to S3")
+
+            return JsonResponse({'img_url': "profilePictures/" + imageFile.name}, safe=False)
         except:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     else:
