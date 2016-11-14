@@ -15,18 +15,16 @@ const componentConfig = {
     postUrl: `${SERVER_URL}/comercial_agent/auth/upload-artist-photo/`,
     showFiletypeIcon: true,
 };
-const djsConfig = {
-  addRemoveLinks: true,
-  acceptedFiles: "image/jpeg,image/png,image/gif",
-  maxFiles: 1,
-}
 
 
 class Login extends Component {
+
   constructor(props){
     super(props);
+    let csrf_token = jQuery("#csrf_token").children()[0].value;
     this.state = {
       authText: AUTH_TYPE.REGISTER,
+      csrf_token: csrf_token,
       register_photo: null,
       show: false,
       sweetAlertOnConfirm: () => {this.setState({ show: false })},
@@ -52,6 +50,14 @@ class Login extends Component {
       modalAnimate(this.state.authText,this.refs.loginForm, this.refs.registerForm);
     }
   }
+  djsConfig(){ return{
+    addRemoveLinks: true,
+    acceptedFiles: "image/jpeg,image/png,image/gif",
+    maxFiles: 1,
+    headers: {
+      'X-CSRF-Token': this.state.csrf_token,
+    },
+  }}
   eventHandlers(){return {
     error: (photo,server) => {
       this.setState({ show: true, sweetAlertTitle: "Error al subir la imagen", sweetAlertOnConfirm: () => { this.setState({ show: false }); },  type: "error", sweetAlertMessage: "Contacte al administrador." });
@@ -191,7 +197,7 @@ class Login extends Component {
                 <label>Escoger una foto de perfil</label>
                 <DropzoneComponent config={componentConfig}
                        eventHandlers={this.eventHandlers()}
-                     djsConfig={djsConfig} />
+                     djsConfig={this.djsConfig()} />
                 <input ref="register_nickname" className="form-control" type="text" placeholder="Nombre Artistico" required />
                 <input ref="register_accountNumber" className="form-control" type="number" placeholder="Número de cuenta" required />
                 <input ref="register_city" className="form-control" type="text" placeholder="Ciudad" required />
