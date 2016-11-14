@@ -10,7 +10,7 @@ class NotificationModal extends Component {
   render(){
     return (
       <span>
-        <Modal show={this.props.showModal} onHide={this.closeModal.bind(this)}>
+        <Modal show={this.props.showModal} onHide={this.closeModal.bind(this)} bsSize="large" >
         <Modal.Header closeButton>
           {
             this.props.userType!=='artist' ?

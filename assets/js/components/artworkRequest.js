@@ -84,7 +84,7 @@ class ArtworkRequest extends Component {
       return (
         <div className="section artwork-selection">
           <div>
-            Seleccionado: { selectLabel }
+            Seleccione obra: { selectLabel }
           </div>
   				<Select ref={`artwork-${cell}`}
              autofocus
@@ -121,8 +121,8 @@ class ArtworkRequest extends Component {
             <div className="row" >
             <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
               <BootstrapTable data={this.props.request} striped={true} hover={false}>
-                  <TableHeaderColumn dataField="name" isKey={true}  dataAlign="center" dataSort={true}>Obra Solicitada</TableHeaderColumn>
-                  <TableHeaderColumn dataField="features" dataSort={true}>Características</TableHeaderColumn>
+                  <TableHeaderColumn dataField="name" isKey={true}  dataAlign="center" dataSort={true} width="150">Obra Solicitada</TableHeaderColumn>
+                  <TableHeaderColumn dataField="features" dataSort={true} width="150">Características</TableHeaderColumn>
                   { this.tableComponent(this.props.userType) }
               </BootstrapTable>
             </div>
@@ -180,7 +180,7 @@ class ArtworkRequest extends Component {
     tableComponent(userType){
       switch (userType){
         case "artist":
-          return( <TableHeaderColumn dataField="id" dataFormat={this.requestUpload.bind(this)}> Tipo & Obra </TableHeaderColumn> )
+          return( <TableHeaderColumn dataField="id" dataFormat={this.requestUpload.bind(this)} width="300"> Tipo & Obra </TableHeaderColumn> )
         case "comercial_agent":
           return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
         default:
