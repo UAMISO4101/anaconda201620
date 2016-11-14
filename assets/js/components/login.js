@@ -12,14 +12,15 @@ let msgAnimateTime = 150;
 let msgShowTime = 2000;
 const componentConfig = {
     iconFiletypes: ['.jpg', '.png', '.gif'],
-    maxFiles: 1,
     postUrl: `${SERVER_URL}/comercial_agent/auth/create-artist/`,
     showFiletypeIcon: true,
 };
 const djsConfig = {
   addRemoveLinks: true,
-  acceptedFiles: "image/jpeg,image/png,image/gif"
+  acceptedFiles: "image/jpeg,image/png,image/gif",
+  maxFiles: 1,
 }
+
 
 class Login extends Component {
   constructor(props){
@@ -34,6 +35,7 @@ class Login extends Component {
       type: "warning",
     };
     this.changeAuth = this.changeAuth.bind(this);
+    this.eventHandlers = this.eventHandlers.bind(this);
     this._onLogin = this._onLogin.bind(this);
     this._onRegister = this._onRegister.bind(this);
     this._onSubmit = this._onSubmit.bind(this);
@@ -50,16 +52,14 @@ class Login extends Component {
       modalAnimate(this.state.authText,this.refs.loginForm, this.refs.registerForm);
     }
   }
-  _onChangePhoto(event){
-    console.debug("changed");
-    // let FR= new FileReader();
-    // FR.onload = (e) => {
-    //   this.setState({
-    //     register_photo: e.target.result,
-    //   })
-    // };
-    // FR.readAsDataURL( this.refs.register_photo.files[0] );
-  }
+  eventHandlers(){return {
+    error: (photo,server) => {
+      this.setState({ show: true, sweetAlertTitle: "Error al subir la imagen", sweetAlertOnConfirm: () => { this.setState({ show: false }); },  type: "error", sweetAlertMessage: "Contacte al administrador." });
+    },
+    success: (photo,server) => {
+      this.setState({register_photo: true})
+    },
+  }}
   _onLogin(event){ this._onSubmit(event) }
   _onRegister(event){ this._onSubmit(event) }
   _onSubmit(event){
@@ -191,7 +191,7 @@ class Login extends Component {
                 <input ref="register_surname" className="form-control" type="text" placeholder="Apellidos" required />
                 <label>Escoger una foto de perfil</label>
                 <DropzoneComponent config={componentConfig}
-                       eventHandlers={this._onChangePhoto.bind(this)}
+                       eventHandlers={this.eventHandlers()}
                      djsConfig={djsConfig} />
                 {/* <input onChange={this._onChangePhoto.bind(this)} ref="register_photo" className="form-control" type="file" accept="image/jpg, image/png, image/jpeg" placeholder="Foto" required /> */}
                 <input ref="register_nickname" className="form-control" type="text" placeholder="Nombre Artistico" required />
