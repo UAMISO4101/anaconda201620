@@ -223,7 +223,7 @@ class NotificationForm extends Component{
               type: "success",
               show: true,
               showModal: false,
-              sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = "#/dashboard/agente-comercial/convocatorias"; },
+              sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}/convocatorias`; },
               sweetAlertMessage: "Convocatoria creada exitosamente",
               sweetAlertTitle: "Exito",
             });
