@@ -1,8 +1,10 @@
 import json
 import os
 
+import boto
 import django
 from django.contrib.auth import authenticate, login, logout
+from boto.s3.key import Key
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -137,6 +139,30 @@ def create_artist_user(request):
 
 
         return HttpResponse(status=status.HTTP_201_CREATED)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+def upload_artist_photo(request):
+    if request.method == 'POST':
+        try:
+            imageFile = request.FILES['file']
+            path = "media/profilePictures/" + imageFile.name
+            extension = imageFile.name.split(".")[-1]
+
+            conn = boto.connect_s3(os.environ.get('AWS_ACCESS_KEY_ID'), os.environ.get('AWS_SECRET_ACCESS_KEY'))
+            bucket = conn.get_bucket(os.environ.get('AWS_STORAGE_BUCKET_NAME'))
+            k = Key(bucket)
+            k.key = path
+            k.set_metadata('Content-Type', 'image/' + extension)
+            k.set_contents_from_file(imageFile)
+            k.set_acl('public-read')
+
+            print("photo " + path + " uploaded to S3")
+
+            return JsonResponse({'img_url': "profilePictures/" + imageFile.name}, safe=False)
+        except:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 

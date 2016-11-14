@@ -1,14 +1,27 @@
 import React, {Component} from 'react';
 import { ListGroupItem } from 'react-bootstrap'
 import { auth } from '../utils/auth'
-import { ARTIST_DASHBOARD, CA_DASHBOARD, AUTH_TYPE } from '../utils/constants'
+import { ARTIST_DASHBOARD, CA_DASHBOARD, AUTH_TYPE, SERVER_URL } from '../utils/constants'
 import FaUserSecret from 'react-icons/lib/fa/user-secret'
 import SweetAlert from 'sweetalert-react';
+import DropzoneComponent from 'react-dropzone-component';
 
 let $divForms = null;
 let modalAnimateTime = 300;
 let msgAnimateTime = 150;
 let msgShowTime = 2000;
+const componentConfig = {
+    iconFiletypes: ['.jpg', '.png', '.gif'],
+    postUrl: `${SERVER_URL}/comercial_agent/auth/upload-artist-photo/`,
+    showFiletypeIcon: true,
+};
+const djsConfig = {
+  addRemoveLinks: true,
+  acceptedFiles: "image/jpeg,image/png,image/gif",
+  maxFiles: 1,
+}
+
+
 class Login extends Component {
   constructor(props){
     super(props);
@@ -22,6 +35,7 @@ class Login extends Component {
       type: "warning",
     };
     this.changeAuth = this.changeAuth.bind(this);
+    this.eventHandlers = this.eventHandlers.bind(this);
     this._onLogin = this._onLogin.bind(this);
     this._onRegister = this._onRegister.bind(this);
     this._onSubmit = this._onSubmit.bind(this);
@@ -38,15 +52,14 @@ class Login extends Component {
       modalAnimate(this.state.authText,this.refs.loginForm, this.refs.registerForm);
     }
   }
-  _onChangePhoto(event){
-    let FR= new FileReader();
-    FR.onload = (e) => {
-      this.setState({
-        register_photo: e.target.result,
-      })
-    };
-    FR.readAsDataURL( event.target.files[0] );
-  }
+  eventHandlers(){return {
+    error: (photo,server) => {
+      this.setState({ show: true, sweetAlertTitle: "Error al subir la imagen", sweetAlertOnConfirm: () => { this.setState({ show: false }); },  type: "error", sweetAlertMessage: "Contacte al administrador." });
+    },
+    success: (photo,server) => {
+      this.setState({register_photo: server.img_url})
+    },
+  }}
   _onLogin(event){ this._onSubmit(event) }
   _onRegister(event){ this._onSubmit(event) }
   _onSubmit(event){
@@ -176,7 +189,9 @@ class Login extends Component {
                 <input ref="register_names" className="form-control" type="text" placeholder="Nombres" required />
                 <input ref="register_surname" className="form-control" type="text" placeholder="Apellidos" required />
                 <label>Escoger una foto de perfil</label>
-                <input onChange={this._onChangePhoto.bind(this)} ref="register_photo" className="form-control" type="file" accept="image/jpg, image/png, image/jpeg" placeholder="Foto" required />
+                <DropzoneComponent config={componentConfig}
+                       eventHandlers={this.eventHandlers()}
+                     djsConfig={djsConfig} />
                 <input ref="register_nickname" className="form-control" type="text" placeholder="Nombre Artistico" required />
                 <input ref="register_accountNumber" className="form-control" type="number" placeholder="Número de cuenta" required />
                 <input ref="register_city" className="form-control" type="text" placeholder="Ciudad" required />
