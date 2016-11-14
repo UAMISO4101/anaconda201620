@@ -4,7 +4,7 @@ from django.test import TestCase
 
 # Create your tests here.
 from comercial_agent.models import Genre, Artist, ArtworkCollection, Album, Song, Notification, RequestedPiece, \
-    PostulatedArtwork, Postulation
+    PostulatedArtwork, Postulation, BusinessAgent
 
 
 class PostulationTest(TestCase):
@@ -66,7 +66,18 @@ class PostulationTest(TestCase):
             contentUrl='http://url'
         )
         song.save()
-        
+
+        user2 = django.contrib.auth.models.User.objects.create_user(username='ca_user_01', password='causer011234')
+        business_agent = BusinessAgent(
+            user=user2,
+            profile_picture='profilePictures/ironmaiden2015bandwlogo_638.jpg',
+            company_name='Producciones JES',
+            address='Fake St 123',
+            city='Springfield',
+            country='USA',
+            telephone=123456,
+        )
+        business_agent.save()
 
         notification = Notification(
             name='Notification Test',
@@ -74,6 +85,7 @@ class PostulationTest(TestCase):
             closing_date='2016-11-11',
             description='Not 01 Desc',
             notification_type='PB',
+            business_agent=business_agent,
         )
         notification.save()
 
