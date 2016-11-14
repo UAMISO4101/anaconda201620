@@ -144,9 +144,12 @@ def create_artist_user(request):
 
 @csrf_exempt
 def upload_artist_photo(request):
+    print("REQUEST")
+    print(request)
     if request.method == 'POST':
         try:
             imageFile = request.FILES['file']
+            print(imageFile)
             path = "media/profilePictures/" + imageFile.name
             extension = imageFile.name.split(".")[-1]
 
