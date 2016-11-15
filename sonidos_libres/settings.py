@@ -163,6 +163,17 @@ CORS_ALLOW_METHODS = (
     'DELETE',
     'OPTIONS',
 )
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 if os.environ.get( 'DJANGO_ENV' ) == 'production':
