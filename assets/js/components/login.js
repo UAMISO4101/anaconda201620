@@ -276,7 +276,7 @@ function setWarning(obj){
   !obj.country ? warning.push(" País") : null ;
   !obj.email ? warning.push(" Correo Electrónico") : null ;
   !obj.password ? warning.push(" Contraseña") : null ;
-  !obj.password == !obj.confirm_password ? warning.push(" Contreseñas NO coinciden") : null;
+  obj.password != obj.confirm_password ? warning.push(" Contreseñas NO coinciden") : null;
   !obj.photo ? warning.push(" Imagen") : null ;
   !obj.names ? warning.push(" Nombres") : null ;
   !obj.nickname ? warning.push(" Nombre Artistico") : null ;
