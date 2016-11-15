@@ -62,6 +62,9 @@ class Login extends Component {
     error: (photo,server) => {
       this.setState({ show: true, sweetAlertTitle: "Error al subir la imagen", sweetAlertOnConfirm: () => { this.setState({ show: false }); },  type: "error", sweetAlertMessage: "Contacte al administrador." });
     },
+    sending: (file, xhr, formData) => {
+      formData.append('image', file);
+    },
     success: (photo,server) => {
       this.setState({register_photo: server.img_url})
     },
