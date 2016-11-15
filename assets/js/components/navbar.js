@@ -1,7 +1,51 @@
 import React, {Component} from 'react';
 import { CA_DASHBOARD, ARTIST_DASHBOARD } from '../utils/constants'
+import { auth } from '../utils/auth';
+import { USER_ROLES } from '../utils/constants';
+import { Link } from 'react-router'
+
+const ArtistNavBarComponent = (userId) => {return <li><a href={`#${ARTIST_DASHBOARD}/${userId}/convocatorias`}>Participar</a></li>} ;
+
+const authComponent = () => {
+  if (auth.loggedIn()) {
+    return(
+      <li className="scroll active">
+        <button className='btn btn-danger' style={{padding: '20px', 'font-size': '18px'}} onClick={()=>{
+            auth.logout(()=>{
+              window.location = "#";
+            });
+          }}>Logout</button>
+        </li>
+      )
+  } else {
+    return(
+      <li className="scroll active">
+        <Link to='/auth'>Cuenta</Link>
+      </li>
+    )
+  }
+}
+const ComercialAgentNavBarComponent = (userId) => {
+  return [
+    <li><a href={`#${CA_DASHBOARD}/${userId}/`}>Crear Convocatoria</a></li>,
+    <li><a href={`#${CA_DASHBOARD}/${userId}/convocatorias`}>Convocatorias</a></li>
+]}
+const userTypeComponent = (userId) => {
+  switch (auth.getUserRole()) {
+    case USER_ROLES.ARTIST :
+        return ArtistNavBarComponent(userId);
+      break;
+    case USER_ROLES.COMERCIAL_AGENT :
+        return ComercialAgentNavBarComponent(userId);
+      break;
+    default:
+      return null
+  }
+}
+
 class Navbar extends Component{
     render(){
+        let userId = window.localStorage.userId;
         return(
             <header id="header" role="banner">
                 <div className="main-nav fixed-menu">
@@ -29,16 +73,8 @@ class Navbar extends Component{
                             <div className="collapse navbar-collapse">
                                 <ul className="nav navbar-nav navbar-right">
                                     <li><a href="#">Home</a></li>
-                                    <li><a href={`#${CA_DASHBOARD}`}>Crear Convocatoria</a></li>
-                                    <li><a href={`#${CA_DASHBOARD}/convocatorias`}>Convocatorias</a></li>
-                                    <li><a href={`#${ARTIST_DASHBOARD}/1/convocatorias`}>Participar</a></li>
-                                    {/*<li className="scroll active"><a href="#home">Home</a></li>*/}
-                                    {/*<li className="scroll"><a href="#explore">Explore</a></li>*/}
-                                    {/*<li className="scroll"><a href="#event">Event</a></li>*/}
-                                    {/*<li className="scroll"><a href="#about">About</a></li>*/}
-                                    {/*<li className="no-scroll"><a href="#twitter">Twitter</a></li>*/}
-                                    {/*<li><a className="no-scroll" href="#" target="_blank">PURCHASE TICKETS</a></li>*/}
-                                    {/*<li className="scroll"><a href="#contact">Contact</a></li>*/}
+                                    { userTypeComponent(userId) }
+                                    { authComponent() }
                                 </ul>
                             </div>
                         </div>

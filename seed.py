@@ -3,9 +3,11 @@
 import os
 
 import django
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
 from comercial_agent.models import Artist, ArtworkCollection, SoundType, Genre, Album, Song, Sound, Notification, \
-    RequestedPiece
+    RequestedPiece, BusinessAgent
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sonidos_libres.settings")
 
@@ -15,7 +17,7 @@ def songs_creator():
     user = django.contrib.auth.models.User.objects.create_user(username='ironmaiden_user', password='ironmaiden1234')
     artist = Artist(
         user = user,
-        profile_picture='media/profilePictures/ironmaiden2015bandwlogo_638.jpg',
+        profile_picture='profilePictures/ironmaiden2015bandwlogo_638.jpg',
         artistic_name = 'Iron Maiden',
         account_number = 88889,
         address = 'London 123',
@@ -46,7 +48,7 @@ def songs_creator():
         collection=collection,
         genre=genre,
         length=3072,
-        cover='media/covers/Iron_Maiden_-_Powerslave.jpg',
+        cover='covers/Iron_Maiden_-_Powerslave.jpg',
         artwork_type='ALB',
     )
     album.save()
@@ -103,7 +105,7 @@ def songs_creator():
         averageRating=5,
         collection=collection,
         genre=genre,
-        cover='media/covers/IronMaiden_NumberOfBeast.jpg',
+        cover='covers/IronMaiden_NumberOfBeast.jpg',
         length=2351,
         artwork_type='ALB',
     )
@@ -158,7 +160,7 @@ def sounds_creator():
     user = django.contrib.auth.models.User.objects.create_user(username='coke_user', password='coke1234')
     artist = Artist(
         user=user,
-        profile_picture='media/profilePictures/coca-cola-02.jpg',
+        profile_picture='profilePictures/coca-cola-02.jpg',
         artistic_name='Coca Cola',
         account_number=555555,
         address='Silver Summer Ave',
@@ -248,6 +250,41 @@ def notifications_creator():
     )
     requested_piece.save()
 
+def agents_creator():
+    user = django.contrib.auth.models.User.objects.create_user(username='ca_user_01', password='causer011234')
+    business_agent = BusinessAgent(
+        user=user,
+        profile_picture='profilePictures/ironmaiden2015bandwlogo_638.jpg',
+        company_name='Producciones JES',
+        address='Fake St 123',
+        city='Springfield',
+        country='USA',
+        telephone=123456,
+    )
+    business_agent.save()
+
+    user = django.contrib.auth.models.User.objects.create_user(username='ca_user_02', password='causer021234')
+    business_agent = BusinessAgent(
+        user=user,
+        profile_picture='profilePictures/ironmaiden2015bandwlogo_638.jpg',
+        company_name='RTI',
+        address='Lambda St 456',
+        city='Arcade',
+        country='NZ',
+        telephone=985555,
+    )
+    business_agent.save()
+
+
+def users_tokens():
+    for user in User.objects.all():
+        Token.objects.get_or_create(user=user)
+
+
+
 songs_creator()
 sounds_creator()
 notifications_creator()
+agents_creator()
+
+users_tokens()

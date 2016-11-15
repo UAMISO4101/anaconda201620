@@ -24,7 +24,7 @@ const mapStateToProps = (state,  { params: { id }}) => ({
 
 const mapDispatchToProps = dispatch => ({
   editNotification: (id) => {dispatch(editNotification)},
-  fetchNotifications: () => dispatch(fetchOpenNotifications()),
+  fetchNotifications: (id) => dispatch(fetchOpenNotifications(id)),
   getActualNotification: (notifications,notificationId) => dispatch(getActualNotification(notifications,notificationId)),
   hideSAModal: () => dispatch(hideSAModal()),
   publishNotification: (id) => {dispatch(publishNotification)},
