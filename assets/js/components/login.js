@@ -58,14 +58,16 @@ class Login extends Component {
       'X-CSRFToken': this.state.csrf_token,
     },
   }}
-  eventHandlers(){return {
+  eventHandlers(){
+    let self = this;
+    return {
     error: (photo,server) => {
       this.setState({ show: true, sweetAlertTitle: "Error al subir la imagen", sweetAlertOnConfirm: () => { this.setState({ show: false }); },  type: "error", sweetAlertMessage: "Contacte al administrador." });
     },
     sending: (file, xhr, formData) => {
-      formData.append('X-CSRF-Token': this.state.csrf_token);
-      formData.append('X-CSRFToken': this.state.csrf_token);
-      formData.append('image': file);
+      formData.append('X-CSRF-Token', self.state.csrf_token);
+      formData.append('X-CSRFToken', self.state.csrf_token);
+      formData.append('image', file);
     },
     success: (photo,server) => {
       this.setState({register_photo: server.img_url})
