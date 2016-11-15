@@ -198,7 +198,7 @@ class Login extends Component {
                 <span id="text-register-msg">Crea una cuenta nueva</span>
               </div>
                 <input ref="register_username" className="form-control" type="text" placeholder="Nombre de Usuario" required />
-                <input ref="register_email" className="form-control" type="text" placeholder="E-Mail" required />
+                <input ref="register_email" className="form-control" type="email" placeholder="E-Mail" required />
                 <input ref="register_names" className="form-control" type="text" placeholder="Nombres" required />
                 <input ref="register_surname" className="form-control" type="text" placeholder="Apellidos" required />
                 <label>Escoger una foto de perfil</label>
@@ -210,7 +210,7 @@ class Login extends Component {
                 <input ref="register_city" className="form-control" type="text" placeholder="Ciudad" required />
                 <input ref="register_country" className="form-control" type="text" placeholder="País" required />
                 <input ref="register_address" className="form-control" type="text" placeholder="Dirección" required />
-                <input ref="register_phone" className="form-control" type="tel" placeholder="Teléfono" required />
+                <input ref="register_phone" className="form-control" type="number" placeholder="Teléfono" required />
                 <input ref="register_password" className="form-control" type="password" placeholder="Contraseña" required />
                 <input ref="register_confirm_password" className="form-control" type="password" placeholder="Confirmar Contraseña" required />
             </div>
