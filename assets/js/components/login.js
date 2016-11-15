@@ -55,7 +55,7 @@ class Login extends Component {
     acceptedFiles: "image/jpeg,image/png,image/gif",
     maxFiles: 1,
     headers: {
-      'X-CSRF-Token': this.state.csrf_token,
+      'X-CSRFToken': this.state.csrf_token,
     },
   }}
   eventHandlers(){return {
@@ -63,7 +63,9 @@ class Login extends Component {
       this.setState({ show: true, sweetAlertTitle: "Error al subir la imagen", sweetAlertOnConfirm: () => { this.setState({ show: false }); },  type: "error", sweetAlertMessage: "Contacte al administrador." });
     },
     sending: (file, xhr, formData) => {
-      formData.append('image', file);
+      formData.append('X-CSRF-Token': this.state.csrf_token);
+      formData.append('X-CSRFToken': this.state.csrf_token);
+      formData.append('image': file);
     },
     success: (photo,server) => {
       this.setState({register_photo: server.img_url})
