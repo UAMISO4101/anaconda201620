@@ -134,6 +134,9 @@ class RequestedPiece(models.Model):
 class Postulation(models.Model):
     artist = models.ForeignKey(Artist, null=False)
     notification = models.ForeignKey(Notification, null=False)
+    is_winner = models.BooleanField(
+        default=False
+    )
 
 
 #ARTWORKS MODELS
