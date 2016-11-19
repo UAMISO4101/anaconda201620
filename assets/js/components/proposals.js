@@ -38,7 +38,16 @@ class Proposals extends Component {
           />
         <br/><br/><br/><br/>
         <div className="list-group">
-          { this.props.proposals.map( proposal => <ProposalContent proposal={proposal} notification={this.props.notification} key={proposal.id}/> )}
+          { ()=>{ if (this.props.notification.notification_state == "FIN") {
+              this.props.proposals.filter( proposal => {
+                 if (proposal.winner) {
+                   return <ProposalContent proposal={proposal} notification={this.props.notification} key={proposal.id}/>
+                 }
+               })
+            } else {
+              this.props.proposals.map( proposal => <ProposalContent proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
+            }}
+          }
         </div>
       </div>
     );
