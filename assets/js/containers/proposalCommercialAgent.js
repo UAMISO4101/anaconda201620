@@ -1,15 +1,16 @@
 import Proposal from '../components/proposal'
 import {  choosedProposal } from '../actions';
 import { connect } from 'react-redux';
+import {CA_DASHBOARD} from '../utils/constants';
 
 const mapDispatchToProps = dispatch => ({
   choosedProposal: (proposalId) => dispatch(choosedProposal(proposalId)),
-  selectProposal: () => {
-    this.setState({
+  selectProposal: (self) => {
+    self.setState({
           type: "success",
           show: true,
           showModal: false,
-          sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}/${this.state.userId}/convocatorias`; },
+          sweetAlertOnConfirm: () => {self.setState({show: false}); window.location = `#${CA_DASHBOARD}/${self.state.userId}/convocatorias`; },
           sweetAlertMessage: "Es cogió la postulación satisfactoriamente",
           sweetAlertTitle: "Exito",
         });
