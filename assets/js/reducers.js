@@ -54,7 +54,7 @@ export const notification = (state=notificationBlank,  action) => {
 };
 
 const requestDeafult = {name: "requestDeafult", features: "Default Feature"};
-const notificationDefault  = { id: 1, cover: "",name: "notification A", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "my description for notification A", publishingState: false, request: [requestDeafult] };
+const notificationDefault  = { id: null, cover: "",name: "notification A", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "my description for notification A", publishingState: false, request: [requestDeafult] };
 const notificationsDefault = {"notifications":[notificationDefault]};
 export const notifications = (state=notificationsDefault,  action) => {
   switch (action.type) {
