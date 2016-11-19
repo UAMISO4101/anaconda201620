@@ -4,7 +4,7 @@ import { BootstrapTable, TableHeaderColumn, Button } from 'react-bootstrap-table
 import FaEdit from 'react-icons/lib/fa/edit';
 import SweetAlert from 'sweetalert-react';
 import { Link } from 'react-router';
-import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
+import { ARTIST_DASHBOARD, CA_DASHBOARD, SERVER_URL } from '../utils/constants';
 
 import NotificationShowModal from '../containers/notificationShowModal';
 
@@ -22,6 +22,8 @@ class Notifications extends Component {
     this.formatEdit = this.formatEdit.bind(this);
     this.formatPublish = this.formatPublish.bind(this);
     this.editClick = this.editClick.bind(this);
+    this.formatRequestsUser = this.formatRequestsUser.bind(this);
+    this.formatListen = this.formatListen.bind(this);
     this.state = {
       showModal: false,
       sweetAlertMessage: "",
@@ -33,21 +35,8 @@ class Notifications extends Component {
     this.props.fetchNotifications(this.props.userId);
     this.props.setUserId(this.props.userId);
   }
-
-  tableComponent(userType){
-    switch (userType){
-      case "artist":
-        return( <TableHeaderColumn dataField="request" dataFormat={this.formatRequestsUser.bind(this)} dataSort={false}>Participar</TableHeaderColumn>)
-      case "comercial_agent":
-        return([
-          <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>,
-          <TableHeaderColumn dataField="publishingState" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>,
-          <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false} dataAlign="left">Solicitudes</TableHeaderColumn>,
-          <TableHeaderColumn dataFormat={this.formatVotes.bind(this)} dataSort={false} dataAlign="left">Votaciones</TableHeaderColumn>
-        ])
-      default:
-        return null
-    }
+  editClick(notification){
+    this.props.editNotification(getNotificationId(notification));
   }
 
   openModal(cell,row) {
@@ -56,38 +45,6 @@ class Notifications extends Component {
     this.props.showNotifictionModal({ showModal: true, modalRequest: cell, userType: this.props.userType })
   }
 
-  formatRequests(cell, row){
-    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
-      this.openModal(cell,row)
-    }}  type="submit">Ver Detalles</button>);
-  }
-  formatVotes(cell, row){
-    return (
-      <Link  className="btn btn-primary-participate pull-right"
-        to={`${CA_DASHBOARD}/${this.props.userId}/convocatoria/${row.id}/votacion`}>
-        Ir a votaciones</Link>
-    );
-  }
-  formatRequestsUser(cell, row){
-    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
-      this.openModal(cell,row)
-    }}  type="submit">Participar Ahora</button>);
-  }
-
-  formatEdit(cell, row){
-    return (
-      <Link to={`${CA_DASHBOARD}/${this.props.userId}/convocatoria/${cell}`}> <FaEdit /> </Link>
-    );
-  }
-  formatPublish(cell, row) {
-    let checkedState = row.notification_state == "PUB" ? "checked" : "";
-    return (
-      <input type="checkbox" onChange={this.publishClick.bind(this)} id={`publish-${row.id}`}  value={ checkedState ? true : false} />
-    )
-  }
-  editClick(notification){
-    this.props.editNotification(getNotificationId(notification));
-  }
   publishClick(notification){
     let idNotification    = getNotificationId(notification);
     let notificationState = notification.target.checked ? "PUB" : "CRE";
@@ -119,6 +76,40 @@ class Notifications extends Component {
     })
     this.props.publishNotification(getNotificationId(notification));
   }
+  formatEdit(cell, row){
+    return (
+      <Link to={`${CA_DASHBOARD}/${this.props.userId}/convocatoria/${cell}`}> <FaEdit /> </Link>
+    );
+  }
+  formatListen(cell, row){
+    <Link  className="btn btn-primary-participate pull-right"
+      to={`${ARTIST_DASHBOARD}/${this.props.userId}/convocatoria/${row.id}/votacion`}>
+      Ir a votaciones</Link>
+  }
+  formatPublish(cell, row) {
+    let checkedState = row.notification_state == "PUB" ? "checked" : "";
+    return (
+      <input type="checkbox" onChange={this.publishClick.bind(this)} id={`publish-${row.id}`}  value={ checkedState ? true : false} />
+    )
+  }
+  formatRequests(cell, row){
+    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
+      this.openModal(cell,row)
+    }}  type="submit">Ver Detalles</button>);
+  }
+  formatRequestsUser(cell, row){
+    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
+      this.openModal(cell,row)
+    }}  type="submit">Participar Ahora</button>);
+  }
+  formatVotes(cell, row){
+    return (
+      <Link  className="btn btn-primary-participate pull-right"
+        to={`${CA_DASHBOARD}/${this.props.userId}/convocatoria/${row.id}/votacion`}>
+        Ir a votaciones</Link>
+    );
+  }
+
   render(){
       return(
         <div className="contact-section">
@@ -152,6 +143,24 @@ class Notifications extends Component {
           </div>
         </div>
       )
+  }
+  tableComponent(userType){
+    switch (userType){
+      case "artist":
+        return( [
+          <TableHeaderColumn dataField="request" dataFormat={this.formatRequestsUser } dataSort={false}>Participar</TableHeaderColumn>,
+          <TableHeaderColumn dataField="request" dataFormat={this.formatListen } dataSort={false}>Votar</TableHeaderColumn>
+          ])
+      case "comercial_agent":
+        return([
+          <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>,
+          <TableHeaderColumn dataField="publishingState" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>,
+          <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false} dataAlign="left">Solicitudes</TableHeaderColumn>,
+          <TableHeaderColumn dataFormat={this.formatVotes.bind(this)} dataSort={false} dataAlign="left">Votaciones</TableHeaderColumn>
+        ])
+      default:
+        return null
+    }
   }
 }
 
