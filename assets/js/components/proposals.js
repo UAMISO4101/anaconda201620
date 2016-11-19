@@ -5,7 +5,13 @@ import Votation from './votation';
 import SweetAlert from 'sweetalert-react';
 
 class Proposals extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      role:  window.localStorage.role,
+    }
 
+  }
   componentDidMount(){
     this.props.fetchProposals(this.props.notification.id);
   }
