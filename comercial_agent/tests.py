@@ -51,7 +51,6 @@ class PostulationTest(TestCase):
         )
         collection2.save()
 
-
         genre = Genre(
             name='Heavy Metal',
         )
@@ -173,6 +172,8 @@ class PostulationTest(TestCase):
 
     def test_postulation(self):
         c = Client()
+        response = c.get('/comercial_agent/notifications/user/1/')
+        print(response)
         response = c.get('/comercial_agent/notifications/1/postulations/')
         print('RESPONSE')
         print(response)
