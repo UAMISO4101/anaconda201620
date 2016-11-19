@@ -142,6 +142,9 @@ class PostulationTest(TestCase):
         postulation = Postulation(
             notification=notification,
             artist=artist1,
+            is_winner=False,
+            is_tied=False,
+            polls_num=0,
         )
         postulation.save()
 
@@ -155,6 +158,9 @@ class PostulationTest(TestCase):
         postulation2 = Postulation(
             notification=notification,
             artist=artist2,
+            is_winner=False,
+            is_tied=False,
+            polls_num=0,
         )
         postulation2.save()
 
