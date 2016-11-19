@@ -3,8 +3,10 @@ from django.test import Client
 from django.test import TestCase
 
 # Create your tests here.
+from rest_framework import status
+
 from comercial_agent.models import Genre, Artist, ArtworkCollection, Album, Song, Notification, RequestedPiece, \
-    PostulatedArtwork, Postulation, BusinessAgent
+    PostulatedArtwork, Postulation, BusinessAgent, Sound, SoundType
 
 
 class PostulationTest(TestCase):
@@ -29,6 +31,26 @@ class PostulationTest(TestCase):
             artist=artist1,
         )
         collection.save()
+
+        user2 = django.contrib.auth.models.User.objects.create_user(username='usuario_test_2',
+                                                                   password='test1234')
+        artist2 = Artist(
+            user=user2,
+            profile_picture='',
+            artistic_name='Test Artist 2',
+            account_number=88889,
+            address='London 123',
+            city='London',
+            country='UK',
+            telephone=784555,
+        )
+        artist2.save()
+
+        collection2 = ArtworkCollection(
+            artist=artist2,
+        )
+        collection2.save()
+
 
         genre = Genre(
             name='Heavy Metal',
@@ -67,9 +89,30 @@ class PostulationTest(TestCase):
         )
         song.save()
 
-        user2 = django.contrib.auth.models.User.objects.create_user(username='ca_user_01', password='causer011234')
+        sound_type = SoundType(
+            name='Jingle'
+        )
+        sound_type.save()
+
+        sound = Sound(
+            name='Sound Test',
+            ratingCount=44,
+            likesCount=365,
+            dislikesCount=7,
+            playsCount=2564,
+            averageRating=4,
+            collection=collection2,
+            length=271,
+            artwork_type='SND',
+            cover='http://url',
+            contentUrl='http://url',
+            type=sound_type,
+        )
+        sound.save()
+
+        user3 = django.contrib.auth.models.User.objects.create_user(username='ca_user_01', password='causer011234')
         business_agent = BusinessAgent(
-            user=user2,
+            user=user3,
             profile_picture='profilePictures/ironmaiden2015bandwlogo_638.jpg',
             company_name='Producciones JES',
             address='Fake St 123',
@@ -99,6 +142,9 @@ class PostulationTest(TestCase):
         postulation = Postulation(
             notification=notification,
             artist=artist1,
+            is_winner=False,
+            is_tied=False,
+            polls_num=0,
         )
         postulation.save()
 
@@ -109,15 +155,48 @@ class PostulationTest(TestCase):
         )
         postulated_artwork.save()
 
+        postulation2 = Postulation(
+            notification=notification,
+            artist=artist2,
+            is_winner=False,
+            is_tied=False,
+            polls_num=0,
+        )
+        postulation2.save()
+
+        postulated_artwork_2 = PostulatedArtwork(
+            artwork=sound,
+            requestedPiece=requested_piece,
+            postulation=postulation,
+        )
+        postulated_artwork_2.save()
+
     def test_postulation(self):
         c = Client()
         response = c.get('/comercial_agent/notifications/1/postulations/')
 
-        self.assertEqual(len(response.json()["proposals"]), 1)
+        self.assertEqual(len(response.json()["proposals"]), 2)
         self.assertGreaterEqual(len(response.json()["proposals"][0]["audios"][0]["url"]), 1)
 
+    def test_sounds(self):
         c2 = Client()
         response2 = c2.get('/comercial_agent/sounds/song/all/')
+
         self.assertGreaterEqual(len(response2.json()["sounds"][0]["url"]), 1)
         self.assertGreaterEqual(len(response2.json()["sounds"][0]["soundtrack"]), 1)
 
+    def test_winner_postulation(self):
+        c = Client()
+        response = c.put('/comercial_agent/notifications/1/set-winner/1/')
+
+        self.assertTrue(status.is_success(response.status_code))
+
+    def test_multiple_winners_postulation(self):
+        c = Client()
+        response = c.put('/comercial_agent/notifications/1/set-winner/1/')
+
+        self.assertTrue(status.is_success(response.status_code))
+
+        response2 = c.put('/comercial_agent/notifications/1/set-winner/2/')
+
+        self.assertTrue(status.is_client_error(response2.status_code))

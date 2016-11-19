@@ -8,7 +8,7 @@ from django.utils import timezone
 class AbsUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(
-        null=False,
+        null=True,
         upload_to='profilePictures',
         max_length=1000,
     )
@@ -71,10 +71,12 @@ class Notification(models.Model):
     CREATED = 'CRE'
     PUBLISHED = 'PUB'
     CLOSED = 'CER'
+    FINISHED = 'FIN'
     NOTIFICATION_STATE = (
         (CREATED, 'Creada'),
         (PUBLISHED, 'Publicada'),
-        (CLOSED, 'Cerrada')
+        (CLOSED, 'Cerrada'),
+        (FINISHED, 'Finalizada'),
     )
 
     name = models.CharField(
@@ -134,6 +136,15 @@ class RequestedPiece(models.Model):
 class Postulation(models.Model):
     artist = models.ForeignKey(Artist, null=False)
     notification = models.ForeignKey(Notification, null=False)
+    is_tied = models.BooleanField(
+        default=False,
+    )
+    is_winner = models.BooleanField(
+        default=False,
+    )
+    polls_num = models.IntegerField(
+        default=0,
+    )
 
 
 #ARTWORKS MODELS
@@ -252,3 +263,8 @@ class Album(Artwork):
 
 class Song(Artwork):
     song_album = models.ForeignKey(Album, null=False)
+
+#VOTES
+class Poll(models.Model):
+    postulation = models.ForeignKey(Postulation, null=False)
+    user = models.ForeignKey(User, null=False)
