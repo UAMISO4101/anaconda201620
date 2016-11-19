@@ -28,7 +28,8 @@ class Notifications extends Component {
       showModal: false,
       sweetAlertMessage: "",
       sweetAlertTitle: "",
-      type: "warning"
+      type: "warning",
+      userId: window.localStorage.userId,
     };
   }
   componentDidMount(){
@@ -45,6 +46,38 @@ class Notifications extends Component {
     this.props.showNotifictionModal({ showModal: true, modalRequest: cell, userType: this.props.userType })
   }
 
+  formatRequests(cell, row){
+    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
+      this.openModal(cell,row)
+    }}  type="submit">Ver Detalles</button>);
+  }
+  formatVotes(cell, row){
+    return (
+      <Link  className="btn btn-primary-participate pull-right"
+        to={`${CA_DASHBOARD}/${this.state.userId}/${this.state.userId}/convocatoria/${row.id}/votacion`}>
+        Ir a votaciones</Link>
+    );
+  }
+  formatRequestsUser(cell, row){
+    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
+      this.openModal(cell,row)
+    }}  type="submit">Participar Ahora</button>);
+  }
+
+  formatEdit(cell, row){
+    return (
+      <Link to={`${CA_DASHBOARD}/${this.state.userId}/convocatoria/${cell}`}> <FaEdit /> </Link>
+    );
+  }
+  formatPublish(cell, row) {
+    let checkedState = row.notification_state == "PUB" ? "checked" : "";
+    return (
+      <input type="checkbox" onChange={this.publishClick.bind(this)} id={`publish-${row.id}`}  value={ checkedState ? true : false} />
+    )
+  }
+  editClick(notification){
+    this.props.editNotification(getNotificationId(notification));
+  }
   publishClick(notification){
     let idNotification    = getNotificationId(notification);
     let notificationState = notification.target.checked ? "PUB" : "CRE";
