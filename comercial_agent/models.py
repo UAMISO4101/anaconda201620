@@ -8,7 +8,7 @@ from django.utils import timezone
 class AbsUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(
-        null=False,
+        null=True,
         upload_to='profilePictures',
         max_length=1000,
     )
