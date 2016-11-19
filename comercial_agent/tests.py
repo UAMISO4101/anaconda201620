@@ -174,7 +174,8 @@ class PostulationTest(TestCase):
     def test_postulation(self):
         c = Client()
         response = c.get('/comercial_agent/notifications/1/postulations/')
-
+        print('RESPONSE')
+        print(response)
         self.assertEqual(len(response.json()["proposals"]), 2)
         self.assertGreaterEqual(len(response.json()["proposals"][0]["audios"][0]["url"]), 1)
 
@@ -200,3 +201,11 @@ class PostulationTest(TestCase):
         response2 = c.put('/comercial_agent/notifications/1/set-winner/2/')
 
         self.assertTrue(status.is_client_error(response2.status_code))
+
+    def test_postulation_likes(self):
+        c = Client()
+        response = c.get('/comercial_agent/notifications/1/postulations/')
+
+        self.assertGreaterEqual(len(response.json()["proposals"][0]["likes"]), 1)
+
+
