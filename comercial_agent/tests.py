@@ -106,7 +106,7 @@ class PostulationTest(TestCase):
             artwork_type='SND',
             cover='http://url',
             contentUrl='http://url',
-            sound_type=sound_type,
+            type=sound_type,
         )
         sound.save()
 
