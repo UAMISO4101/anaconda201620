@@ -105,7 +105,7 @@ class PostulationTest(TestCase):
             artwork_type='SND',
             cover='http://url',
             contentUrl='http://url',
-            sound_typ=sound_type,
+            sound_type=sound_type,
         )
 
         user3 = django.contrib.auth.models.User.objects.create_user(username='ca_user_01', password='causer011234')
