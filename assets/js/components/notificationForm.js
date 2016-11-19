@@ -48,7 +48,7 @@ class NotificationForm extends Component{
       sweetAlertTitle: "",
       sweetAlertOnConfirm: () => {this.setState({ show: false })},
       type: "warning",
-      userId: window.localStorage.userId,
+      userId:  window.localStorage.userId,
     };
   }
   componentDidMount(){
