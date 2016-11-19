@@ -142,6 +142,9 @@ class PostulationTest(TestCase):
         postulation = Postulation(
             notification=notification,
             artist=artist1,
+            is_winner=False,
+            is_tied=False,
+            polls_num=0,
         )
         postulation.save()
 
@@ -155,6 +158,9 @@ class PostulationTest(TestCase):
         postulation2 = Postulation(
             notification=notification,
             artist=artist2,
+            is_winner=False,
+            is_tied=False,
+            polls_num=0,
         )
         postulation2.save()
 
@@ -172,11 +178,12 @@ class PostulationTest(TestCase):
         self.assertEqual(len(response.json()["proposals"]), 2)
         self.assertGreaterEqual(len(response.json()["proposals"][0]["audios"][0]["url"]), 1)
 
+    def test_sounds(self):
         c2 = Client()
         response2 = c2.get('/comercial_agent/sounds/song/all/')
+
         self.assertGreaterEqual(len(response2.json()["sounds"][0]["url"]), 1)
         self.assertGreaterEqual(len(response2.json()["sounds"][0]["soundtrack"]), 1)
-
 
     def test_winner_postulation(self):
         c = Client()
@@ -184,7 +191,12 @@ class PostulationTest(TestCase):
 
         self.assertTrue(status.is_success(response.status_code))
 
-        c2 = Client()
-        response2 = c2.put('/comercial_agent/notifications/1/set-winner/2/')
+    def test_multiple_winners_postulation(self):
+        c = Client()
+        response = c.put('/comercial_agent/notifications/1/set-winner/1/')
+
+        self.assertTrue(status.is_success(response.status_code))
+
+        response2 = c.put('/comercial_agent/notifications/1/set-winner/2/')
 
         self.assertTrue(status.is_client_error(response2.status_code))

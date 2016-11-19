@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import date
 
 import boto
 import django
@@ -201,6 +202,7 @@ def notification_json(request, user_id):
         dict_notifications = []
 
         for notification in notifications:
+            update_notification(notification.id)
             pieces = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
             dict_notification = notification.as_dict();
             dict_pieces = []
@@ -246,6 +248,7 @@ def get_open_notifications(request):
         notifications_array = []
 
         for notification in notifications_model:
+            update_notification(notification.id)
             pieces_model = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
             dict_notification = notification.as_dict();
             dict_piece = []
@@ -258,6 +261,34 @@ def get_open_notifications(request):
         return JsonResponse({'notifications': notifications_array}, safe=False)
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+def update_notification(notification_id):
+    notification = Notification.objects.get(pk=notification_id)
+    print(notification.closing_date)
+
+    if (date.today() > notification.closing_date) and (notification.notification_state == Notification.PUBLISHED):
+        Notification.objects.filter(pk=notification_id).update(
+            notification_state=Notification.CLOSED
+        )
+
+        if notification.notification_type == Notification.PUBLIC:
+            max_polls = Postulation.objects.filter(notification_id=notification_id).aggregate(Max('polls_num'))
+
+            postulations = Postulation.objects.filter(polls_num=max_polls['polls_num__max'])
+
+            if len(postulations) > 1:
+                Postulation.objects.filter(polls_num=max_polls['polls_num__max']).update(
+                    is_tied=True
+                )
+            elif len(postulations) == 1:
+                Postulation.objects.filter(polls_num=max_polls['polls_num__max']).update(
+                    is_winner=True
+                )
+                Notification.objects.filter(pk=notification_id).update(
+                    notification_state=Notification.FINISHED
+                )
+
 
 
 @csrf_exempt
