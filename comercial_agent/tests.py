@@ -6,7 +6,7 @@ from django.test import TestCase
 from rest_framework import status
 
 from comercial_agent.models import Genre, Artist, ArtworkCollection, Album, Song, Notification, RequestedPiece, \
-    PostulatedArtwork, Postulation, BusinessAgent
+    PostulatedArtwork, Postulation, BusinessAgent, Sound, SoundType
 
 
 class PostulationTest(TestCase):
@@ -31,6 +31,26 @@ class PostulationTest(TestCase):
             artist=artist1,
         )
         collection.save()
+
+        user2 = django.contrib.auth.models.User.objects.create_user(username='usuario_test_2',
+                                                                   password='test1234')
+        artist2 = Artist(
+            user=user2,
+            profile_picture='',
+            artistic_name='Test Artist 2',
+            account_number=88889,
+            address='London 123',
+            city='London',
+            country='UK',
+            telephone=784555,
+        )
+        artist2.save()
+
+        collection2 = ArtworkCollection(
+            artist=artist2,
+        )
+        collection2.save()
+
 
         genre = Genre(
             name='Heavy Metal',
@@ -69,9 +89,28 @@ class PostulationTest(TestCase):
         )
         song.save()
 
-        user2 = django.contrib.auth.models.User.objects.create_user(username='ca_user_01', password='causer011234')
+        sound_type = SoundType(
+            name='Jingle'
+        )
+
+        sound = Sound(
+            name='Sound Test',
+            ratingCount=44,
+            likesCount=365,
+            dislikesCount=7,
+            playsCount=2564,
+            averageRating=4,
+            collection=collection2,
+            length=271,
+            artwork_type='SND',
+            cover='http://url',
+            contentUrl='http://url',
+            sound_typ=sound_type,
+        )
+
+        user3 = django.contrib.auth.models.User.objects.create_user(username='ca_user_01', password='causer011234')
         business_agent = BusinessAgent(
-            user=user2,
+            user=user3,
             profile_picture='profilePictures/ironmaiden2015bandwlogo_638.jpg',
             company_name='Producciones JES',
             address='Fake St 123',
@@ -111,6 +150,19 @@ class PostulationTest(TestCase):
         )
         postulated_artwork.save()
 
+        postulation2 = Postulation(
+            notification=notification,
+            artist=artist2,
+        )
+        postulation2.save()
+
+        postulated_artwork_2 = PostulatedArtwork(
+            artwork=sound,
+            requestedPiece=requested_piece,
+            postulation=postulation,
+        )
+        postulated_artwork_2.save()
+
     def test_postulation(self):
         c = Client()
         response = c.get('/comercial_agent/notifications/1/postulations/')
@@ -126,6 +178,11 @@ class PostulationTest(TestCase):
 
     def test_winner_postulation(self):
         c = Client()
-        response = c.put('/comercial_agent/notifications/set-winner/1/')
+        response = c.put('/comercial_agent/notifications/1/set-winner/1/')
 
         self.assertTrue(status.is_success(response.status_code))
+
+        c2 = Client()
+        response2 = c2.put('/comercial_agent/notifications/1/set-winner/2/')
+
+        self.assertTrue(status.is_client_error(response2.status_code))
