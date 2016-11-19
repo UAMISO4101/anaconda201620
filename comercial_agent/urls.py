@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^notifications/(?P<notification_id>\w+)/postulations/$',views.get_postulations_by_notification,name='get_postulations_by_notification'),
     url(r'^auth/create-artist/$',views.create_artist_user,name='create-artist-user'),
     url(r'^auth/upload-artist-photo/$',views.upload_artist_photo,name='upload-artist-photo'),
-    url(r'^notifications/(?P<notification_id>/set-winner/(?P<postulation_id>\w+)/$', views.set_notification_winner, name='set_notification_winner'),
+    url(r'^notifications/(?P<notification_id>\w+)/set-winner/(?P<postulation_id>\w+)/$', views.set_notification_winner, name='set_notification_winner'),
     url(r'^obtain-auth-token/', obtain_auth_token),
     url(r'^auth/login/', views.login_view, name="login"),
     url(r'^auth/logout/', views.logout_view, name="logout"),
