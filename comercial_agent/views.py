@@ -6,6 +6,7 @@ import boto
 import django
 from django.contrib.auth import authenticate, login, logout
 from boto.s3.key import Key
+from django.db.models import Max
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -490,7 +491,7 @@ def get_postulations_by_notification(request,notification_id):
 
                 audio_array.append(artwork_info_json)
 
-            postulation_info_json = {"id": postulation,"artist":artist_info.artistic_name,"audios":audio_array}
+            postulation_info_json = {"id": postulation,"artist":artist_info.artistic_name,"likes":postulation_info.polls_num,"tie":postulation_info.is_tied,"audios":audio_array}
             postulation_array_json.append(postulation_info_json)
 
         return JsonResponse(dict(proposals=postulation_array_json))
