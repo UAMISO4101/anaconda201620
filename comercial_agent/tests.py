@@ -92,6 +92,7 @@ class PostulationTest(TestCase):
         sound_type = SoundType(
             name='Jingle'
         )
+        sound_type.save()
 
         sound = Sound(
             name='Sound Test',
@@ -107,6 +108,7 @@ class PostulationTest(TestCase):
             contentUrl='http://url',
             sound_type=sound_type,
         )
+        sound.save()
 
         user3 = django.contrib.auth.models.User.objects.create_user(username='ca_user_01', password='causer011234')
         business_agent = BusinessAgent(
