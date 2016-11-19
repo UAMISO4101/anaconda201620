@@ -64,7 +64,7 @@ class Notifications extends Component {
   formatVotes(cell, row){
     return (
       <Link  className="btn btn-primary-participate pull-right"
-        to={`${CA_DASHBOARD}/convocatoria/${row.id}/votacion`}>
+        to={`${CA_DASHBOARD}/${this.props.userId}/convocatoria/${row.id}/votacion`}>
         Ir a votaciones</Link>
     );
   }
@@ -76,7 +76,7 @@ class Notifications extends Component {
 
   formatEdit(cell, row){
     return (
-      <Link to={`${CA_DASHBOARD}/convocatoria/${cell}`}> <FaEdit /> </Link>
+      <Link to={`${CA_DASHBOARD}/${this.props.userId}/convocatoria/${cell}`}> <FaEdit /> </Link>
     );
   }
   formatPublish(cell, row) {
