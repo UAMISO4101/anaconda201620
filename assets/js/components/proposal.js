@@ -21,7 +21,6 @@ class Proposal extends Component {
         type: "success",
         userId: window.localStorage.userId
    };
-   this.selectProposal = this.selectProposal.bind(this);
   }
 
   render(){
@@ -75,46 +74,11 @@ class Proposal extends Component {
       </div>
     );
   }
-  selectProposal(){
-    this.setState({
-          type: "success",
-          show: true,
-          showModal: false,
-          sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}/${this.state.userId}/convocatorias`; },
-          sweetAlertMessage: "Es cogió la postulación satisfactoriamente",
-          sweetAlertTitle: "Exito",
-        });
 
-    $.ajax({
-      method: 'PUT',
-      url: `${SERVER_URL}/comercial_agent/notifications/${this.props.notification.id}/set-winner/${this.props.proposal.id}/`,
-      data: JSON.stringify({}),
-    })
-    .done(( msg ) => {
-        this.setState({
-          type: "success",
-          show: true,
-          showModal: false,
-          sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}/${this.state.userId}/convocatorias`; },
-          sweetAlertMessage: "Es cogió la postulación satisfactoriamente",
-          sweetAlertTitle: "Exito",
-        });
-      })
-    .fail((err) => {
-      console.error(err);
-      this.setState({
-        show: true,
-        sweetAlertTitle: "Error Servidor",
-        type: "error",
-        sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
-      });
-    })
-
-  }
   selectProposalButton() {
     if(this.props.notification.notification_type == "PR") {
       return (
-        <button className="btn btn-primary" onClick={ this.selectProposal } >
+        <button className="btn btn-primary" onClick={ this.props.selectProposal.bind(this) } >
           Escoger esta obra como ganadora
         </button>
       )

@@ -10,7 +10,7 @@ const authComponent = () => {
   if (auth.loggedIn()) {
     return(
       <li className="scroll active">
-        <button className='btn btn-danger' style={{padding: '20px', 'font-size': '18px'}} onClick={()=>{
+        <button className='btn btn-danger' style={{padding: '20px', 'fontSize': '18px'}} onClick={()=>{
             auth.logout(()=>{
               window.location = "#";
             });

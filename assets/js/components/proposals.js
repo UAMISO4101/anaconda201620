@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import { ListGroupItem } from 'react-bootstrap';
 import FaEraser from 'react-icons/lib/fa/eraser';
-import ProposalContent from '../containers/proposalContent';
+import ProposalCommercialAgent from '../containers/proposalCommercialAgent';
+import ProposalArtist from '../containers/proposalArtist';
 import SweetAlert from 'sweetalert-react';
 import { CA_DASHBOARD, SERVER_URL,USER_ROLES } from '../utils/constants';
 import { auth } from '../utils/auth';
@@ -30,10 +31,10 @@ class Proposals extends Component {
   proposalType(){
     switch (auth.getUserRole()) {
       case USER_ROLES.ARTIST :
-          return ;
+          return this.props.proposals.map( proposal => <ProposalArtist proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
         break;
       case USER_ROLES.COMERCIAL_AGENT :
-          return this.props.proposals.map( proposal => <ProposalContent proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
+          return this.props.proposals.map( proposal => <ProposalCommercialAgent proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
         break;
       default:
         return null
@@ -68,7 +69,7 @@ class Proposals extends Component {
           />
         <br/><br/><br/><br/>
         <div className="list-group">
-          { proposalType() }
+          { this.proposalType() }
         </div>
       </div>
     );
