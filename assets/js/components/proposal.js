@@ -76,7 +76,7 @@ class Proposal extends Component {
   }
 
   selectProposalButton() {
-    if(this.props.notification.notification_type == "PR") {
+    if(this.props.notification.notification_type == "PB") {
       return (
         <button className="btn btn-primary" onClick={ ()=>{this.props.selectProposal(this)} } >
           Escoger esta obra como ganadora

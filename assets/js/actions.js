@@ -123,7 +123,7 @@ export const fetchProposals = (id) => {
 
         if(proposals.length> 0 ){
           dispatch(getProposals(proposals))
-          dispatch(resetPlayerAudios())
+          // dispatch(resetPlayerAudios())
           dispatch(setPlayerAudios(proposals))
         }else {
           dispatch(showSAModal({
