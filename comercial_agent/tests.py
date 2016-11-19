@@ -191,7 +191,6 @@ class PostulationTest(TestCase):
 
         self.assertTrue(status.is_success(response.status_code))
 
-        c2 = Client()
-        response2 = c2.put('/comercial_agent/notifications/1/set-winner/2/')
+        response2 = c.put('/comercial_agent/notifications/1/set-winner/2/')
 
         self.assertTrue(status.is_client_error(response2.status_code))
