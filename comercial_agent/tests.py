@@ -127,9 +127,5 @@ class PostulationTest(TestCase):
     def test_winner_postulation(self):
         c = Client()
         response = c.put('/comercial_agent/notifications/set-winner/1/')
-        print('RESPONSE')
-        print(response)
-        print('STATUS')
-        print(response.status_code)
 
         self.assertTrue(status.is_success(response.status_code))
