@@ -20,23 +20,9 @@ class Proposals extends Component {
   }
   componentDidMount(){
     this.props.fetchProposals(this.props.notification.id);
-    if (this.props.notification.notification_state == "CER"){
-       this.setState({show: true})
-    }
   }
 
   render(){
-    if(this.props.notification.notification_state == "CER"){
-      return(
-        <SweetAlert
-          show={this.state.show}
-          type="warning"
-          title="Convocatoria cerrada"
-          text="Esta Convocatoria ya está cerrada porqué se escogió la propuesta ganadora"
-          onConfirm={() => { this.setState({show: false}); window.location = `#${CA_DASHBOARD}/${this.state.userId}/convocatorias`; }}
-        />
-      )
-    }else{
       return (
         <div >
           <SweetAlert
@@ -56,7 +42,6 @@ class Proposals extends Component {
         </div>
       </div>
     );
-    }
   }
 };
 

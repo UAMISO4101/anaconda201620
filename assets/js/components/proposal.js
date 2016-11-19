@@ -76,15 +76,6 @@ class Proposal extends Component {
     );
   }
   selectProposal(){
-    this.setState({
-          type: "success",
-          show: true,
-          showModal: false,
-          sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}/${this.state.userId}/convocatorias`; },
-          sweetAlertMessage: "Es cogió la postulación satisfactoriamente",
-          sweetAlertTitle: "Exito",
-        });
-
     $.ajax({
       method: 'PUT',
       url: `${SERVER_URL}/comercial_agent/notifications/${this.props.notification.id}/set-winner/${this.props.proposal.id}/`,
@@ -106,7 +97,8 @@ class Proposal extends Component {
         show: true,
         sweetAlertTitle: "Error Servidor",
         type: "error",
-        sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
+        sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`,
+        sweetAlertOnConfirm: () => {this.setState({show: false}); },
       });
     })
 
