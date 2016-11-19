@@ -203,7 +203,7 @@ def notification_json(request, user_id):
         dict_notifications = []
 
         for notification in notifications:
-            update_notification(notification.id)
+            notification = update_notification(notification.id)
             pieces = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
             dict_notification = notification.as_dict();
             dict_pieces = []
@@ -249,7 +249,7 @@ def get_open_notifications(request):
         notifications_array = []
 
         for notification in notifications_model:
-            update_notification(notification.id)
+            notification = update_notification(notification.id)
             pieces_model = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
             dict_notification = notification.as_dict();
             dict_piece = []
@@ -269,9 +269,8 @@ def update_notification(notification_id):
     print(notification.closing_date)
 
     if (date.today() > notification.closing_date) and (notification.notification_state == Notification.PUBLISHED):
-        Notification.objects.filter(pk=notification_id).update(
-            notification_state=Notification.CLOSED
-        )
+        notification.notification_state=Notification.CLOSED
+        notification.save()
 
         if notification.notification_type == Notification.PUBLIC:
             max_polls = Postulation.objects.filter(notification_id=notification_id).aggregate(Max('polls_num'))
@@ -286,9 +285,10 @@ def update_notification(notification_id):
                 Postulation.objects.filter(polls_num=max_polls['polls_num__max']).update(
                     is_winner=True
                 )
-                Notification.objects.filter(pk=notification_id).update(
-                    notification_state=Notification.FINISHED
-                )
+                notification.notification_state = Notification.FINISHED
+                notification.save()
+
+    return notification
 
 
 
@@ -509,6 +509,10 @@ def set_notification_winner(request,notification_id,postulation_id):
             Postulation.objects.filter(pk=postulation_id).update(
                 is_winner=True
             )
+            Notification.objects.filter(pk=notification_id).update(
+                notification_state=Notification.FINISHED
+            )
+
             return HttpResponse(status=status.HTTP_201_CREATED)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
