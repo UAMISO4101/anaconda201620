@@ -49,7 +49,7 @@ function run () {
             <Route path="convocatorias" component={NotificationArtist} />
           </Route>
           <Route path="convocatoria/:notificationId" >
-            <Route path='votacion' component={ProposalContent} />
+            <Route path='votacion' component={ProposalsContent} />
           </Route>
         </Route>
         <Route path="participar(/:tipo)" component={NotificationContent} />
