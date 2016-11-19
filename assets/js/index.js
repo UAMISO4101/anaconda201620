@@ -48,6 +48,9 @@ function run () {
             <IndexRedirect to="/convocatorias" />
             <Route path="convocatorias" component={NotificationArtist} />
           </Route>
+          <Route path="convocatoria/:notificationId" >
+            <Route path='votacion' component={ProposalContent} />
+          </Route>
         </Route>
         <Route path="participar(/:tipo)" component={NotificationContent} />
       </Route>
