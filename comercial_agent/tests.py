@@ -126,7 +126,7 @@ class PostulationTest(TestCase):
 
     def test_winner_postulation(self):
         c = Client()
-        response = c.get('/comercial_agent/notifications/set-winner/1/')
+        response = c.put('/comercial_agent/notifications/set-winner/1/')
         print('RESPONSE')
         print(response)
         print('STATUS')
