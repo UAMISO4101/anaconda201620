@@ -7,9 +7,7 @@ class SonidosLibresPlayer extends Component{
     render(){
       if (this.props.setted) {
         return(
-            <Fixed>
-          <ReactMusicPlayer songs={this.props.audios} autoplay />
-            </Fixed>
+             <ReactMusicPlayer songs={this.props.audios} autoplay 
         )
       } else {
         return(
