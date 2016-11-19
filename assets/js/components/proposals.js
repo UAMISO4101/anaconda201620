@@ -33,7 +33,7 @@ class Proposals extends Component {
           type="warning"
           title="Convocatoria cerrada"
           text="Esta Convocatoria ya está cerrada porqué se escogió la propuesta ganadora"
-          onConfirm={() => { this.setState({show: false}); window.location = `#${CA_DASHBOARD}/convocatorias/${this.state.userId}`; }}
+          onConfirm={() => { this.setState({show: false}); window.location = `#${CA_DASHBOARD}/${this.state.userId}/convocatorias`; }}
         />
       )
     }else{
@@ -47,7 +47,7 @@ class Proposals extends Component {
             text={this.props.saModal.text}
             onConfirm={() => {
               this.props.hideSAModal();
-              window.location = `#${CA_DASHBOARD}/convocatorias/${this.state.userId}`;
+              window.location = `#${CA_DASHBOARD}/${this.state.userId}/convocatorias`;
             }
           }
           />

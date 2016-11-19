@@ -48,6 +48,7 @@ class NotificationForm extends Component{
       sweetAlertTitle: "",
       sweetAlertOnConfirm: () => {this.setState({ show: false })},
       type: "warning",
+      userId: window.localStorage.userId,
     };
   }
   componentDidMount(){
@@ -223,7 +224,7 @@ class NotificationForm extends Component{
               type: "success",
               show: true,
               showModal: false,
-              sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}/convocatorias`; },
+              sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}/${this.state.userId}/convocatorias`; },
               sweetAlertMessage: "Convocatoria creada exitosamente",
               sweetAlertTitle: "Exito",
             });

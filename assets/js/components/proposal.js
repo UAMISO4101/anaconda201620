@@ -80,7 +80,7 @@ class Proposal extends Component {
           type: "success",
           show: true,
           showModal: false,
-          sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}//convocatorias`; },
+          sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}/${this.state.userId}/convocatorias`; },
           sweetAlertMessage: "Es cogió la postulación satisfactoriamente",
           sweetAlertTitle: "Exito",
         });
@@ -95,7 +95,7 @@ class Proposal extends Component {
           type: "success",
           show: true,
           showModal: false,
-          sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}/convocatorias`; },
+          sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}/${this.state.userId}/convocatorias`; },
           sweetAlertMessage: "Es cogió la postulación satisfactoriamente",
           sweetAlertTitle: "Exito",
         });
