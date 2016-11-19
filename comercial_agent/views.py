@@ -470,11 +470,4 @@ def get_postulations_by_notification(request,notification_id):
 
 @csrf_exempt
 def set_notification_winner(request,postulation_id):
-    if request.method == 'PUT':
-        Postulation.objects.filter(pk=postulation_id).update(
-            is_winner=True
-        )
-
-        return HttpResponse(status=status.HTTP_201_CREATED)
-    else:
-        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    return HttpResponse(status=status.HTTP_400_BAD_REQUEST)

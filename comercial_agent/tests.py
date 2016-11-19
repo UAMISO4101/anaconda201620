@@ -3,6 +3,8 @@ from django.test import Client
 from django.test import TestCase
 
 # Create your tests here.
+from rest_framework import status
+
 from comercial_agent.models import Genre, Artist, ArtworkCollection, Album, Song, Notification, RequestedPiece, \
     PostulatedArtwork, Postulation, BusinessAgent
 
@@ -121,3 +123,9 @@ class PostulationTest(TestCase):
         self.assertGreaterEqual(len(response2.json()["sounds"][0]["url"]), 1)
         self.assertGreaterEqual(len(response2.json()["sounds"][0]["soundtrack"]), 1)
 
+
+    def test_winner_postulation(self):
+        c = Client()
+        response = c.get('/comercial_agent/notifications/set-winner/1/')
+
+        self.assertTrue(status.is_success(response.status_code))
