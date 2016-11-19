@@ -472,6 +472,7 @@ def get_postulations_by_notification(request,notification_id):
 def set_notification_winner(request,notification_id,postulation_id):
     if request.method == 'PUT':
         postulations = Postulation.objects.filter(notification_id=notification_id,is_winner=True)
+        print(postulations)
 
         if len(postulations) == 0:
             Postulation.objects.filter(pk=postulation_id).update(

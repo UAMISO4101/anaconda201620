@@ -169,7 +169,7 @@ class PostulationTest(TestCase):
         c = Client()
         response = c.get('/comercial_agent/notifications/1/postulations/')
 
-        self.assertEqual(len(response.json()["proposals"]), 1)
+        self.assertEqual(len(response.json()["proposals"]), 2)
         self.assertGreaterEqual(len(response.json()["proposals"][0]["audios"][0]["url"]), 1)
 
         c2 = Client()
