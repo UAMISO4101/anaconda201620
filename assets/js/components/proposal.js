@@ -14,11 +14,12 @@ class Proposal extends Component {
         choosedAudio:{soundtrack:{song: null}},
         selectedAudio: false,
         selectedProposal: false,
-        type: "success",
         show: false,
         sweetAlertOnConfirm: () => {},
         sweetAlertMessage: "",
-        sweetAlertTitle: ""
+        sweetAlertTitle: "",
+        type: "success",
+        userId: window.localStorage.userId
    };
    this.selectProposal = this.selectProposal.bind(this);
   }
@@ -75,8 +76,22 @@ class Proposal extends Component {
     );
   }
   selectProposal(){
-    let choosedProposal = {notificationId: this.props.notification.id, proposalId: this.props.proposal.id};
     this.setState({
+          type: "success",
+          show: true,
+          showModal: false,
+          sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}//convocatorias`; },
+          sweetAlertMessage: "Es cogió la postulación satisfactoriamente",
+          sweetAlertTitle: "Exito",
+        });
+
+    $.ajax({
+      method: 'PUT',
+      url: `${SERVER_URL}/comercial_agent/notifications/${this.props.notification.id}/set-winner/${this.props.proposal.id}/`,
+      data: JSON.stringify({}),
+    })
+    .done(( msg ) => {
+        this.setState({
           type: "success",
           show: true,
           showModal: false,
@@ -84,33 +99,16 @@ class Proposal extends Component {
           sweetAlertMessage: "Es cogió la postulación satisfactoriamente",
           sweetAlertTitle: "Exito",
         });
-    // $.ajax({
-    //   method: 'POST',
-    //   url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}`,
-    //   data: JSON.stringify(choosedProposal),
-    // })
-    // .done(( msg ) => {
-    //     self.props.choosedProposal(this.props.proposal.id);
-    //     self.setState({ selectedProposal:true});
-    //
-    //     this.setState({
-    //       type: "success",
-    //       show: true,
-    //       showModal: false,
-    //       sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}/convocatorias`; },
-    //       sweetAlertMessage: "Es cogió la postulación satisfactoriamente",
-    //       sweetAlertTitle: "Exito",
-    //     });
-    //   })
-    // .fail((err) => {
-    //   console.error(err);
-    //   this.setState({
-    //     show: true,
-    //     sweetAlertTitle: "Error Servidor",
-    //     type: "error",
-    //     sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
-    //   });
-    // })
+      })
+    .fail((err) => {
+      console.error(err);
+      this.setState({
+        show: true,
+        sweetAlertTitle: "Error Servidor",
+        type: "error",
+        sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
+      });
+    })
 
   }
   selectProposalButton() {

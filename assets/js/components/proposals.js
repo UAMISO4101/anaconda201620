@@ -15,6 +15,7 @@ class Proposals extends Component {
       name: null,
       notif : null,
       prev: false,
+      userId: window.localStorage.userId,
     };
   }
   componentDidMount(){
@@ -32,7 +33,7 @@ class Proposals extends Component {
           type="warning"
           title="Convocatoria cerrada"
           text="Esta Convocatoria ya está cerrada porqué se escogió la propuesta ganadora"
-          onConfirm={() => { this.setState({show: false}); window.location = `#${CA_DASHBOARD}/convocatorias`; }}
+          onConfirm={() => { this.setState({show: false}); window.location = `#${CA_DASHBOARD}/convocatorias/${this.state.userId}`; }}
         />
       )
     }else{
@@ -46,7 +47,7 @@ class Proposals extends Component {
             text={this.props.saModal.text}
             onConfirm={() => {
               this.props.hideSAModal();
-              window.location = `#${CA_DASHBOARD}/convocatorias`;
+              window.location = `#${CA_DASHBOARD}/convocatorias/${this.state.userId}`;
             }
           }
           />
