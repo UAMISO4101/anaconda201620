@@ -25,7 +25,7 @@ class Login extends Component {
     this.state = {
       authText: AUTH_TYPE.REGISTER,
       csrf_token: csrf_token,
-      register_photo: null,
+      register_photo: "null",
       show: false,
       sweetAlertOnConfirm: () => {this.setState({ show: false })},
       sweetAlertTitle: "",
@@ -202,9 +202,10 @@ class Login extends Component {
                 <input ref="register_names" className="form-control" type="text" placeholder="Nombres" required />
                 <input ref="register_surname" className="form-control" type="text" placeholder="Apellidos" required />
                 <label>Escoger una foto de perfil</label>
-                <DropzoneComponent config={componentConfig}
+                {/*<DropzoneComponent config={componentConfig }
                        eventHandlers={this.eventHandlers()}
                      djsConfig={this.djsConfig()} />
+                   */}
                 <input ref="register_nickname" className="form-control" type="text" placeholder="Nombre Artistico" required />
                 <input ref="register_accountNumber" className="form-control" type="number" placeholder="Número de cuenta" required />
                 <input ref="register_city" className="form-control" type="text" placeholder="Ciudad" required />
