@@ -18,13 +18,7 @@ export const audios = (state={audios:audiosDefault, setted: true},action) => {
         setted: false
       });
     case 'SET_AUDIOS':
-      let audios = [];
-      let proposals = action.data;
-      for (let i=0, l=proposals.length; l>i; i+=1) {
-        proposals[i].audios.forEach(audio => {
-          audios.push(audio);
-        });
-      }
+      let audios = action.data;
       return {audios: audios, setted: true} || state;
     default:
       return Object.assign({}, state, {
