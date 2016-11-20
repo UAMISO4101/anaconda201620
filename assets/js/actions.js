@@ -50,8 +50,8 @@ export const fetchSoundTracks = (filter, type) => {
         statusCode: {
         200: (data) => {
           dispatch(getSoundTracks(data))
-          dispatch(resetPlayerAudios())
-          dispatch(setPlayerAudios(data))
+          //dispatch(resetPlayerAudios())
+          //dispatch(setPlayerAudios(data))
         },
         404: (err) => {
           dispatch(showSAModal({
@@ -124,7 +124,7 @@ export const fetchProposals = (id) => {
         if(proposals.length> 0 ){
           dispatch(getProposals(proposals))
           // dispatch(resetPlayerAudios())
-          dispatch(setPlayerAudios(proposals))
+          //dispatch(setPlayerAudios(proposals))
         }else {
           dispatch(showSAModal({
             show: true,
@@ -148,7 +148,7 @@ export const fetchProposals = (id) => {
 }
 
 export const resetPlayerAudios = () => ({type: 'RESET_AUDIOS'})
-export const setPlayerAudios = proposals => ({type: 'SET_AUDIOS',data: proposals})
+export const setPlayerAudios = (audios) => ({type: 'SET_AUDIOS',data: audios})
 export const setActualUserType = (userType) => ({ type: 'SET_USER_TYPE', data: userType });
 export const setRequest = (request) => ({ type: 'SET_REQUEST', data: request });
 export const setUserId = (id) => ({ type: 'SET_USER_ID', data: id});
