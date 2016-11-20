@@ -87,14 +87,26 @@ class Proposal extends Component {
         </button>
       )
     } else {
-      return (
-        <span>
-          <FaThumbsOUp/> 36 &nbsp;
-          <button type="button" className="btn btn-primary disabled" aria-label="Left Align">
-            Publica debe haber un empate para poder Escoger
-          </button>
-        </span>
+      // this.props.notification  ; CREATED = 'CRE'; PUBLISHED = 'PUB'; CLOSED = 'CER'; FINISHED = 'FIN'
+      if ( this.props.notification.notification_state == "CER" && this.props.proposal.tie ) {
+        return (
+          <span>
+            <FaThumbsOUp/> { this.props.proposal.likes } &nbsp;
+            <button type="button" onClick={ this.selectProposal } className="btn btn-primary" aria-label="Left Align">
+              Escoger esta obra como ganadora
+            </button>
+          </span>
         )
+      }else{
+        return (
+          <span>
+            <FaThumbsOUp/> { this.props.proposal.likes } &nbsp;
+            <button type="button" className="btn btn-primary disabled" aria-label="Left Align">
+              Publica debe haber un empate para poder Escoger Y estar cerrada
+            </button>
+          </span>
+        )
+      }
     }
   }
 

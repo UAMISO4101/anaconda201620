@@ -23,8 +23,27 @@ class Proposals extends Component {
   }
   componentDidMount(){
     this.props.fetchProposals(this.props.notification.id);
-    if (this.props.notification.notification_state == "CER"){
-       this.setState({show: true})
+  }
+
+  proposalType(){
+    switch (auth.getUserRole()) {
+      case USER_ROLES.ARTIST :
+          return this.props.proposals.map( proposal => <ProposalArtist proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
+        break;
+      case USER_ROLES.COMERCIAL_AGENT :
+        if (this.props.notification.notification_state == "FIN"){
+          let filteredProposal = this.props.proposals.filter( proposal => { if (proposal.winner) { return proposal } });
+         if (filteredProposal.length == 0) {
+           return null
+         } else {
+           return <ProposalContent proposal={filteredProposal[0]} notification={this.props.notification} key={filteredProposal[0].id}/>;
+         }
+      }else {
+        return this.props.proposals.map( proposal => <ProposalCommercialAgent proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
+      }
+        break;
+      default:
+        return null
     }
   }
 
@@ -42,18 +61,6 @@ class Proposals extends Component {
   }
 
   render(){
-    if(this.props.notification.notification_state == "CER"){
-      return(
-        <SweetAlert
-          show={this.state.show}
-          type="warning"
-          title="Convocatoria cerrada"
-          text="Esta Convocatoria ya está cerrada porqué se escogió la propuesta ganadora"
-          onConfirm={() => { this.setState({show: false}); window.location = `#${CA_DASHBOARD}/${this.state.userId}/convocatorias`; }}
-        />
-      )
-    }else{
-      let tie = false;
       return (
         <div >
           <SweetAlert
@@ -73,7 +80,6 @@ class Proposals extends Component {
         </div>
       </div>
     );
-    }
   }
 };
 

@@ -54,7 +54,7 @@ class Notifications extends Component {
   formatVotes(cell, row){
     return (
       <Link  className="btn btn-primary-participate pull-right"
-        to={`${CA_DASHBOARD}/${this.state.userId}/${this.state.userId}/convocatoria/${row.id}/votacion`}>
+        to={`${CA_DASHBOARD}/${this.state.userId}/convocatoria/${row.id}/votacion`}>
         Ir a votaciones</Link>
     );
   }

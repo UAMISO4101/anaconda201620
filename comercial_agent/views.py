@@ -1,10 +1,12 @@
 import json
 import os
+from datetime import date
 
 import boto
 import django
 from django.contrib.auth import authenticate, login, logout
 from boto.s3.key import Key
+from django.db.models import Max
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -143,8 +145,6 @@ def create_artist_user(request):
 
 @csrf_exempt
 def upload_artist_photo(request):
-    print("REQUEST")
-    print(request)
     if request.method == 'POST':
         try:
             imageFile = request.FILES['file']
@@ -201,6 +201,7 @@ def notification_json(request, user_id):
         dict_notifications = []
 
         for notification in notifications:
+            notification = update_notification(notification.id)
             pieces = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
             dict_notification = notification.as_dict();
             dict_pieces = []
@@ -246,6 +247,7 @@ def get_open_notifications(request):
         notifications_array = []
 
         for notification in notifications_model:
+            notification = update_notification(notification.id)
             pieces_model = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
             dict_notification = notification.as_dict();
             dict_piece = []
@@ -258,6 +260,34 @@ def get_open_notifications(request):
         return JsonResponse({'notifications': notifications_array}, safe=False)
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+def update_notification(notification_id):
+    notification = Notification.objects.get(pk=notification_id)
+    print(notification.closing_date)
+
+    if (date.today() > notification.closing_date) and (notification.notification_state == Notification.PUBLISHED):
+        notification.notification_state=Notification.CLOSED
+        notification.save()
+
+        if notification.notification_type == Notification.PUBLIC:
+            max_polls = Postulation.objects.filter(notification_id=notification_id).aggregate(Max('polls_num'))
+
+            postulations = Postulation.objects.filter(polls_num=max_polls['polls_num__max'])
+
+            if len(postulations) > 1:
+                Postulation.objects.filter(polls_num=max_polls['polls_num__max']).update(
+                    is_tied=True
+                )
+            elif len(postulations) == 1:
+                Postulation.objects.filter(polls_num=max_polls['polls_num__max']).update(
+                    is_winner=True
+                )
+                notification.notification_state = Notification.FINISHED
+                notification.save()
+
+    return notification
+
 
 
 @csrf_exempt
@@ -420,7 +450,11 @@ def postulate_artwork(request):
         artist_info = Artist.objects.get(user_id=user_id)
         notification_info = Notification.objects.get(id=notification_id)
 
-        postulation_info = Postulation(artist=artist_info, notification=notification_info)
+        postulation_info = Postulation(artist=artist_info,
+                                       notification=notification_info,
+                                       is_tied=False,
+                                       is_winner=False,
+                                       polls_num=0)
         postulation_info.save()
 
         for artwork in postulation_json['proposal']['pairs']:
@@ -459,7 +493,12 @@ def get_postulations_by_notification(request,notification_id):
 
                 audio_array.append(artwork_info_json)
 
-            postulation_info_json = {"id": postulation,"artist":artist_info.artistic_name,"audios":audio_array}
+            postulation_info_json = {"id": postulation,
+                                     "artist":artist_info.artistic_name,
+                                     "likes":postulation_info.polls_num,
+                                     "tie":postulation_info.is_tied,
+                                     "winner":postulation_info.is_winner,
+                                     "audios":audio_array}
             postulation_array_json.append(postulation_info_json)
 
         return JsonResponse(dict(proposals=postulation_array_json))
@@ -471,12 +510,15 @@ def get_postulations_by_notification(request,notification_id):
 def set_notification_winner(request,notification_id,postulation_id):
     if request.method == 'PUT':
         postulations = Postulation.objects.filter(notification_id=notification_id,is_winner=True)
-        print(postulations)
 
         if len(postulations) == 0:
             Postulation.objects.filter(pk=postulation_id).update(
                 is_winner=True
             )
+            Notification.objects.filter(pk=notification_id).update(
+                notification_state=Notification.FINISHED
+            )
+
             return HttpResponse(status=status.HTTP_201_CREATED)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
