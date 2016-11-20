@@ -173,8 +173,10 @@ class PostulationTest(TestCase):
 
     def test_postulation(self):
         c = Client()
-        response = c.get('/comercial_agent/notifications/user/1/')
-        print(response)
+        postulations = Postulation.objects.all()
+        for postulation in postulations:
+            print(postulation)
+            
         response = c.get('/comercial_agent/notifications/1/postulations/')
         print('RESPONSE')
         print(response)
