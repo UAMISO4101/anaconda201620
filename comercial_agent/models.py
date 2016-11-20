@@ -147,6 +147,15 @@ class Postulation(models.Model):
     )
 
 
+    def __str__(self):
+        return ''.join([
+            self.pk,
+            self.artist.artistic_name,
+            self.notification.name,
+            self.polls_num,
+        ])
+
+
 #ARTWORKS MODELS
 class ArtworkCollection(models.Model):
     artist = models.OneToOneField(Artist, null=False)
