@@ -3,7 +3,8 @@ import { ListGroupItem } from 'react-bootstrap';
 import FaEraser from 'react-icons/lib/fa/eraser';
 import ProposalContent from '../containers/proposalContent';
 import SweetAlert from 'sweetalert-react';
-import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
+import { CA_DASHBOARD, SERVER_URL,USER_ROLES } from '../utils/constants';
+import { auth } from '../utils/auth';
 
 class Proposals extends Component {
   constructor(props){
@@ -22,6 +23,32 @@ class Proposals extends Component {
     this.props.fetchProposals(this.props.notification.id);
   }
 
+  proposalType(){
+    switch (auth.getUserRole()) {
+      case USER_ROLES.ARTIST :
+          return this.props.proposals.map( proposal => <ProposalArtist proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
+        break;
+      case USER_ROLES.COMERCIAL_AGENT :
+        if (this.props.notification.notification_state == "FIN"){
+          let filteredProposal = this.props.proposals.filter( proposal => {
+           if (proposal.winner) {
+             return proposal
+           }
+         });
+         if (filteredProposal.length == 0) {
+           return null
+         } else {
+           return <ProposalContent proposal={filteredProposal[0]} notification={this.props.notification} key={filteredProposal[0].id}/>;
+         }
+      }else {
+        return this.props.proposals.map( proposal => <ProposalCommercialAgent proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
+      }
+        break;
+      default:
+        return null
+    }
+  }
+
   render(){
       return (
         <div >
@@ -38,7 +65,7 @@ class Proposals extends Component {
           />
         <br/><br/><br/><br/>
         <div className="list-group">
-          { this.props.proposals.map( proposal => <ProposalContent proposal={proposal} notification={this.props.notification} key={proposal.id}/> )}
+          { this.proposalType() }
         </div>
       </div>
     );

@@ -11,7 +11,7 @@ class Proposal extends Component {
     super(props);
     this.state = {
         active: 0,
-        choosedAudio:{soundtrack:{song: null}},
+        choosedAudio:{soundtrack:{song: "Escoge una canción."}},
         selectedAudio: false,
         selectedProposal: false,
         show: false,
