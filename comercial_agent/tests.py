@@ -203,14 +203,14 @@ class AppTest(TestCase):
 
         #Test Likes
         response = c.get('/comercial_agent/notifications/1/postulations/')
-        response_dict = json.load(response.json())
+        #response_dict = json.load(response.json())
 
-        self.assertGreaterEqual(len(response_dict["proposals"][0]["likes"]), 1)
+        self.assertGreaterEqual(len(response.json()["proposals"][0]["likes"]), 1)
 
         #Test Ties
         response = c.get('/comercial_agent/notifications/1/postulations/')
-        response_dict = json.load(response.json())
+        #response_dict = json.load(response.json())
 
-        self.assertGreaterEqual(len(response_dict["proposals"][0]["tie"]), 1)
+        self.assertGreaterEqual(len(response.json()["proposals"][0]["tie"]), 1)
 
 
