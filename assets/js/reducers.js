@@ -88,6 +88,21 @@ export const notificationModal = (state={ showModal: false, modalRequest: [] }, 
   }
 }
 
+export const descriptionModal = (state={ showModal: false, modalRequest: [] },  action) => {
+  let descriptionModal = {};
+  switch (action.type) {
+    case 'SHOW_DESCRIPTION_MODAL':
+      descriptionModal = Object.assign({}, action.data);
+      return  descriptionModal || state;
+      break;
+    case 'HIDE_DESCRIPTION_MODAL':
+      return  {  showModal: false, modalRequest: [] } || state;
+      break;
+    default:
+      return state ;
+  }
+}
+
 const proposalDefault = {
   id: "proposalId",
   artist: "artistId",

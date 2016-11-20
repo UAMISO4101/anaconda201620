@@ -15,6 +15,9 @@ export const hideSAModal = () => ({ type: 'HIDE_SA_MODALS' });
 export const showNotifictionModal = (modalProps) => ({ type: 'SHOW_NOTIFICATION_MODAL', data: modalProps });
 export const hideNotifictionModal = () => ({ type: 'HIDE_NOTIFICATION_MODAL' });
 
+export const showDescriptionModal = (modalProps) => ({ type: 'SHOW_DESCRIPTION_MODAL', data: modalProps });
+export const hideDescriptionModal = () => ({ type: 'HIDE_DESCRIPTION_MODAL' });
+
 export const setActualUserType = (userType) => ({ type: 'SET_USER_TYPE', data: userType });
 export const setUserId = (id) => ({ type: 'SET_USER_ID', data: id});
 export const getActualNotification = (notifications,notificationId) => ({ type: 'GET_ACTUAL_NOTIFICATION', data: {notifications, notificationId} });

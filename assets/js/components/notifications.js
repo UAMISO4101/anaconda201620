@@ -7,6 +7,7 @@ import { Link } from 'react-router';
 import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
 
 import NotificationShowModal from '../containers/notificationShowModal';
+import DescriptionShowModal from  '../containers/descriptionShowModal';
 
 const getNotificationId = notification => {
   let str = notification.target.id
@@ -40,8 +41,8 @@ class Notifications extends Component {
         return( <TableHeaderColumn dataField="request" dataFormat={this.formatRequestsUser.bind(this)} dataSort={false}>Participar</TableHeaderColumn>)
       case "comercial_agent":
         return([
-          <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} >Editar</TableHeaderColumn>,
-          <TableHeaderColumn dataField="publishingState" dataFormat={this.formatPublish}  dataSort={false} >Publicar</TableHeaderColumn>,
+          <TableHeaderColumn dataField="id" dataFormat={this.formatEdit}  dataSort={false} width="85" dataAlign="center">Editar</TableHeaderColumn>,
+          <TableHeaderColumn dataField="publishingState" dataFormat={this.formatPublish}  dataSort={false} width="85" dataAlign="center">Publicar</TableHeaderColumn>,
           <TableHeaderColumn dataField="request" dataFormat={this.formatRequests.bind(this)} dataSort={false} dataAlign="left">Solicitudes</TableHeaderColumn>,
           <TableHeaderColumn dataFormat={this.formatVotes.bind(this)} dataSort={false} dataAlign="left">Votaciones</TableHeaderColumn>
         ])
@@ -54,6 +55,11 @@ class Notifications extends Component {
     this.props.setActualUserType(this.props.userType);
     this.props.getActualNotification(this.props.notifications.notifications, row.id);
     this.props.showNotifictionModal({ showModal: true, modalRequest: cell, userType: this.props.userType })
+  }
+
+  openModalDetails(cell,row){
+    this.props.getActualNotification(this.props.notifications.notifications, row.id);
+    this.props.showDescriptionModal({ showModal: true, modalRequest: cell})
   }
 
   formatRequests(cell, row){
@@ -69,9 +75,16 @@ class Notifications extends Component {
     );
   }
   formatRequestsUser(cell, row){
-    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
+    return (
+        <button className="btn btn-primary-participate pull-right" onClick={()=>{
       this.openModal(cell,row)
     }}  type="submit">Participar Ahora</button>);
+  }
+
+  formatRequestsDetail(cell, row){
+    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
+      this.openModalDetails(cell,row)
+    }}  type="submit"> Ver Descripción</button>);
   }
 
   formatEdit(cell, row){
@@ -85,6 +98,7 @@ class Notifications extends Component {
       <input type="checkbox" onChange={this.publishClick.bind(this)} id={`publish-${row.id}`}  value={ checkedState ? true : false} />
     )
   }
+
   editClick(notification){
     this.props.editNotification(getNotificationId(notification));
   }
@@ -130,6 +144,7 @@ class Notifications extends Component {
             onConfirm={() => this.setState({ show: false })}
             />
           <NotificationShowModal />
+          <DescriptionShowModal />
           <center>
             <div className="border col-sm-12">
               <center>
@@ -141,8 +156,8 @@ class Notifications extends Component {
             <div className="col-sm-12 col-xs-12 " >
               <BootstrapTable data={ this.props.notifications.notifications } striped={true} hover={true} >
                 <TableHeaderColumn dataField="id" isKey={true} hidden={true}>ID</TableHeaderColumn>
-                <TableHeaderColumn dataField="name" dataSort={true}>Nombre</TableHeaderColumn>
-                <TableHeaderColumn dataField="description" >Descripción</TableHeaderColumn>
+                <TableHeaderColumn dataField="name" dataSort={true} width="250">Nombre</TableHeaderColumn>
+                <TableHeaderColumn dataField="description" dataFormat={this.formatRequestsDetail.bind(this)} >Descripción</TableHeaderColumn>
                 <TableHeaderColumn dataField="initial_date" dataSort={true}>Fecha de Inicio</TableHeaderColumn>
                 <TableHeaderColumn dataField="closing_date"  dataSort={true}  >Fecha de Cierre</TableHeaderColumn>
                 <TableHeaderColumn dataField="notification_type"  dataSort={true} >Tipo</TableHeaderColumn>
