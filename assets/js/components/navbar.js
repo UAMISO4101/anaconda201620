@@ -8,6 +8,7 @@ const ArtistNavBarComponent = (userId) => {return <li><a href={`#${ARTIST_DASHBO
 
 const authComponent = () => {
   if (auth.loggedIn()) {
+    let user = auth.getUserInformation();
     return(
       <li className="dropdown">
         <a href="#" className="dropdown-toggle" data-toggle="dropdown">
@@ -21,12 +22,12 @@ const authComponent = () => {
                     <div className="row">
                         <div className="col-lg-4">
                             <p className="text-center">
-                                image
+                                <img src={user.image || "" } class="img-thumbnail" alt={user.username} width="40" height="40" />
                             </p>
                         </div>
                         <div className="col-lg-8">
-                            <p className="text-left"><strong>{auth.getUserUsername()}</strong></p>
-                            <p className="text-left small">correoElectronico@email.com</p>
+                            <p className="text-left"><strong>{user.username}</strong></p>
+                            <p className="text-left small">{user.email}</p>
                         </div>
                     </div>
                 </div>
@@ -64,7 +65,7 @@ const ComercialAgentNavBarComponent = (userId) => {
     <li><a href={`#${CA_DASHBOARD}/${userId}/convocatorias`}>Convocatorias</a></li>
 ]}
 const userTypeComponent = (userId) => {
-  switch (auth.getUserRole()) {
+  switch (auth.getUserInformation().role) {
     case USER_ROLES.ARTIST :
         return ArtistNavBarComponent(userId);
       break;

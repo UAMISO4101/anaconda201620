@@ -14,9 +14,9 @@ export const auth = {
   },
   getUserInformation() {
     return {
-      id: localStorage.id,
+      id: localStorage.userId,
       email: localStorage.email,
-      image: localStorage.username,
+      image: localStorage.userImage,
       role: localStorage.role,
       username: localStorage.email,
     }
@@ -32,6 +32,7 @@ export const auth = {
     .done(( {user} ) => {
       localStorage.token = user.token;
       localStorage.userId = user.id;
+      localStorage.userImage = user.image;
       localStorage.role = user.role;
       localStorage.username = user.username;
       if (cb) cb(true,user)
@@ -45,7 +46,7 @@ export const auth = {
 
   logout(cb) {
     delete localStorage.token
-    delete localStorage.id
+    delete localStorage.userId
     delete localStorage.email
     delete localStorage.username
     delete localStorage.role
