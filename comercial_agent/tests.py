@@ -175,10 +175,10 @@ class PostulationTest(TestCase):
         c = Client()
 
         print('POSTULATIONS')
-        postulations = Postulation.objects.all()
+        postulations = Postulation.objects.all().values_list('id',flat=True)
 
         for postulation in postulations:
-            print(postulation.json())
+            print(postulation)
 
         response = c.get('/comercial_agent/notifications/1/postulations/')
         print('RESPONSE')
