@@ -41,15 +41,15 @@ function run () {
               <IndexRoute component={NotificationFormEdit} />
               <Route path='votacion' component={ProposalsContent} />
             </Route>
-
             <Route path="convocatorias" component={NotificationContent} />
           </Route>
+          
           <Route path="artista/:id" onEnter={isArtist}>
             <IndexRedirect to="/convocatorias" />
             <Route path="convocatorias" component={NotificationArtist} />
-          </Route>
-          <Route path="convocatoria/:notificationId" >
-            <Route path='votacion' component={ProposalsContent} />
+            <Route path="convocatoria/:notificationId" >
+              <Route path='votacion' component={ProposalsContent} />
+            </Route>
           </Route>
         </Route>
         <Route path="participar(/:tipo)" component={NotificationContent} />
