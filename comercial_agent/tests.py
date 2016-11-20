@@ -11,6 +11,8 @@ from comercial_agent.models import Genre, Artist, ArtworkCollection, Album, Song
 
 class PostulationTest(TestCase):
 
+    c = None;
+
     def setUp(self):
         print('Tests SetUp started')
         user = django.contrib.auth.models.User.objects.create_user(username='usuario_test',
@@ -169,10 +171,14 @@ class PostulationTest(TestCase):
             postulation=postulation,
         )
         postulated_artwork_2.save()
+
+        self.c = Client()
         print('Tests SetUp finished')
 
+
+
     def test_postulation(self):
-        c = Client()
+        #c = Client()
 
         print('POSTULATIONS')
         postulations = Postulation.objects.all().values_list('id',flat=True)
@@ -180,38 +186,38 @@ class PostulationTest(TestCase):
         for postulation in postulations:
             print(postulation)
 
-        response = c.get('/comercial_agent/notifications/1/postulations/')
+        response = self.c.get('/comercial_agent/notifications/1/postulations/')
         print('RESPONSE')
         print(response.json())
         self.assertEqual(len(response.json()["proposals"]), 2)
         self.assertGreaterEqual(len(response.json()["proposals"][0]["audios"][0]["url"]), 1)
 
     def test_sounds(self):
-        c2 = Client()
-        response2 = c2.get('/comercial_agent/sounds/song/all/')
+        #c2 = Client()
+        response = self.c.get('/comercial_agent/sounds/song/all/')
 
-        self.assertGreaterEqual(len(response2.json()["sounds"][0]["url"]), 1)
-        self.assertGreaterEqual(len(response2.json()["sounds"][0]["soundtrack"]), 1)
+        self.assertGreaterEqual(len(response.json()["sounds"][0]["url"]), 1)
+        self.assertGreaterEqual(len(response.json()["sounds"][0]["soundtrack"]), 1)
 
     def test_winner_postulation(self):
-        c = Client()
-        response = c.put('/comercial_agent/notifications/1/set-winner/1/')
+        #c = Client()
+        response = self.c.put('/comercial_agent/notifications/1/set-winner/1/')
 
         self.assertTrue(status.is_success(response.status_code))
 
     def test_multiple_winners_postulation(self):
-        c = Client()
-        response = c.put('/comercial_agent/notifications/1/set-winner/1/')
+        #c = Client()
+        response = self.c.put('/comercial_agent/notifications/1/set-winner/1/')
 
         self.assertTrue(status.is_success(response.status_code))
 
-        response2 = c.put('/comercial_agent/notifications/1/set-winner/2/')
+        response2 = self.c.put('/comercial_agent/notifications/1/set-winner/2/')
 
         self.assertTrue(status.is_client_error(response2.status_code))
 
     def test_postulation_likes(self):
-        c = Client()
-        response = c.get('/comercial_agent/notifications/1/postulations/')
+        #c = Client()
+        response = self.c.get('/comercial_agent/notifications/1/postulations/')
 
         self.assertGreaterEqual(len(response.json()["proposals"][0]["likes"]), 1)
 
