@@ -91,7 +91,7 @@ export const notificationModal = (state={ showModal: false, modalRequest: [] }, 
 const proposalDefault = {
   id: "proposalId",
   artist: "artistId",
-  audios: [audiosDefault]
+  audios: audiosDefault
 }
 export const proposals = (state=[proposalDefault], action) => {
   let proposals = null
