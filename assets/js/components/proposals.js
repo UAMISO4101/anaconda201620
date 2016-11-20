@@ -30,13 +30,16 @@ class Proposals extends Component {
         break;
       case USER_ROLES.COMERCIAL_AGENT :
         if (this.props.notification.notification_state == "FIN"){
-          let a = this.props.proposals.filter( proposal => {
+          let filteredProposal = this.props.proposals.filter( proposal => {
            if (proposal.winner) {
-             return <ProposalContent proposal={proposal} notification={this.props.notification} key={proposal.id}/>
+             return proposal
            }
-         })
-         debugger
-         return a
+         });
+         if (filteredProposal.length == 0) {
+           return null
+         } else {
+           return <ProposalContent proposal={filteredProposal[0]} notification={this.props.notification} key={filteredProposal[0].id}/>;
+         }
       }else {
         return this.props.proposals.map( proposal => <ProposalCommercialAgent proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
       }
