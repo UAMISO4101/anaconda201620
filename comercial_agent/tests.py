@@ -1,3 +1,5 @@
+import json
+
 import django
 from django.test import Client
 from django.test import TestCase
@@ -201,7 +203,14 @@ class AppTest(TestCase):
 
         #Test Likes
         response = c.get('/comercial_agent/notifications/1/postulations/')
+        response_dict = json.load(response)
 
-        self.assertGreaterEqual(len(response.json()["proposals"][0]["likes"]), 1)
+        self.assertGreaterEqual(len(response_dict["proposals"][0]["likes"]), 1)
+
+        #Test Ties
+        response = c.get('/comercial_agent/notifications/1/postulations/')
+        response_dict = json.load(response)
+
+        self.assertGreaterEqual(len(response_dict["proposals"][0]["tie"]), 1)
 
 
