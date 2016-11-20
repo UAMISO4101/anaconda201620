@@ -8,15 +8,49 @@ const ArtistNavBarComponent = (userId) => {return <li><a href={`#${ARTIST_DASHBO
 
 const authComponent = () => {
   if (auth.loggedIn()) {
+    let user = auth.getUserInformation();
     return(
-      <li className="scroll active">
-        <button className='btn btn-danger' style={{padding: '20px', 'fontSize': '18px'}} onClick={()=>{
-            auth.logout(()=>{
-              window.location = "#";
-            });
-          }}>Logout</button>
-        </li>
-      )
+      <li className="dropdown">
+        <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+            <span className="glyphicon glyphicon-user"></span> 
+            <strong>Nombre</strong>
+            <span className="glyphicon glyphicon-chevron-down"></span>
+        </a>
+        <ul className="dropdown-menu">
+            <li>
+                <div className="navbar-login">
+                    <div className="row">
+                        <div className="col-sm-4">
+                            <p className="text-center">
+                                <img src={user.image || "" } class="img-thumbnail" alt={user.username} width="40" height="40" />
+                            </p>
+                        </div>
+                        <div className="col-sm-8">
+                            <p className="text-left"><strong>{user.username}</strong></p>
+                            <p className="text-left small">{user.email}</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li className="divider"></li>
+            <li>
+                <div className="navbar-login navbar-login-session">
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <p>
+                                <button className='btn btn-danger btn-block' onClick={()=>{
+                                    auth.logout(()=>{
+                                      window.location = "#";
+                                    });
+                                  }}>Logout</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+      </li>
+    )
   } else {
     return(
       <li className="scroll active">
@@ -31,7 +65,7 @@ const ComercialAgentNavBarComponent = (userId) => {
     <li><a href={`#${CA_DASHBOARD}/${userId}/convocatorias`}>Convocatorias</a></li>
 ]}
 const userTypeComponent = (userId) => {
-  switch (auth.getUserRole()) {
+  switch (auth.getUserInformation().role) {
     case USER_ROLES.ARTIST :
         return ArtistNavBarComponent(userId);
       break;

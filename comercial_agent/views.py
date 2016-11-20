@@ -69,8 +69,11 @@ def login_view(request):
                     return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
 
             user_json = {"id": user.pk,
+                        "image": user.profile_picture,
+                         "role": user_role,
+                         "username": username,
                          "token": token.key,
-                         "role": user_role}
+                         }
 
             return JsonResponse ({"user":user_json}, safe=False)
         else:
