@@ -208,7 +208,8 @@ class AppTest(TestCase):
 
         #Test Ties
         response = c.get('/comercial_agent/notifications/1/postulations/')
-        #response_dict = json.load(response.json())
+        response_dict = dict(response.json())
+        print('dict ' + response_dict)
 
         self.assertGreaterEqual(len(response.json()["proposals"][0]["tie"]), 1)
 
