@@ -24,7 +24,7 @@ class Proposals extends Component {
   }
 
   proposalType(){
-    switch (auth.getUserRole()) {
+    switch (auth.auth.getUserInformation().role()) {
       case USER_ROLES.ARTIST :
           return this.props.proposals.map( proposal => <ProposalArtist proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
         break;

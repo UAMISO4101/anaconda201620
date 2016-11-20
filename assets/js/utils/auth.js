@@ -12,9 +12,16 @@ export const auth = {
   getToken() {
     return localStorage.token
   },
-  getUserRole(){
-    return localStorage.role
+  getUserInformation() {
+    return {
+      id: localStorage.id,
+      email: localStorage.email,
+      image: localStorage.username,
+      role: localStorage.role,
+      username: localStorage.email,
+    }
   },
+
   login(credentials, cb) {
     cb = arguments[arguments.length - 1]
     $.ajax({
@@ -23,35 +30,28 @@ export const auth = {
       data: JSON.stringify(credentials),
     })
     .done(( {user} ) => {
-      localStorage.token = user.token
-      localStorage.userId = user.id
-      localStorage.role = user.role
+      localStorage.token = user.token;
+      localStorage.userId = user.id;
+      localStorage.role = user.role;
+      localStorage.username = user.username;
       if (cb) cb(true,user)
-      this.onChange(true)
+      this.onChange(true);
     })
     .fail((err) => {
       if (cb) cb(false)
       this.onChange(false)
     })
-    /*
-    pretendRequest(credentials.username, credentials.password, (res) => {
-      if (res.authenticated) {
-        localStorage.token = res.token
-        localStorage.role = res.role
-        if (cb) cb(true,res)
-        this.onChange(true)
-      } else {
-        if (cb) cb(false)
-        this.onChange(false)
-      }
-    })
-    */
   },
 
   logout(cb) {
     delete localStorage.token
+    delete localStorage.id
+    delete localStorage.email
+    delete localStorage.username
     delete localStorage.role
-    delete localStorage.userId
+    delete localStorage.email
+
+
     if (cb) cb()
     this.onChange(false)
   },
