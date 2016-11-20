@@ -16,6 +16,12 @@ class ReactMusicPlayer extends Component {
       songs: this.props.songs
     }
   }
+  componentWillReceiveProps(nextProps) {
+  // You don't have to do this check first, but it can help prevent an unneeded render
+  if (nextProps.songs !== this.state.songs) {
+    this.setState({ songs: nextProps.songs, active: nextProps.songs[0] });
+  }
+}
   componentDidMount () {
     let playerElement = this.refs.player;
     playerElement.addEventListener('timeupdate', this.updateProgress.bind(this));
