@@ -183,9 +183,8 @@ class AppTest(TestCase):
         response = c.get('/comercial_agent/notifications/1/postulations/')
 
         self.assertEqual(len(response.json()["proposals"]), 2)
-        print(len(response.json()["proposals"]))
         self.assertGreaterEqual(len(response.json()["proposals"][0]["audios"][0]["url"]), 1)
-        print(len(response.json()["proposals"][0]["audios"][0]["url"]))
+
         #Test Artworks
         response = c.get('/comercial_agent/sounds/song/all/')
 
@@ -209,10 +208,10 @@ class AppTest(TestCase):
 
         #Test Ties
         response = c.get('/comercial_agent/notifications/1/postulations/')
-        response_dict = dict(response.json())
-        print('dict ')
-        print(response_dict)
 
-        self.assertIsInstance(response_dict["proposals"][0]["tie"], bool)
+        self.assertIsInstance(response.json()["proposals"][0]["tie"], bool)
 
+        #Test Winner
+        response = c.get('/comercial_agent/notifications/1/postulations/')
 
+        self.assertIsInstance(response.json()["proposals"][0]["winner"], bool)
