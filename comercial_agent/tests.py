@@ -205,7 +205,7 @@ class AppTest(TestCase):
         #Test Likes
         response = c.get('/comercial_agent/notifications/1/postulations/')
 
-        self.assertGreaterEqual(response.json()["proposals"][0]["likes"], 0)
+        self.assertIsInstance(response.json()["proposals"][0]["likes"], int)
 
         #Test Ties
         response = c.get('/comercial_agent/notifications/1/postulations/')
@@ -213,6 +213,6 @@ class AppTest(TestCase):
         print('dict ')
         print(response_dict)
 
-        self.assertGreaterEqual(len(response_dict["proposals"][0]["tie"]), 1)
+        self.assertIsInstance(response_dict["proposals"][0]["tie"], bool)
 
 
