@@ -20,12 +20,12 @@ const authComponent = () => {
             <li>
                 <div className="navbar-login">
                     <div className="row">
-                        <div className="col-lg-4">
+                        <div className="col-sm-4">
                             <p className="text-center">
                                 <img src={user.image || "" } class="img-thumbnail" alt={user.username} width="40" height="40" />
                             </p>
                         </div>
-                        <div className="col-lg-8">
+                        <div className="col-sm-8">
                             <p className="text-left"><strong>{user.username}</strong></p>
                             <p className="text-left small">{user.email}</p>
                         </div>
@@ -38,7 +38,7 @@ const authComponent = () => {
                     <div className="row">
                         <div className="col-lg-12">
                             <p>
-                                <button className='btn btn-danger' onClick={()=>{
+                                <button className='btn btn-danger btn-block' onClick={()=>{
                                     auth.logout(()=>{
                                       window.location = "#";
                                     });
