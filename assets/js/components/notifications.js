@@ -115,9 +115,11 @@ class Notifications extends Component {
     );
   }
   formatListen(cell, row){
-    <Link  className="btn btn-primary-participate pull-right"
-      to={`${ARTIST_DASHBOARD}/${this.props.userId}/convocatoria/${row.id}/votacion`}>
-      Ir a votaciones</Link>
+    return (
+      <Link  className="btn btn-primary-participate pull-right"
+        to={`${ARTIST_DASHBOARD}/${this.props.userId}/convocatoria/${row.id}/votacion`}>
+        Ir a votaciones</Link>
+    )
   }
   formatPublish(cell, row) {
     let checkedState = row.notification_state == "PUB" ? "checked" : "";

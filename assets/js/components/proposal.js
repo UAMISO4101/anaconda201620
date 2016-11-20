@@ -11,7 +11,7 @@ class Proposal extends Component {
     super(props);
     this.state = {
         active: 0,
-        choosedAudio:{soundtrack:{song: null}},
+        choosedAudio:{soundtrack:{song: "Escoge una canción."}},
         selectedAudio: false,
         selectedProposal: false,
         show: false,
@@ -51,12 +51,12 @@ class Proposal extends Component {
                   width={500}
                   height={380}
                   displayQuantityOfSide={2}
-                  navigation={true}
-                  enableHeading={false}
+                  navigation={false}
+                  enableHeading={true}
                   active={this.state.active}
                   >
                   {this.props.proposal.audios.map( audio => {
-                    return (<img src={audio.cover || DEFAULT_IMAGE} alt={artist} data-action={()=>{
+                    return (<img src={audio.cover || DEFAULT_IMAGE} alt={audio.soundtrack.song} data-action={()=>{
                       this.setState({
                         choosedAudio: audio,
                         selectedAudio: true
