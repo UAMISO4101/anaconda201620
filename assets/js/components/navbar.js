@@ -12,8 +12,8 @@ const authComponent = () => {
     return(
       <li className="dropdown">
         <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-            <span className="glyphicon glyphicon-user"></span> 
-            <strong>Nombre</strong>
+            <img src={ user.image != "null" ? user.image : "http://thumb9.shutterstock.com/display_pic_with_logo/1186124/180542816/stock-vector-vector-hipster-icon-180542816.jpg" } class="img-thumbnail" alt={user.username} width="25" height="25" />
+            <strong>{user.username}</strong>
             <span className="glyphicon glyphicon-chevron-down"></span>
         </a>
         <ul className="dropdown-menu">
@@ -22,7 +22,7 @@ const authComponent = () => {
                     <div className="row">
                         <div className="col-sm-4">
                             <p className="text-center">
-                                <img src={user.image || "" } class="img-thumbnail" alt={user.username} width="40" height="40" />
+                                <img src={ user.image != "null" ? user.image : "http://thumb9.shutterstock.com/display_pic_with_logo/1186124/180542816/stock-vector-vector-hipster-icon-180542816.jpg" } class="img-thumbnail" alt={user.username} width="40" height="40" />
                             </p>
                         </div>
                         <div className="col-sm-8">

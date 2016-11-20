@@ -18,7 +18,7 @@ export const auth = {
       email: localStorage.email,
       image: localStorage.userImage,
       role: localStorage.role,
-      username: localStorage.email,
+      username: localStorage.username,
     }
   },
 
