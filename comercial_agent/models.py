@@ -152,7 +152,7 @@ class Postulation(models.Model):
             self.pk,
             self.artist.artistic_name,
             self.notification.name,
-            self.polls_num,
+            str(self.polls_num),
         ])
 
 
