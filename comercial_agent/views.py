@@ -489,7 +489,12 @@ def get_postulations_by_notification(request,notification_id):
 
                 audio_array.append(artwork_info_json)
 
-            postulation_info_json = {"id": postulation,"artist":artist_info.artistic_name,"likes":postulation_info.polls_num,"tie":postulation_info.is_tied,"audios":audio_array}
+            postulation_info_json = {"id": postulation,
+                                     "artist":artist_info.artistic_name,
+                                     "likes":postulation_info.polls_num,
+                                     "tie":postulation_info.is_tied,
+                                     "winner":postulation_info.is_winner,
+                                     "audios":audio_array}
             postulation_array_json.append(postulation_info_json)
 
         return JsonResponse(dict(proposals=postulation_array_json))
