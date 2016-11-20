@@ -75,7 +75,7 @@ def login_view(request):
                          "token": token.key,
                          }
 
-            import pdb; pdb.set_trace();
+            # import pdb; pdb.set_trace();
             return JsonResponse ({"user":user_json}, safe=False)
         else:
             return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
