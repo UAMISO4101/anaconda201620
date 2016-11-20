@@ -9,14 +9,47 @@ const ArtistNavBarComponent = (userId) => {return <li><a href={`#${ARTIST_DASHBO
 const authComponent = () => {
   if (auth.loggedIn()) {
     return(
-      <li className="scroll active">
-        <button className='btn btn-danger' style={{padding: '20px', 'font-size': '18px'}} onClick={()=>{
-            auth.logout(()=>{
-              window.location = "#";
-            });
-          }}>Logout</button>
-        </li>
-      )
+      <li className="dropdown">
+        <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+            <span className="glyphicon glyphicon-user"></span> 
+            <strong>Nombre</strong>
+            <span className="glyphicon glyphicon-chevron-down"></span>
+        </a>
+        <ul className="dropdown-menu">
+            <li>
+                <div className="navbar-login">
+                    <div className="row">
+                        <div className="col-lg-4">
+                            <p className="text-center">
+                                image
+                            </p>
+                        </div>
+                        <div className="col-lg-8">
+                            <p className="text-left"><strong>{auth.getUserUsername()}</strong></p>
+                            <p className="text-left small">correoElectronico@email.com</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li className="divider"></li>
+            <li>
+                <div className="navbar-login navbar-login-session">
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <p>
+                                <button className='btn btn-danger' onClick={()=>{
+                                    auth.logout(()=>{
+                                      window.location = "#";
+                                    });
+                                  }}>Logout</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+      </li>
+    )
   } else {
     return(
       <li className="scroll active">
