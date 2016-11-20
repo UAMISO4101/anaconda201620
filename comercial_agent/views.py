@@ -452,7 +452,11 @@ def postulate_artwork(request):
         artist_info = Artist.objects.get(user_id=user_id)
         notification_info = Notification.objects.get(id=notification_id)
 
-        postulation_info = Postulation(artist=artist_info, notification=notification_info)
+        postulation_info = Postulation(artist=artist_info,
+                                       notification=notification_info,
+                                       is_tied=False,
+                                       is_winner=False,
+                                       polls_num=0)
         postulation_info.save()
 
         for artwork in postulation_json['proposal']['pairs']:
