@@ -21,7 +21,7 @@ html, body {
 }
 
 body {
-  background: #3C576B;
+  background: #3C576B !important;
 }
 
 #initialLoader {
