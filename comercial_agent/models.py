@@ -146,13 +146,6 @@ class Postulation(models.Model):
         default=0,
     )
 
-    def __str__(self):
-        return ''.join([
-            self.pk,
-            self.artist.artistic_name,
-            self.notification.name,
-        ])
-
 
 #ARTWORKS MODELS
 class ArtworkCollection(models.Model):

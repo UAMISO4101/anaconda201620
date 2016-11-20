@@ -178,11 +178,11 @@ class PostulationTest(TestCase):
         postulations = Postulation.objects.all()
 
         for postulation in postulations:
-            print(postulation)
+            print(postulation.json())
 
         response = c.get('/comercial_agent/notifications/1/postulations/')
         print('RESPONSE')
-        print(response)
+        print(response.json())
         self.assertEqual(len(response.json()["proposals"]), 2)
         self.assertGreaterEqual(len(response.json()["proposals"][0]["audios"][0]["url"]), 1)
 
