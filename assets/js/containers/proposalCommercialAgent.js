@@ -1,10 +1,11 @@
 import Proposal from '../components/proposal'
-import {  choosedProposal } from '../actions';
+import {  choosedProposal,setPlayerAudios } from '../actions';
 import { connect } from 'react-redux';
 import {CA_DASHBOARD} from '../utils/constants';
 
 const mapDispatchToProps = dispatch => ({
   choosedProposal: (proposalId) => dispatch(choosedProposal(proposalId)),
+  changedSongs: (audios) => dispatch(setPlayerAudios(audios)),
   selectProposal: (self) => {
     self.setState({
           type: "success",
