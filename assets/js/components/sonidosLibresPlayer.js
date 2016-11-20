@@ -6,7 +6,10 @@ import Fixed from 'react-fixed';
 class SonidosLibresPlayer extends Component{
     render(){
       return(
+        <Fixed>
         <ReactMusicPlayer songs={this.props.audios} autoplay />
+        </Fixed>
+
       )
     }
 }

@@ -11,7 +11,7 @@ const mapDispatchToProps = dispatch => ({
           show: true,
           showModal: false,
           sweetAlertOnConfirm: () => {self.setState({show: false}); window.location = `#${CA_DASHBOARD}/${self.state.userId}/convocatorias`; },
-          sweetAlertMessage: "Es cogió la postulación satisfactoriamente",
+          sweetAlertMessage: "Escogió la postulación satisfactoriamente",
           sweetAlertTitle: "Exito",
         });
 

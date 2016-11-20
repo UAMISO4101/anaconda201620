@@ -41,7 +41,6 @@ class Proposal extends Component {
             <FaUserSecret size={60} color='#19708D' /><br/>
             <h3>{artist}</h3>
             <br/>
-            <h4 className="">{this.state.choosedAudio.soundtrack.song || 'Escoge una canción'}</h4>
             <br/>
             { this.selectProposalButton() }
           </div>
@@ -66,6 +65,7 @@ class Proposal extends Component {
                   })}
 
                 </Coverflow>
+                <center><h3>{this.state.choosedAudio.soundtrack.song || 'Escoge una canción'}</h3></center>
               </div>
             </div>
           </div>
