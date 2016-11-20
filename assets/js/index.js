@@ -43,7 +43,7 @@ function run () {
             </Route>
             <Route path="convocatorias" component={NotificationContent} />
           </Route>
-          
+
           <Route path="artista/:id" onEnter={isArtist}>
             <IndexRedirect to="/convocatorias" />
             <Route path="convocatorias" component={NotificationArtist} />
@@ -63,6 +63,7 @@ function run () {
 
 
 function init () {
+  document.getElementById("initialLoader").style.display = 'none';
   run();
   store.subscribe(run);
 }
