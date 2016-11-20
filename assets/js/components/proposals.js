@@ -30,11 +30,7 @@ class Proposals extends Component {
         break;
       case USER_ROLES.COMERCIAL_AGENT :
         if (this.props.notification.notification_state == "FIN"){
-          let filteredProposal = this.props.proposals.filter( proposal => {
-           if (proposal.winner) {
-             return proposal
-           }
-         });
+          let filteredProposal = this.props.proposals.filter( proposal => { if (proposal.winner) { return proposal } });
          if (filteredProposal.length == 0) {
            return null
          } else {
