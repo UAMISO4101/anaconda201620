@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { ListGroupItem } from 'react-bootstrap'
+import { ListGroupItem , Button} from 'react-bootstrap'
 import FaUserSecret from 'react-icons/lib/fa/user-secret'
 import Coverflow from 'react-coverflow';
 import {StyleRoot} from 'radium';
@@ -43,6 +43,10 @@ class Proposal extends Component {
             <br/>
             <br/>
             { this.selectProposalButton() }
+            <br/>
+            <br/>
+            <Button bsStyle="success" onClick={()=>{this.props.changedSongs(this.props.proposal.audios)}}>Reproducir Propuesta</Button>
+
           </div>
           <div className="col-sm-9">
             <div href="#" className="">
