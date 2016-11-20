@@ -12,7 +12,7 @@ from comercial_agent.models import Genre, Artist, ArtworkCollection, Album, Song
 class PostulationTest(TestCase):
 
     def setUp(self):
-
+        print('Tests SetUp started')
         user = django.contrib.auth.models.User.objects.create_user(username='usuario_test',
                                                                    password='test1234')
         artist1 = Artist(
@@ -169,6 +169,7 @@ class PostulationTest(TestCase):
             postulation=postulation,
         )
         postulated_artwork_2.save()
+        print('Tests SetUp finished')
 
     def test_postulation(self):
         c = Client()
