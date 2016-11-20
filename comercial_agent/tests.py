@@ -9,9 +9,7 @@ from comercial_agent.models import Genre, Artist, ArtworkCollection, Album, Song
     PostulatedArtwork, Postulation, BusinessAgent, Sound, SoundType
 
 
-class PostulationTest(TestCase):
-
-    c = None;
+class AppTest(TestCase):
 
     def setUp(self):
         print('Tests SetUp started')
@@ -172,52 +170,37 @@ class PostulationTest(TestCase):
         )
         postulated_artwork_2.save()
 
-        self.c = Client()
         print('Tests SetUp finished')
 
 
 
-    def test_postulation(self):
-        #c = Client()
+    def test_app(self):
+        c = Client()
 
-        print('POSTULATIONS')
-        postulations = Postulation.objects.all().values_list('id',flat=True)
+        #Test Postulations
+        response = c.get('/comercial_agent/notifications/1/postulations/')
 
-        for postulation in postulations:
-            print(postulation)
-
-        response = self.c.get('/comercial_agent/notifications/1/postulations/')
-        print('RESPONSE')
-        print(response.json())
         self.assertEqual(len(response.json()["proposals"]), 2)
         self.assertGreaterEqual(len(response.json()["proposals"][0]["audios"][0]["url"]), 1)
 
-    #def test_sounds(self):
-        #c2 = Client()
-        response = self.c.get('/comercial_agent/sounds/song/all/')
+        #Test Artworks
+        response = c.get('/comercial_agent/sounds/song/all/')
 
         self.assertGreaterEqual(len(response.json()["sounds"][0]["url"]), 1)
         self.assertGreaterEqual(len(response.json()["sounds"][0]["soundtrack"]), 1)
 
-    #def test_winner_postulation(self):
-        #c = Client()
-        response = self.c.put('/comercial_agent/notifications/1/set-winner/1/')
+        #Test Winners
+        response = c.put('/comercial_agent/notifications/1/set-winner/1/')
 
         self.assertTrue(status.is_success(response.status_code))
 
-    #def test_multiple_winners_postulation(self):
-        #c = Client()
-        response = self.c.put('/comercial_agent/notifications/1/set-winner/1/')
-
-        self.assertTrue(status.is_success(response.status_code))
-
-        response2 = self.c.put('/comercial_agent/notifications/1/set-winner/2/')
+        #Test Winners 2
+        response2 = c.put('/comercial_agent/notifications/1/set-winner/2/')
 
         self.assertTrue(status.is_client_error(response2.status_code))
 
-    #def test_postulation_likes(self):
-        #c = Client()
-        response = self.c.get('/comercial_agent/notifications/1/postulations/')
+        #Test Likes
+        response = c.get('/comercial_agent/notifications/1/postulations/')
 
         self.assertGreaterEqual(len(response.json()["proposals"][0]["likes"]), 1)
 
