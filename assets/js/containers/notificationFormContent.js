@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import NotificationForm from '../components/notificationForm';
 import { addRequest } from '../actions';
 
-const mapStateToProps = (state, router) => ({
+const mapStateToProps = (state, { params: { id }}) => ({
+  notification: state.notification,
   request: state.request,
-  notification: state.notification
+  userId: parseInt(id, 10),
 });
 
 

@@ -23,12 +23,11 @@ const mapStateToProps = (state,  { params: { id }}) => ({
   saModal: state.saModal,
   userId: id || "",
   userType: 'comercial_agent',
-
 });
 
 const mapDispatchToProps = dispatch => ({
   editNotification: (id) => {dispatch(editNotification)},
-  fetchNotifications: () => dispatch(fetchNotifications()),
+  fetchNotifications: (id) => dispatch(fetchNotifications(id)),
   getActualNotification: (notifications,notificationId) => dispatch(getActualNotification(notifications,notificationId)),
   hideSAModal: () => dispatch(hideSAModal()),
   publishNotification: (id) => {dispatch(publishNotification)},

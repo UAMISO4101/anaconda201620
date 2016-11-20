@@ -5,17 +5,12 @@ import Fixed from 'react-fixed';
 
 class SonidosLibresPlayer extends Component{
     render(){
-      if (this.props.setted) {
-        return(
-            <Fixed>
-          <ReactMusicPlayer songs={this.props.audios} autoplay />
-            </Fixed>
-        )
-      } else {
-        return(
-          null
-        )
-      }
+      return(
+        <Fixed>
+        <ReactMusicPlayer songs={this.props.audios} autoplay />
+        </Fixed>
+
+      )
     }
 }
 export default SonidosLibresPlayer;
