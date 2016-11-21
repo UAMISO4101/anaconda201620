@@ -32,6 +32,7 @@ export const auth = {
     .done(( {user} ) => {
       localStorage.token = user.token;
       localStorage.userId = user.id;
+      localStorage.email = user.email;
       localStorage.userImage = user.image;
       localStorage.role = user.role;
       localStorage.username = user.username;
@@ -51,8 +52,6 @@ export const auth = {
     delete localStorage.username
     delete localStorage.role
     delete localStorage.email
-
-
     if (cb) cb()
     this.onChange(false)
   },
