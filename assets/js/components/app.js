@@ -2,12 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import Navbar from './navbar';
 import SonidosLibresPlayerContent from '../containers/sonidosLibresPlayerContent';
-<<<<<<< HEAD
-import { StickyContainer, Sticky } from 'react-sticky';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-=======
-
->>>>>>> development
 import  Loading from 'react-loading';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 injectTapEventPlugin();
@@ -24,13 +19,9 @@ const App = ({children}) => {
             <div  className="navbarMarginTopForContainer back">
                 {children}
             </div>
-<<<<<<< HEAD
               <SonidosLibresPlayerContent />
               </div>
         </MuiThemeProvider>
-=======
-            <SonidosLibresPlayerContent />
->>>>>>> development
 
 
 
