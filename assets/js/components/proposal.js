@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import PlayArrow from 'material-ui/svg-icons/av/play-arrow'
 import FaThumbsOUp from 'react-icons/lib/fa/thumbs-o-up';
 import {fullWhite} from 'material-ui/styles/colors';
+import Paper from 'material-ui/Paper';
 const style = {
   margin: '12dp',
   backgroundColor: '#212121',
@@ -46,8 +47,9 @@ class Proposal extends Component {
         <div className={`row ${this.state.selectedProposal ? "selectedProposal" : ""}`}>
           <hr/><hr/>
           <div className="col-sm-3" style={{textAlign: 'center'}}>
-            <FaUserSecret size={60} color='#19708D' /><br/>
-            <h3>{artist}</h3>
+            <FaUserSecret size={60} color='#fff' /><br/>
+            <Paper zDepth={4}><h3>{artist}</h3></Paper>
+
             <br/>
             <br/>
             { this.selectProposalButton() }
