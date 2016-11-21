@@ -11,6 +11,7 @@ import {
   setUserId,
   showNotifictionModal,
   showSAModal,
+  showDescriptionModal
 } from '../actions';
 
 import { connect } from 'react-redux';
@@ -30,6 +31,7 @@ const mapDispatchToProps = dispatch => ({
   publishNotification: (id) => {dispatch(publishNotification)},
   setActualUserType: (userType) => {dispatch(setActualUserType(userType))},
   setUserId: (id) => {dispatch(setUserId(id))},
-  showNotifictionModal: (modalProps) => {dispatch(showNotifictionModal(modalProps))}
+  showNotifictionModal: (modalProps) => {dispatch(showNotifictionModal(modalProps))},
+  showDescriptionModal: (modalProps) => {dispatch(showDescriptionModal(modalProps))}
 })
 export default connect(mapStateToProps,mapDispatchToProps)(Notifications);
