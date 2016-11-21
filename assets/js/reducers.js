@@ -18,13 +18,7 @@ export const audios = (state={audios:audiosDefault, setted: true},action) => {
         setted: false
       });
     case 'SET_AUDIOS':
-      let audios = [];
-      let proposals = action.data;
-      for (let i=0, l=proposals.length; l>i; i+=1) {
-        proposals[i].audios.forEach(audio => {
-          audios.push(audio);
-        });
-      }
+      let audios = action.data;
       return {audios: audios, setted: true} || state;
     default:
       return Object.assign({}, state, {
@@ -54,7 +48,7 @@ export const notification = (state=notificationBlank,  action) => {
 };
 
 const requestDeafult = {name: "requestDeafult", features: "Default Feature"};
-const notificationDefault  = { id: 1, cover: "",name: "notification A", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "my description for notification A", publishingState: false, request: [requestDeafult] };
+const notificationDefault  = { id: null, cover: "",name: "notification A", notificationType: "Private", initialDate: new Date(), closingDate: new Date(), description: "my description for notification A", publishingState: false, request: [requestDeafult] };
 const notificationsDefault = {"notifications":[notificationDefault]};
 export const notifications = (state=notificationsDefault,  action) => {
   switch (action.type) {
@@ -106,12 +100,21 @@ export const descriptionModal = (state={ showModal: false, modalRequest: [] },  
 const proposalDefault = {
   id: "proposalId",
   artist: "artistId",
-  audios: [audiosDefault]
+  audios: audiosDefault
 }
 export const proposals = (state=[proposalDefault], action) => {
+  let proposals = null
   switch (action.type) {
     case 'GET_PROPOSALS':
-      return action.data || state;
+      proposals = action.data.map(proposal => {
+        return Object.assign({}, proposal, {choosed: false})
+      });
+      return proposals || state;
+    case 'CHOOSED_PROPOSAL':
+      proposals = state.map(proposal => {
+        return (proposal.id==action.data) ? Object.assign({}, proposal, { choosed: true }) : proposal;
+      });
+      return proposals
     default:
       return state ;
   }

@@ -55,6 +55,7 @@
     "react-bootstrap-validation": "^0.1.11",
     "react-coverflow": "^0.2.3",
     "react-dom": "^15.3.1",
+    "react-dropzone-component": "^1.2.0",
     "react-fixed": "^1.0.2",
     "react-icons": "^2.2.1",
     "react-loading": "0.0.9",
