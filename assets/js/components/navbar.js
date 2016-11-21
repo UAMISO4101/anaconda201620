@@ -2,17 +2,23 @@ import React, {Component} from 'react';
 import { CA_DASHBOARD, ARTIST_DASHBOARD } from '../utils/constants'
 import { auth } from '../utils/auth';
 import { USER_ROLES } from '../utils/constants';
-import { Link } from 'react-router'
+import { Link } from 'react-router';
+import Avatar from 'material-ui/Avatar';
 
 const ArtistNavBarComponent = (userId) => {return <li><a href={`#${ARTIST_DASHBOARD}/${userId}/convocatorias`}>Participar</a></li>} ;
-
+const style = {margin: 5};
 const authComponent = () => {
   if (auth.loggedIn()) {
     let user = auth.getUserInformation();
     return(
       <li className="dropdown">
         <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-            <img src={ user.image != "null" ? user.image : "http://thumb9.shutterstock.com/display_pic_with_logo/1186124/180542816/stock-vector-vector-hipster-icon-180542816.jpg" } className="img-thumbnail" alt={user.username} width="25" height="25" />
+
+            <Avatar
+         src={ user.image != "null" ? user.image : "http://thumb9.shutterstock.com/display_pic_with_logo/1186124/180542816/stock-vector-vector-hipster-icon-180542816.jpg" } className="img-thumbnail" alt={user.username}
+         size={30}
+         style={style}
+       />
             <strong>{user.username}</strong>
             <span className="glyphicon glyphicon-chevron-down"></span>
         </a>

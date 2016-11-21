@@ -5,7 +5,16 @@ import Coverflow from 'react-coverflow';
 import {StyleRoot} from 'radium';
 import {CA_DASHBOARD, SERVER_URL,DEFAULT_IMAGE} from "../utils/constants.js";
 import SweetAlert from 'sweetalert-react';
+import RaisedButton from 'material-ui/RaisedButton';
+import PlayArrow from 'material-ui/svg-icons/av/play-arrow'
 import FaThumbsOUp from 'react-icons/lib/fa/thumbs-o-up';
+import {fullWhite} from 'material-ui/styles/colors';
+import Paper from 'material-ui/Paper';
+const style = {
+  margin: '12dp',
+  backgroundColor: '#212121',
+  labelColor: '#fff'
+}
 class Proposal extends Component {
   constructor(props){
     super(props);
@@ -38,15 +47,21 @@ class Proposal extends Component {
         <div className={`row ${this.state.selectedProposal ? "selectedProposal" : ""}`}>
           <hr/><hr/>
           <div className="col-sm-3" style={{textAlign: 'center'}}>
-            <FaUserSecret size={60} color='#19708D' /><br/>
-            <h3>{artist}</h3>
+            <FaUserSecret size={60} color='#fff' /><br/>
+            <Paper zDepth={4}><h3>{artist}</h3></Paper>
+
             <br/>
             <br/>
             { this.selectProposalButton() }
             <br/>
             <br/>
-            <Button bsStyle="success" onClick={()=>{this.props.changedSongs(this.props.proposal.audios)}}>Reproducir Propuesta</Button>
-
+            <RaisedButton label="Reproducir Propuesta"
+           labelColor={style.labelColor}
+            backgroundColor="#a4c639"
+            icon={<PlayArrow color={fullWhite} />}
+            onClick={()=>{
+        this.props.changedSongs(this.props.proposal.audios)}
+        } />
           </div>
           <div className="col-sm-9">
             <div href="#" className="">
@@ -69,7 +84,6 @@ class Proposal extends Component {
                   })}
 
                 </Coverflow>
-                <center><h3>{this.state.choosedAudio.soundtrack.song || 'Escoge una canción'}</h3></center>
               </div>
             </div>
           </div>
@@ -83,7 +97,7 @@ class Proposal extends Component {
     if(this.props.notification.notification_type == "PB") {
       return (
         <button className="btn btn-primary" onClick={ ()=>{this.props.selectProposal(this)} } >
-          Escoger esta obra como ganadora
+          Escoger esta propuesta como ganadora
         </button>
       )
     } else {

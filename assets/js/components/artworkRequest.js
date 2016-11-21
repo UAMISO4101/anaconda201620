@@ -4,9 +4,9 @@ import {ARTIST_DASHBOARD, SERVER_URL} from '../utils/constants';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Select from 'react-select';
 import SweetAlert from 'sweetalert-react';
-
+import RaisedButton from 'material-ui/RaisedButton';
 import 'react-select/dist/react-select.css';
-
+const style={margin : 12}
 function buildPairs(requests, {selectValue} ) {
     let pairs = [];
     for (let request of requests) {
@@ -55,16 +55,19 @@ class ArtworkRequest extends Component {
             case "artist":
                 return (
                   <div className="row" >
-                    <div className="col-sm-push-1 col-sm-5 col-xs-12" >
-                      <button className='btn btn-primary' onClick={this.sendRequest}>Postularme</button>
-                    </div>
-                    <div className="col-sm-5 col-xs-12 " >
-                      <button className='btn btn-danger' onClick={()=>{
-                            this.props.hideNotifictionModal();
-                          }
-                        }
-                      >Cancelar</button>
-                    </div>
+                  <center>
+                  <RaisedButton label="Postularme"
+                 labelColor='#fff'
+                 style={style}
+                  backgroundColor="#1565C0"
+                  onClick={this.sendRequest } />
+            <RaisedButton label="Cancelar"
+           labelColor='#fff'
+           style={style}
+            backgroundColor="#C62828"
+            onClick={()=>{
+      this.props.hideNotifictionModal();  }} />
+      </center>
                   </div>
                 )
             case "comercial_agent":

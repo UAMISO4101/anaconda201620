@@ -8,14 +8,20 @@ import { ARTIST_DASHBOARD, CA_DASHBOARD, SERVER_URL } from '../utils/constants';
 
 import NotificationShowModal from '../containers/notificationShowModal';
 import DescriptionShowModal from  '../containers/descriptionShowModal';
-
+import RaisedButton from 'material-ui/RaisedButton';
+import Queue from 'material-ui/svg-icons/av/queue'
+import QueueMusic from 'material-ui/svg-icons/av/queue-music'
 const getNotificationId = notification => {
   let str = notification.target.id
   let regex = /[^edit-|publish-]+/g
   let notificationID =str.match(regex);
   return notificationID
 }
-
+const style = {
+  margin: '12dp',
+  backgroundColor: '#212121',
+  labelColor: '#f7ab24'
+}
 class Notifications extends Component {
 
   constructor(props){
@@ -66,15 +72,17 @@ class Notifications extends Component {
   }
   formatRequestsUser(cell, row){
     return (
-        <button className="btn btn-primary-participate pull-right" onClick={()=>{
-      this.openModal(cell,row)
-    }}  type="submit">Participar Ahora</button>);
+        <center>
+    <RaisedButton label="Participar Ahora"  style={style}  icon={<Queue />} labelColor={style.labelColor} onClick={()=>{
+  this.openModal(cell,row)
+}} />
+    </center>);
   }
 
   formatRequestsDetail(cell, row){
-    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
+    return (<center><button className="btn btn-primary-participate" onClick={()=>{
       this.openModalDetails(cell,row)
-    }}  type="submit"> Ver Descripción</button>);
+    }}  type="submit"> Ver Descripción</button></center>);
   }
 
   formatEdit(cell, row){
@@ -82,12 +90,7 @@ class Notifications extends Component {
       <Link to={`${CA_DASHBOARD}/${this.state.userId}/convocatoria/${cell}`}> <FaEdit /> </Link>
     );
   }
-  formatPublish(cell, row) {
-    let checkedState = row.notification_state == "PUB" ? "checked" : "";
-    return (
-      <input type="checkbox" onChange={this.publishClick.bind(this)} id={`publish-${row.id}`}  value={ checkedState ? true : false} />
-    )
-  }
+
 
   editClick(notification){
     this.props.editNotification(getNotificationId(notification));
@@ -123,16 +126,12 @@ class Notifications extends Component {
     })
     this.props.publishNotification(getNotificationId(notification));
   }
-  formatEdit(cell, row){
-    return (
-      <Link to={`${CA_DASHBOARD}/${this.props.userId}/convocatoria/${cell}`}> <FaEdit /> </Link>
-    );
-  }
   formatListen(cell, row){
     return (
-      <Link  className="btn btn-primary-participate pull-right"
-        to={`${ARTIST_DASHBOARD}/${this.props.userId}/convocatoria/${row.id}/votacion`}>
-        Ir a votaciones</Link>
+      <center>
+  <RaisedButton label="Escuchar Propuestas" href={`#${ARTIST_DASHBOARD}/${this.props.userId}/convocatoria/${row.id}/votacion`} style={style}  icon={<QueueMusic />} labelColor={style.labelColor}  />
+  </center>
+
     )
   }
   formatPublish(cell, row) {
@@ -141,23 +140,7 @@ class Notifications extends Component {
       <input type="checkbox" onChange={this.publishClick.bind(this)} id={`publish-${row.id}`}  value={ checkedState ? true : false} />
     )
   }
-  formatRequests(cell, row){
-    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
-      this.openModal(cell,row)
-    }}  type="submit">Ver Detalles</button>);
-  }
-  formatRequestsUser(cell, row){
-    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
-      this.openModal(cell,row)
-    }}  type="submit">Participar Ahora</button>);
-  }
-  formatVotes(cell, row){
-    return (
-      <Link  className="btn btn-primary-participate pull-right"
-        to={`${CA_DASHBOARD}/${this.props.userId}/convocatoria/${row.id}/votacion`}>
-        Ir a votaciones</Link>
-    );
-  }
+
 
   render(){
       return(
@@ -183,10 +166,10 @@ class Notifications extends Component {
               <BootstrapTable data={ this.props.notifications.notifications } striped={true} hover={true} >
                 <TableHeaderColumn dataField="id" isKey={true} hidden={true}>ID</TableHeaderColumn>
                 <TableHeaderColumn dataField="name" dataSort={true} width="250">Nombre</TableHeaderColumn>
-                <TableHeaderColumn dataField="description" dataFormat={this.formatRequestsDetail.bind(this)} >Descripción</TableHeaderColumn>
-                <TableHeaderColumn dataField="initial_date" dataSort={true}>Fecha de Inicio</TableHeaderColumn>
-                <TableHeaderColumn dataField="closing_date"  dataSort={true}  >Fecha de Cierre</TableHeaderColumn>
-                <TableHeaderColumn dataField="notification_type"  dataSort={true} >Tipo</TableHeaderColumn>
+                <TableHeaderColumn dataField="description" width="120" dataFormat={this.formatRequestsDetail.bind(this)} >Descripción</TableHeaderColumn>
+                <TableHeaderColumn dataField="initial_date" dataSort={true} width="120">Fecha de Inicio</TableHeaderColumn>
+                <TableHeaderColumn dataField="closing_date"  dataSort={true}  width="120">Fecha de Cierre</TableHeaderColumn>
+                <TableHeaderColumn dataField="notification_type"  dataSort={true} width="85" >Tipo</TableHeaderColumn>
                 { this.tableComponent(this.props.userType) }
               </BootstrapTable>
             </div>
@@ -198,8 +181,8 @@ class Notifications extends Component {
     switch (userType){
       case "artist":
         return( [
-          <TableHeaderColumn dataField="request" dataFormat={this.formatRequestsUser } dataSort={false} width="85" dataAlign="center">Participar</TableHeaderColumn>,
-          <TableHeaderColumn dataField="request" dataFormat={this.formatListen } dataSort={false} dataAlign="left">Votar</TableHeaderColumn>
+          <TableHeaderColumn dataField="request" dataFormat={this.formatRequestsUser } dataSort={false} width="200" dataAlign="center">Participar</TableHeaderColumn>,
+          <TableHeaderColumn dataField="request" dataFormat={this.formatListen } dataSort={false} width="250" dataAlign="center">Votar</TableHeaderColumn>
           ])
       case "comercial_agent":
         return([
