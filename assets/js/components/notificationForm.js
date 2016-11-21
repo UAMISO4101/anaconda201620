@@ -83,7 +83,7 @@ class NotificationForm extends Component{
       case NOTIFICATION_TYPE.CREATE:
             return (
               <DateRangePicker onEvent={this.calendarEvent.bind(this)} >
-                 <h2>
+                 <h2 className="dateRangePicke">
                    <span>
                      <FaCalendarCheckO/>
                    </span>
@@ -99,7 +99,7 @@ class NotificationForm extends Component{
           if(this.state.initialDate){
             return(
               <DateRangePicker startDate={ this.state.initialDate } endDate={ this.state.closingDate } onEvent={this.calendarEvent.bind(this)} >
-                  <h2>
+                  <h2 className="dateRangePicker">
                     <span>
                       <FaCalendarCheckO/>
                     </span>
