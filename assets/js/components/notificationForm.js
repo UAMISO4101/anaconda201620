@@ -73,7 +73,6 @@ class NotificationForm extends Component{
   openPrevModal() { this.setState({ showModal: true , prev: true}); }
 
   calendarEvent(event, picker) {
-      debugger
       this.setState({
         initialDate: picker.startDate,
         closingDate: picker.endDate
@@ -98,7 +97,6 @@ class NotificationForm extends Component{
         break;
       case NOTIFICATION_TYPE.EDIT:
           if(this.state.initialDate){
-            debugger
             return(
               <DateRangePicker startDate={ this.state.initialDate } endDate={ this.state.closingDate } onEvent={this.calendarEvent.bind(this)} >
                   <h2>
