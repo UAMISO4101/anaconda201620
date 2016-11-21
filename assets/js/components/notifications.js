@@ -11,7 +11,7 @@ import DescriptionShowModal from  '../containers/descriptionShowModal';
 
 const getNotificationId = notification => {
   let str = notification.target.id
-  let regex = /[^edit-|publish-]/g
+  let regex = /[^edit-|publish-]+/g
   let notificationID =str.match(regex);
   return notificationID
 }
