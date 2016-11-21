@@ -13,7 +13,7 @@ import FaCalendarCheckO from 'react-icons/lib/fa/calendar-check-o'
 import FaCalendarCheckMinusO from 'react-icons/lib/fa/calendar-minus-o'
 
 import Requests from './requests';
-import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
+import { CA_DASHBOARD, NOTIFICATION_TYPE,SERVER_URL } from '../utils/constants';
 import Request from './request';
 
 var moment = require('moment');
@@ -58,8 +58,8 @@ class NotificationForm extends Component{
       this.props.getNotifications();
       this.props.setRequest(this.props.notification.request)
       this.setState({
-        closingDate: moment(moment(this.props.notification.closingDate).format("MM/DD/YYYY")),
-        initialDate: moment(moment(this.props.notification.initialDate).format("MM/DD/YYYY")),
+        closingDate: moment(moment(this.props.notification.closing_date).format("MM/DD/YYYY")),
+        initialDate: moment(moment(this.props.notification.initial_date).format("MM/DD/YYYY")),
       });
     }
   }
@@ -73,10 +73,50 @@ class NotificationForm extends Component{
   openPrevModal() { this.setState({ showModal: true , prev: true}); }
 
   calendarEvent(event, picker) {
-        this.setState({
-          initialDate: picker.startDate,
-          closingDate: picker.endDate
-        })
+      debugger
+      this.setState({
+        initialDate: picker.startDate,
+        closingDate: picker.endDate
+      })
+  }
+  dateTimePicker(){
+    switch (this.props.notification_state) {
+      case NOTIFICATION_TYPE.CREATE:
+            return (
+              <DateRangePicker onEvent={this.calendarEvent.bind(this)} >
+                 <h2>
+                   <span>
+                     <FaCalendarCheckO/>
+                   </span>
+                   <span> &nbsp; </span>
+                   <span>
+                     <FaCalendarCheckMinusO/>
+                   </span>
+                 </h2>
+             </DateRangePicker>
+          )
+        break;
+      case NOTIFICATION_TYPE.EDIT:
+          if(this.state.initialDate){
+            debugger
+            return(
+              <DateRangePicker startDate={ this.state.initialDate } endDate={ this.state.closingDate } onEvent={this.calendarEvent.bind(this)} >
+                  <h2>
+                    <span>
+                      <FaCalendarCheckO/>
+                    </span>
+                    <span> &nbsp; </span>
+                    <span>
+                      <FaCalendarCheckMinusO/>
+                    </span>
+                  </h2>
+              </DateRangePicker>
+          )
+          }else { return null;}
+        break;
+      default:
+        return null;
+    }
   }
 
   render(){
@@ -144,17 +184,7 @@ class NotificationForm extends Component{
               <div className="form-group">
                 <div className="col-sm-9">
                   <h4><span className="label label-default" />Fecha Inicio <i>{`${this.formatDate(this.state.initialDate) || ""}`}</i> <br/>Fecha Final <i>{`${this.formatDate(this.state.closingDate) || ""}`}</i><span/></h4>
-                    <DateRangePicker startDate={ this.state.initialDate || moment().add(1, 'days') } endDate={ this.state.closingDate || moment().add(2, 'days')} onEvent={this.calendarEvent.bind(this)} >
-                        <h2>
-                          <span>
-                            <FaCalendarCheckO/>
-                          </span>
-                          <span> &nbsp; </span>
-                          <span>
-                            <FaCalendarCheckMinusO/>
-                          </span>
-                        </h2>
-                    </DateRangePicker>
+                  {this.dateTimePicker()}
                 </div>
 
               </div>
@@ -208,7 +238,7 @@ class NotificationForm extends Component{
 
     formatDate(date){
         if(date){
-          return new Date(new Date(date).valueOf() + new Date().getTimezoneOffset()*60000);
+          return date.format("YYYY/MM/DD");
         }
     }
 
