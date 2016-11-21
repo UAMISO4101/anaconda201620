@@ -47,27 +47,27 @@ def login_view(request):
         username = user_json['username']
         password = user_json['password']
         user = authenticate(username=username, password=password)
-        image = None; email = None;
+
         if user is not None:
+            print(user)
             login(request, user)
             token = Token.objects.get(user=user)
 
-            user_role = 'not-associated'
+            image = None;
+            email = None;
 
             try:
                 artist_user = Artist.objects.get(user_id=user.pk)
-                print(artist_user)
                 user_role = 'artist'
-                # email = artist_user.email
-                # image = artist_user.profile_picture
+                email = artist_user.user.email
+                image = os.environ.get('MEDIA_URL') + str(artist_user.profile_picture)
             except:
                 print('User is not Artist: ' + username)
                 try:
                     business_agent_user = BusinessAgent.objects.get(user_id=user.pk)
-                    print(business_agent_user)
-                    # email = business_agent_user.email
-                    # image = business_agent_user.profile_picture
                     user_role = 'commercial-agent'
+                    email = business_agent_user.user.email
+                    image = os.environ.get('MEDIA_URL') + str(business_agent_user.profile_picture)
                 except:
                     print('User is not Business Agent: ' + username)
                     return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
@@ -80,6 +80,7 @@ def login_view(request):
                          "token": token.key,
                          }
 
+            print(user_json)
             return JsonResponse ({"user":user_json}, safe=False)
         else:
             return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
