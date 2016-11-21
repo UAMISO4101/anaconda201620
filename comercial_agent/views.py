@@ -534,3 +534,8 @@ def set_notification_winner(request,notification_id,postulation_id):
 
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+def set_postulation_vote(request):
+    return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
