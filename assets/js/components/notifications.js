@@ -8,14 +8,19 @@ import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
 
 import NotificationShowModal from '../containers/notificationShowModal';
 import DescriptionShowModal from  '../containers/descriptionShowModal';
-
+import RaisedButton from 'material-ui/RaisedButton';
+import Queue from 'material-ui/svg-icons/av/queue'
 const getNotificationId = notification => {
   let str = notification.target.id
   let regex = /[^edit-|publish-]/g
   let notificationID =str.match(regex);
   return notificationID
 }
-
+const style = {
+  margin: '12dp',
+  backgroundColor: '#212121',
+  labelColor: '#f7ab24'
+}
 class Notifications extends Component {
 
   constructor(props){
@@ -76,15 +81,17 @@ class Notifications extends Component {
   }
   formatRequestsUser(cell, row){
     return (
-        <button className="btn btn-primary-participate pull-right" onClick={()=>{
-      this.openModal(cell,row)
-    }}  type="submit">Participar Ahora</button>);
+        <center>
+    <RaisedButton label="Participar Ahora"  style={style}  icon={<Queue />} labelColor={style.labelColor} onClick={()=>{
+  this.openModal(cell,row)
+}} />
+    </center>);
   }
 
   formatRequestsDetail(cell, row){
-    return (<button className="btn btn-primary-participate pull-right" onClick={()=>{
+    return (<center><button className="btn btn-primary-participate" onClick={()=>{
       this.openModalDetails(cell,row)
-    }}  type="submit"> Ver Descripción</button>);
+    }}  type="submit"> Ver Descripción</button></center>);
   }
 
   formatEdit(cell, row){

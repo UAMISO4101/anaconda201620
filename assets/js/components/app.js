@@ -7,6 +7,9 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import  Loading from 'react-loading';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 injectTapEventPlugin();
+const style = {
+  margin: 12,
+};
 const App = ({children}) => {
     return(
         <MuiThemeProvider>
