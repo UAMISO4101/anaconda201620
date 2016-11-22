@@ -8,8 +8,8 @@ const mapDispatchToProps = dispatch => ({
   changedSongs: (audios) => dispatch(setPlayerAudios(audios)),
   selectProposal: (self) => {
     $.ajax({
-      method: 'PUT',
-      url: `${SERVER_URL}/comercial_agent/notifications/${self.props.notification.id}/set-winner/${self.props.proposal.id}/`,
+      method: 'POST',
+      url: `${SERVER_URL}/comercial_agent/notifications/${self.props.notification.id}/user/${window.localStorage.userId}/postulation/${self.props.proposal.id}/vote/`,
       data: JSON.stringify({}),
     })
     .done(( msg ) => {
@@ -18,7 +18,7 @@ const mapDispatchToProps = dispatch => ({
           show: true,
           showModal: false,
           sweetAlertOnConfirm: () => {self.setState({show: false}); window.location = `#${CA_DASHBOARD}/${self.state.userId}/convocatorias`; },
-          sweetAlertMessage: "Es cogió la postulación satisfactoriamente",
+          sweetAlertMessage: "Vostate súper",
           sweetAlertTitle: "Exito",
         });
       })
