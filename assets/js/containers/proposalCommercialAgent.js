@@ -24,13 +24,21 @@ const mapDispatchToProps = dispatch => ({
           })
         .fail((err) => {
           console.error(err);
-          self.setState({
-            show: true,
-            sweetAlertTitle: "Error Servidor",
-            type: "error",
-            sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`,
-            sweetAlertOnConfirm: () => {self.setState({show: false}); },
-          });
+          if (err.status == 400) {
+            this.setState({
+              show: true,
+              sweetAlertTitle: "Error",
+              type: "error",
+              sweetAlertMessage: 'Esta convocatoria ya tiene un ganador'
+            });
+          } else {
+            this.setState({
+              show: true,
+              sweetAlertTitle: "Error Servidor",
+              type: "error",
+              sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
+            });
+          }
         })
 
   }
