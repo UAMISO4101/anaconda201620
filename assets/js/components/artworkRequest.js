@@ -157,12 +157,21 @@ class ArtworkRequest extends Component {
            })
          .fail((err) => {
            console.error(err);
-           this.setState({
-             show: true,
-             sweetAlertTitle: "Error Servidor",
-             type: "error",
-             sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
-           });
+           if (err.status == 400) {
+             this.setState({
+               show: true,
+               sweetAlertTitle: "Ya te habias postulado",
+               type: "warning",
+               sweetAlertMessage: `Lo sentimos tu ya estas postulado`
+             });
+           } else {
+             this.setState({
+               show: true,
+               sweetAlertTitle: "Error Servidor",
+               type: "error",
+               sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
+             });
+           }
          })
       }else {
         this.setState({
