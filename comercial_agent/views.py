@@ -280,16 +280,20 @@ def update_notification(notification_id):
         notification.save()
 
         if notification.notification_type == Notification.PUBLIC:
+
             max_polls = Postulation.objects.filter(notification_id=notification_id).aggregate(Max('polls_num'))
 
-            postulations = Postulation.objects.filter(polls_num=max_polls['polls_num__max'])
+            postulations = Postulation.objects.filter(notification_id=notification_id,
+                                                      polls_num=max_polls['polls_num__max'])
 
             if len(postulations) > 1:
-                Postulation.objects.filter(polls_num=max_polls['polls_num__max']).update(
+                Postulation.objects.filter(notification_id=notification_id,
+                                           polls_num=max_polls['polls_num__max']).update(
                     is_tied=True
                 )
             elif len(postulations) == 1:
-                Postulation.objects.filter(polls_num=max_polls['polls_num__max']).update(
+                Postulation.objects.filter(notification_id=notification_id,
+                                           polls_num=max_polls['polls_num__max']).update(
                     is_winner=True
                 )
                 notification.notification_state = Notification.FINISHED
