@@ -160,9 +160,9 @@ class ArtworkRequest extends Component {
            if (err.status == 400) {
              this.setState({
                show: true,
-               sweetAlertTitle: "Ya te habias postulado",
+               sweetAlertTitle: "Ya te habías postulado",
                type: "warning",
-               sweetAlertMessage: `Lo sentimos tu ya estas postulado`
+               sweetAlertMessage: 'Lo sentimos, ya estás postulado'
              });
            } else {
              this.setState({
