@@ -26,7 +26,7 @@ class Proposals extends Component {
   }
 
   proposalType(){
-    switch (auth.auth.getUserInformation().role()) {
+    switch (auth.getUserInformation().role) {
       case USER_ROLES.ARTIST :
           return this.props.proposals.map( proposal => <ProposalArtist proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
         break;
@@ -36,7 +36,7 @@ class Proposals extends Component {
          if (filteredProposal.length == 0) {
            return null
          } else {
-           return <ProposalContent proposal={filteredProposal[0]} notification={this.props.notification} key={filteredProposal[0].id}/>;
+           return <ProposalCommercialAgent proposal={filteredProposal[0]} notification={this.props.notification} key={filteredProposal[0].id}/>;
          }
       }else {
         return this.props.proposals.map( proposal => <ProposalCommercialAgent proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
@@ -47,18 +47,18 @@ class Proposals extends Component {
     }
   }
 
-  proposalType(){
-    switch (auth.getUserInformation().role) {
-      case USER_ROLES.ARTIST :
-          return this.props.proposals.map( proposal => <ProposalArtist proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
-        break;
-      case USER_ROLES.COMERCIAL_AGENT :
-          return this.props.proposals.map( proposal => <ProposalCommercialAgent proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
-        break;
-      default:
-        return null
-    }
-  }
+  // proposalType(){
+  //   switch (auth.getUserInformation().role) {
+  //     case USER_ROLES.ARTIST :
+  //         return this.props.proposals.map( proposal => <ProposalArtist proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
+  //       break;
+  //     case USER_ROLES.COMERCIAL_AGENT :
+  //         return this.props.proposals.map( proposal => <ProposalCommercialAgent proposal={proposal} notification={this.props.notification} key={proposal.id}/> )
+  //       break;
+  //     default:
+  //       return null
+  //   }
+  // }
 
   render(){
       return (

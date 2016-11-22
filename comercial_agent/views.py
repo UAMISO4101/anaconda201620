@@ -280,16 +280,20 @@ def update_notification(notification_id):
         notification.save()
 
         if notification.notification_type == Notification.PUBLIC:
+
             max_polls = Postulation.objects.filter(notification_id=notification_id).aggregate(Max('polls_num'))
 
-            postulations = Postulation.objects.filter(polls_num=max_polls['polls_num__max'])
+            postulations = Postulation.objects.filter(notification_id=notification_id,
+                                                      polls_num=max_polls['polls_num__max'])
 
             if len(postulations) > 1:
-                Postulation.objects.filter(polls_num=max_polls['polls_num__max']).update(
+                Postulation.objects.filter(notification_id=notification_id,
+                                           polls_num=max_polls['polls_num__max']).update(
                     is_tied=True
                 )
             elif len(postulations) == 1:
-                Postulation.objects.filter(polls_num=max_polls['polls_num__max']).update(
+                Postulation.objects.filter(notification_id=notification_id,
+                                           polls_num=max_polls['polls_num__max']).update(
                     is_winner=True
                 )
                 notification.notification_state = Notification.FINISHED
@@ -456,25 +460,34 @@ def postulate_artwork(request):
         user_id = postulation_json['proposal']['id_user']
         notification_id = postulation_json['proposal']['id_notification']
 
-        artist_info = Artist.objects.get(user_id=user_id)
-        notification_info = Notification.objects.get(id=notification_id)
+        try:
+            artist_info = Artist.objects.get(user_id=user_id)
 
-        postulation_info = Postulation(artist=artist_info,
-                                       notification=notification_info,
-                                       is_tied=False,
-                                       is_winner=False,
-                                       polls_num=0)
-        postulation_info.save()
+            Postulation.objects.get(artist_id=artist_info.pk,notification_id=notification_id)
+            print('Postulación ya existe')
 
-        for artwork in postulation_json['proposal']['pairs']:
-            id_feature = artwork['id_feature']
-            id_artwork = artwork['id_artwork']
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+        except Postulation.DoesNotExist:
 
-            feature_info=RequestedPiece.objects.get(id=id_feature)
-            artwork_info=Artwork.objects.get(id=id_artwork)
+            artist_info = Artist.objects.get(user_id=user_id)
+            notification_info = Notification.objects.get(id=notification_id)
 
-            postulated_artwork= PostulatedArtwork(requestedPiece=feature_info,artwork=artwork_info,postulation=postulation_info)
-            postulated_artwork.save()
+            postulation_info = Postulation(artist=artist_info,
+                                           notification=notification_info,
+                                           is_tied=False,
+                                           is_winner=False,
+                                           polls_num=0)
+            postulation_info.save()
+
+            for artwork in postulation_json['proposal']['pairs']:
+                id_feature = artwork['id_feature']
+                id_artwork = artwork['id_artwork']
+
+                feature_info=RequestedPiece.objects.get(id=id_feature)
+                artwork_info=Artwork.objects.get(id=id_artwork)
+
+                postulated_artwork= PostulatedArtwork(requestedPiece=feature_info,artwork=artwork_info,postulation=postulation_info)
+                postulated_artwork.save()
 
         return HttpResponse(status=status.HTTP_201_CREATED)
     else:
@@ -534,3 +547,35 @@ def set_notification_winner(request,notification_id,postulation_id):
 
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+def set_postulation_vote(request, notification_id, user_id, postulation_id):
+    if request.method == 'POST':
+
+        postulations_info = Postulation.objects.filter(notification_id=notification_id)
+        for postulation in postulations_info:
+            try:
+                Poll.objects.get(user_id=user_id, postulation_id=postulation.pk)
+                print('Voto no valido, ya registrado')
+
+                return HttpResponse(status=status.HTTP_403_FORBIDDEN)
+            except Poll.DoesNotExist:
+                continue
+
+        print('Voto valido')
+
+        user_info = User.objects.get(pk=user_id)
+        postulation_info = Postulation.objects.get(pk=postulation_id)
+
+        poll_info = Poll(user=user_info,
+                         postulation=postulation_info)
+        poll_info.save()
+
+        postulation_info.polls_num += 1
+        postulation_info.save()
+
+        return HttpResponse(status=status.HTTP_201_CREATED)
+
+
+    return HttpResponse(status=status.HTTP_400_BAD_REQUEST)

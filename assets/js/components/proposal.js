@@ -94,18 +94,21 @@ class Proposal extends Component {
   }
 
   selectProposalButton() {
-    if(this.props.notification.notification_type == "PB") {
+    if(this.props.notification.notification_state == "CER" && this.props.notification.notification_type == "PR") {
       return (
-        <button className="btn btn-primary" onClick={ ()=>{this.props.selectProposal(this)} } >
-          Escoger esta propuesta como ganadora
-        </button>
+        <span>
+          <span style={{color: "white"}}> <FaThumbsOUp size={25} /> { this.props.proposal.likes } &nbsp;</span>
+          <button className="btn btn-primary" onClick={ ()=>{this.props.selectProposal(this)} } >
+            Escoger esta propuesta como ganadora
+          </button>
+        </span>
       )
     } else {
       // this.props.notification  ; CREATED = 'CRE'; PUBLISHED = 'PUB'; CLOSED = 'CER'; FINISHED = 'FIN'
       if ( this.props.notification.notification_state == "CER" && this.props.proposal.tie ) {
         return (
           <span>
-            <FaThumbsOUp/> { this.props.proposal.likes } &nbsp;
+            <span style={{color: "white"}}> <FaThumbsOUp size={25} /> { this.props.proposal.likes } &nbsp;</span>
             <button type="button" onClick={ this.selectProposal } className="btn btn-primary" aria-label="Left Align">
               Escoger esta obra como ganadora
             </button>
@@ -114,9 +117,12 @@ class Proposal extends Component {
       }else{
         return (
           <span>
-            <FaThumbsOUp/> { this.props.proposal.likes } &nbsp;
+            <span style={{color: "white"}}>
+              <p>{this.props.proposal.winner ? "Esta es la propuesta ganadora " : null}</p>
+              <p><FaThumbsOUp size={25} /> { this.props.proposal.likes } &nbsp;</p>
+            </span>
             <button type="button" className="btn btn-primary disabled" aria-label="Left Align">
-              Publica debe haber un empate para poder Escoger Y estar cerrada
+              El estado actual de la convocatoria no le permite elegir un ganador
             </button>
           </span>
         )

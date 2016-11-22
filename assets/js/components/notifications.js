@@ -129,18 +129,18 @@ class Notifications extends Component {
   formatListen(cell, row){
     return (
       <center>
-  <RaisedButton label="Escuchar Propuestas" href={`#${ARTIST_DASHBOARD}/${this.props.userId}/convocatoria/${row.id}/votacion`} style={style}  icon={<QueueMusic />} labelColor={style.labelColor}  />
-  </center>
-
+        <RaisedButton label="Escuchar Propuestas" href={`#${ARTIST_DASHBOARD}/${this.props.userId}/convocatoria/${row.id}/votacion`} style={style}  icon={<QueueMusic />} labelColor={style.labelColor}  />
+      </center>
     )
   }
   formatPublish(cell, row) {
-    let checkedState = row.notification_state == "PUB" ? "checked" : "";
-    return (
-      <input type="checkbox" onChange={this.publishClick.bind(this)} id={`publish-${row.id}`}  value={ checkedState ? true : false} />
-    )
-  }
 
+    if (row.notification_state == "CRE"){
+      return (<input type="checkbox" onChange={this.publishClick.bind(this)} id={`publish-${row.id}`}  value={false} />)
+    } else {
+      return (<input type="checkbox" disabled id={`publish-${row.id}`}  checked value={true} />)
+    }
+  }
 
   render(){
       return(

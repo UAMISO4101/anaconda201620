@@ -150,19 +150,28 @@ class ArtworkRequest extends Component {
                type: "success",
                show: true,
                showModal: false,
-               sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${ARTIST_DASHBOARD}/${this.props.userId}/convocatorias`; },
+               sweetAlertOnConfirm: () => {this.setState({show: false}); this.props.hideNotifictionModal();window.location = `#${ARTIST_DASHBOARD}/${this.props.userId}/convocatorias`; },
                sweetAlertMessage: "Postulación enviada exitosamente",
                sweetAlertTitle: "Exito",
              });
            })
          .fail((err) => {
            console.error(err);
-           this.setState({
-             show: true,
-             sweetAlertTitle: "Error Servidor",
-             type: "error",
-             sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
-           });
+           if (err.status == 400) {
+             this.setState({
+               show: true,
+               sweetAlertTitle: "Ya te habías postulado",
+               type: "warning",
+               sweetAlertMessage: 'Lo sentimos, ya estás postulado'
+             });
+           } else {
+             this.setState({
+               show: true,
+               sweetAlertTitle: "Error Servidor",
+               type: "error",
+               sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
+             });
+           }
          })
       }else {
         this.setState({
