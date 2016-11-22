@@ -94,7 +94,7 @@ class Proposal extends Component {
   }
 
   selectProposalButton() {
-    if(this.props.notification.notification_type == "PB") {
+    if(this.props.notification.notification_state == "CER" && this.props.notification.notification_type == "PR") {
       return (
         <span>
           <span style={{color: "white"}}> <FaThumbsOUp size={25} /> { this.props.proposal.likes } &nbsp;</span>
@@ -119,7 +119,7 @@ class Proposal extends Component {
           <span>
             <span style={{color: "white"}}> <FaThumbsOUp size={25} /> { this.props.proposal.likes } &nbsp;</span>
             <button type="button" className="btn btn-primary disabled" aria-label="Left Align">
-              Publica debe haber un empate para poder Escoger Y estar cerrada
+              El estado actual de la convocatoria no le permite elegir un ganador
             </button>
           </span>
         )
