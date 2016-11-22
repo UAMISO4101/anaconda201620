@@ -217,7 +217,7 @@ class AppTest(TestCase):
         self.assertIsInstance(response.json()["proposals"][0]["winner"], bool)
 
         #Test Vote
-        response = c.get('/comercial_agent/notifications/1/user/1/postulation/1/vote/')
+        response = c.post('/comercial_agent/notifications/1/user/1/postulation/1/vote/')
         print(response)
         print(response.status_code)
         self.assertTrue(status.is_success(response.status_code))
