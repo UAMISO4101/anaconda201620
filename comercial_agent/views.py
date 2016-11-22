@@ -534,3 +534,35 @@ def set_notification_winner(request,notification_id,postulation_id):
 
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+def set_postulation_vote(request, notification_id, user_id, postulation_id):
+    if request.method == 'POST':
+
+        postulations_info = Postulation.objects.filter(notification_id=notification_id)
+        for postulation in postulations_info:
+            try:
+                Poll.objects.get(user_id=user_id, postulation_id=postulation.pk)
+                print('Voto no valido, ya registrado')
+
+                return HttpResponse(status=status.HTTP_403_FORBIDDEN)
+            except Poll.DoesNotExist:
+                continue
+
+        print('Voto valido')
+
+        user_info = User.objects.get(pk=user_id)
+        postulation_info = Postulation.objects.get(pk=postulation_id)
+
+        poll_info = Poll(user=user_info,
+                         postulation=postulation_info)
+        poll_info.save()
+
+        postulation_info.polls_num += 1
+        postulation_info.save()
+
+        return HttpResponse(status=status.HTTP_201_CREATED)
+
+
+    return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
