@@ -96,9 +96,12 @@ class Proposal extends Component {
   selectProposalButton() {
     if(this.props.notification.notification_type == "PB") {
       return (
-        <button className="btn btn-primary" onClick={ ()=>{this.props.selectProposal(this)} } >
-          Escoger esta propuesta como ganadora
-        </button>
+        <span>
+          <FaThumbsOUp/> { this.props.proposal.likes } &nbsp;
+          <button className="btn btn-primary" onClick={ ()=>{this.props.selectProposal(this)} } >
+            Escoger esta propuesta como ganadora
+          </button>
+        </span>
       )
     } else {
       // this.props.notification  ; CREATED = 'CRE'; PUBLISHED = 'PUB'; CLOSED = 'CER'; FINISHED = 'FIN'
