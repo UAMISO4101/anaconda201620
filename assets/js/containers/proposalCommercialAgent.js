@@ -1,7 +1,7 @@
 import Proposal from '../components/proposal'
 import {  choosedProposal,setPlayerAudios } from '../actions';
 import { connect } from 'react-redux';
-import {CA_DASHBOARD} from '../utils/constants';
+import {CA_DASHBOARD,SERVER_URL} from '../utils/constants';
 
 const mapDispatchToProps = dispatch => ({
   choosedProposal: (proposalId) => dispatch(choosedProposal(proposalId)),
