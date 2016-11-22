@@ -544,7 +544,7 @@ def set_postulation_vote(request, notification_id, user_id, postulation_id):
         for postulation in postulations_info:
             try:
                 Poll.objects.get(user_id=user_id, postulation_id=postulation.pk)
-                print('Voto ya registrado')
+                print('Voto no valido, ya registrado')
 
                 return HttpResponse(status=status.HTTP_403_FORBIDDEN)
             except Poll.DoesNotExist:
