@@ -456,25 +456,34 @@ def postulate_artwork(request):
         user_id = postulation_json['proposal']['id_user']
         notification_id = postulation_json['proposal']['id_notification']
 
-        artist_info = Artist.objects.get(user_id=user_id)
-        notification_info = Notification.objects.get(id=notification_id)
+        try:
+            artist_info = Artist.objects.get(user_id=user_id)
 
-        postulation_info = Postulation(artist=artist_info,
-                                       notification=notification_info,
-                                       is_tied=False,
-                                       is_winner=False,
-                                       polls_num=0)
-        postulation_info.save()
+            Postulation.objects.get(artist_id=artist_info.pk,notification_id=notification_id)
+            print('Postulación ya existe')
 
-        for artwork in postulation_json['proposal']['pairs']:
-            id_feature = artwork['id_feature']
-            id_artwork = artwork['id_artwork']
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+        except Postulation.DoesNotExist:
 
-            feature_info=RequestedPiece.objects.get(id=id_feature)
-            artwork_info=Artwork.objects.get(id=id_artwork)
+            artist_info = Artist.objects.get(user_id=user_id)
+            notification_info = Notification.objects.get(id=notification_id)
 
-            postulated_artwork= PostulatedArtwork(requestedPiece=feature_info,artwork=artwork_info,postulation=postulation_info)
-            postulated_artwork.save()
+            postulation_info = Postulation(artist=artist_info,
+                                           notification=notification_info,
+                                           is_tied=False,
+                                           is_winner=False,
+                                           polls_num=0)
+            postulation_info.save()
+
+            for artwork in postulation_json['proposal']['pairs']:
+                id_feature = artwork['id_feature']
+                id_artwork = artwork['id_artwork']
+
+                feature_info=RequestedPiece.objects.get(id=id_feature)
+                artwork_info=Artwork.objects.get(id=id_artwork)
+
+                postulated_artwork= PostulatedArtwork(requestedPiece=feature_info,artwork=artwork_info,postulation=postulation_info)
+                postulated_artwork.save()
 
         return HttpResponse(status=status.HTTP_201_CREATED)
     else:
