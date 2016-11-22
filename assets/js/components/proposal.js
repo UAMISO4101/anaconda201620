@@ -117,7 +117,10 @@ class Proposal extends Component {
       }else{
         return (
           <span>
-            <span style={{color: "white"}}> <FaThumbsOUp size={25} /> { this.props.proposal.likes } &nbsp;</span>
+            <span style={{color: "white"}}>
+              <p>{this.props.proposal.winner ? "Esta es la propuesta ganadora " : null}</p>
+              <p><FaThumbsOUp size={25} /> { this.props.proposal.likes } &nbsp;</p>
+            </span>
             <button type="button" className="btn btn-primary disabled" aria-label="Left Align">
               El estado actual de la convocatoria no le permite elegir un ganador
             </button>
