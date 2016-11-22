@@ -464,7 +464,7 @@ def postulate_artwork(request):
             artist_info = Artist.objects.get(user_id=user_id)
 
             Postulation.objects.get(artist_id=artist_info.pk,notification_id=notification_id)
-            print('Postulación ya existe')
+            print('Postulacion ya existe')
 
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
         except Postulation.DoesNotExist:
