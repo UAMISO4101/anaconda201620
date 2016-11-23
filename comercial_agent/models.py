@@ -85,7 +85,7 @@ class Notification(models.Model):
     initial_date = models.DateField()
     closing_date = models.DateField()
     description = models.CharField(
-        max_length=510,
+        max_length=5000,
     )
     notification_type = models.CharField(
         max_length=2,
