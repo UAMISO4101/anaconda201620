@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import NotificationForm from '../components/notificationForm';
 import { setRequest, getNotifications } from '../actions';
+import { NOTIFICATION_TYPE } from '../utils/constants';
 
 
 const mapStateToProps = (state, { params: { notificationId }}) => {
@@ -10,7 +11,8 @@ const mapStateToProps = (state, { params: { notificationId }}) => {
     actualNotification = actualNotification ? actualNotification : state.notifications.notifications[0];
     return {
       request: actualNotification.request,
-      notification: actualNotification
+      notification: actualNotification,
+      notification_state: NOTIFICATION_TYPE.EDIT,
     }
 }
 

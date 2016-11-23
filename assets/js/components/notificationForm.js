@@ -5,7 +5,7 @@ import { Modal, OverlayTrigger, Button, Form,
   FormControl,
   FormGroup,Col,
   ControlLabel, } from 'react-bootstrap';
-import moment from 'moment';
+// import moment from 'moment';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import SweetAlert from 'sweetalert-react';
 
@@ -13,8 +13,10 @@ import FaCalendarCheckO from 'react-icons/lib/fa/calendar-check-o'
 import FaCalendarCheckMinusO from 'react-icons/lib/fa/calendar-minus-o'
 
 import Requests from './requests';
-import { CA_DASHBOARD, SERVER_URL } from '../utils/constants';
+import { CA_DASHBOARD, NOTIFICATION_TYPE,SERVER_URL } from '../utils/constants';
 import Request from './request';
+
+var moment = require('moment');
 
 const setWarning = (name=null, description=null, initialDate=null, closingDate=null, request=0) => {
   let warning = "Llenar campos: \n";
@@ -48,17 +50,22 @@ class NotificationForm extends Component{
       sweetAlertTitle: "",
       sweetAlertOnConfirm: () => {this.setState({ show: false })},
       type: "warning",
+      userId:  window.localStorage.userId,
     };
   }
   componentDidMount(){
     if (this.props.setRequest){
       this.props.getNotifications();
       this.props.setRequest(this.props.notification.request)
+      this.setState({
+        closingDate: moment(moment(this.props.notification.closing_date).format("MM/DD/YYYY")),
+        initialDate: moment(moment(this.props.notification.initial_date).format("MM/DD/YYYY")),
+      });
     }
   }
 
-  handleName(event){ this.setState({name: event.target.value}); }
-  handleDescription(event){ this.setState({description: event.target.value}); }
+  handleName(event){ this.setState({name: event.target.value == "" ? " " : event.target.value}); }
+  handleDescription(event){ this.setState({description: event.target.value == "" ? " " : event.target.value }); }
 
   closeModal() { this.setState({ showModal: false , prev: false}); }
   openModal() { this.setState({ showModal: true , prev:false }); }
@@ -66,10 +73,48 @@ class NotificationForm extends Component{
   openPrevModal() { this.setState({ showModal: true , prev: true}); }
 
   calendarEvent(event, picker) {
-        this.setState({
-          initialDate: picker.startDate,
-          closingDate: picker.endDate
-        })
+      this.setState({
+        initialDate: picker.startDate,
+        closingDate: picker.endDate
+      })
+  }
+  dateTimePicker(){
+    switch (this.props.notification_state) {
+      case NOTIFICATION_TYPE.CREATE:
+            return (
+              <DateRangePicker onEvent={this.calendarEvent.bind(this)} >
+                 <h2 className="dateRangePicker">
+                   <span>
+                     <FaCalendarCheckO/>
+                   </span>
+                   <span> &nbsp; </span>
+                   <span>
+                     <FaCalendarCheckMinusO/>
+                   </span>
+                 </h2>
+             </DateRangePicker>
+          )
+        break;
+      case NOTIFICATION_TYPE.EDIT:
+          if(this.state.initialDate){
+            return(
+              <DateRangePicker startDate={ this.state.initialDate } endDate={ this.state.closingDate } onEvent={this.calendarEvent.bind(this)} >
+                  <h2 className="dateRangePicker hvr-buzz-out">
+                    <span>
+                      <FaCalendarCheckO/>
+                    </span>
+                    <span> &nbsp; </span>
+                    <span>
+                      <FaCalendarCheckMinusO/>
+                    </span>
+                  </h2>
+              </DateRangePicker>
+          )
+          }else { return null;}
+        break;
+      default:
+        return null;
+    }
   }
 
   render(){
@@ -106,7 +151,7 @@ class NotificationForm extends Component{
           <form className="form-horizontal">
             <div className="form-group">
               <div className="col-sm-12">
-                <input ref="name" type="text" className="form-control" placeholder="Nombre de convocatoria" value={this.state.name || this.props.notification.name} onChange={ this.handleName.bind(this)}/>
+                <input ref="name" type="text" className="form-control" placeholder="Nombre de convocatoria" value={ this.state.name || this.props.notification.name} onChange={ this.handleName.bind(this)}/>
               </div>
             </div>
             <div className="form-group">
@@ -135,19 +180,9 @@ class NotificationForm extends Component{
                 </div>
               </div>
               <div className="form-group">
-                <div className="col-sm-9">
-                  <h4><span className="label label-default" />Fecha Inicio Y Final<span/></h4>
-                    <DateRangePicker onEvent={this.calendarEvent.bind(this)} >
-                        <h2>
-                          <span>
-                            <FaCalendarCheckO/>
-                          </span>
-                          <span> &nbsp; </span>
-                          <span>
-                            <FaCalendarCheckMinusO/>
-                          </span>
-                        </h2>
-                    </DateRangePicker>
+                <div className="col-sm-9 hvr-buzz-out">
+                  <h4><span className="label label-default" />Fecha Inicio <i>{`${this.formatDate(this.state.initialDate) || ""}`}</i> <br/>Fecha Final <i>{`${this.formatDate(this.state.closingDate) || ""}`}</i><span/></h4>
+                  {this.dateTimePicker()}
                 </div>
 
               </div>
@@ -200,22 +235,24 @@ class NotificationForm extends Component{
       }
 
     formatDate(date){
-        return new Date(new Date(date).valueOf() + new Date().getTimezoneOffset()*60000);
+        if(date){
+          return date.format("YYYY/MM/DD");
+        }
     }
 
     postServer(event){
       event.preventDefault();
 
       let notificationObj = this.state.notif;
-      let notificationId = "";
+      let _url = `${SERVER_URL}/comercial_agent/notifications/user/${this.props.userId}/`;
       let ajaxMethod = "POST";
       if (this.props.notification.id){
-        notificationId = `${this.props.notification.id}/`;
-        ajaxMethod     = "PUT";
+        _url        = `${SERVER_URL}/comercial_agent/notifications/${this.props.notification.id}/`;
+        ajaxMethod  = "PUT";
       }
         $.ajax({
           method: ajaxMethod,
-          url: `${SERVER_URL}/comercial_agent/notifications/${notificationId}`,
+          url: _url,
           data: JSON.stringify(notificationObj),
         })
         .done(( msg ) => {
@@ -223,7 +260,7 @@ class NotificationForm extends Component{
               type: "success",
               show: true,
               showModal: false,
-              sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = "#/dashboard/agente-comercial/convocatorias"; },
+              sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${CA_DASHBOARD}/${this.state.userId}/convocatorias`; },
               sweetAlertMessage: "Convocatoria creada exitosamente",
               sweetAlertTitle: "Exito",
             });

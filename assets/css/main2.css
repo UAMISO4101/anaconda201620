@@ -270,7 +270,6 @@ h2 {
 .fullwidth{
   margin: 0%;
   width:100%;
-  z-index: 99999;
 }
 #notiform {
   background-color: #75B46E;
@@ -543,6 +542,7 @@ h2 {
   overflow: hidden;
 }
 
+
 .twit {
   position: absolute;
   left: 0;
@@ -697,7 +697,7 @@ h2 {
 
 #contact h3 {
   text-transform:inherit;
-  color: #373737; 
+  color: #373737;
 }
 
 #contact-section h3 {  
@@ -756,8 +756,12 @@ h2 {
   margin-top: 10px
 }
  .btn-primary-participate:hover {
-  background-color: #212020;
+  background-color: #f7ab24;
   color: #fff
+}
+  .btn-primary-participate:focus {
+  background-color: #797979;
+  color: #fff;
 }
 
 #contact-section .btn-primary:hover {
