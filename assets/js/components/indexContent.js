@@ -7,7 +7,13 @@ import StarRatingComponent from 'react-star-rating-component';
 import FaApple from 'react-icons/lib/fa/apple';
 import { DEFAULT_IMAGE, SERVER_URL, SOUNDS_FILTER, SOUNDS_TYPE} from '../utils/constants';
 import Loading from 'react-loading';
-
+import PlayArrow from 'material-ui/svg-icons/av/play-arrow';
+import RaisedButton from 'material-ui/RaisedButton';
+import {fullWhite} from 'material-ui/styles/colors';
+const style = {
+  margin: 12,
+  labelColor: '#fff'
+}
 const startsFormatter = (cell, row) => {
   return (<StarRatingComponent
                       name="rate2"
@@ -94,12 +100,20 @@ class IndexContent extends Component{
                 <MenuItem eventKey={SOUNDS_TYPE.SONG}>{translator(SOUNDS_TYPE.SONG)}</MenuItem>
                 <MenuItem eventKey={SOUNDS_TYPE.SOUND}>{translator(SOUNDS_TYPE.SOUND)}</MenuItem>
               </DropdownButton>
+              <RaisedButton label="Reproducir Contenido"
+              labelColor={style.labelColor}
+              style={style}
+              backgroundColor="#a4c639"
+              icon={<PlayArrow color={fullWhite} />}
+              onClick={()=>{
+              this.props.changedSongs(this.props.soundtracks.sounds)}
+              } />
                 {this.props.soundtracks? <BootstrapTable data={this.props.soundtracks.sounds } striped={true} hover={true}>
                  <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>ID</TableHeaderColumn>
                  <TableHeaderColumn dataField="cover" dataFormat={this.coverImage} >Cover</TableHeaderColumn>
                  <TableHeaderColumn dataField="sound" dataAlign="center" dataSort={true}>Sonido</TableHeaderColumn>
                  <TableHeaderColumn dataField="type" dataSort={true}>Tipo</TableHeaderColumn>
-                 <TableHeaderColumn dataField="artist">Artista</TableHeaderColumn>
+                 <TableHeaderColumn dataField="artist" dataSort={true}>Artista</TableHeaderColumn>
                  <TableHeaderColumn dataField="rating"  dataSort={true} dataFormat={startsFormatter} >Rating</TableHeaderColumn>
                  <TableHeaderColumn dataField="likes"  dataSort={true} >Likes</TableHeaderColumn>
              </BootstrapTable> : <center><h1>Cargando tus sonidos favoritos</h1><br></br><Loading type='bars' color='#1A237E'></Loading></center>}

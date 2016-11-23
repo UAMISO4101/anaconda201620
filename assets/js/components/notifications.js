@@ -20,7 +20,7 @@ const getNotificationId = notification => {
 const style = {
   margin: '12dp',
   backgroundColor: '#212121',
-  labelColor: '#f7ab24'
+  labelColor: '#F57F17'
 }
 class Notifications extends Component {
 

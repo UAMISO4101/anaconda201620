@@ -54,7 +54,7 @@ export const fetchSoundTracks = (filter, type) => {
         200: (data) => {
           dispatch(getSoundTracks(data))
           //dispatch(resetPlayerAudios())
-          //dispatch(setPlayerAudios(data))
+          dispatch(setPlayerAudios(data.sounds))
         },
         404: (err) => {
           dispatch(showSAModal({
