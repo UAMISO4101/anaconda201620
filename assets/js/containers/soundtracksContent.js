@@ -1,6 +1,6 @@
 import IndexContent from '../components/indexContent'
 import { SERVER_URL } from '../utils/constants';
-import { fetchSoundTracks, showSAModal, hideSAModal } from '../actions';
+import { fetchSoundTracks, showSAModal, hideSAModal ,setPlayerAudios} from '../actions';
 
 import { connect } from 'react-redux';
 
@@ -10,6 +10,7 @@ const mapStateToProps = (state, router) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  changedSongs: (audios) => dispatch(setPlayerAudios(audios)),
   fetchSoundTracks: (filter, type) => dispatch(fetchSoundTracks(filter, type)),
   hideSAModal: () => dispatch(hideSAModal())
 });

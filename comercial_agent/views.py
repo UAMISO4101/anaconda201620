@@ -1,6 +1,12 @@
 import json
 import os
+from datetime import date
 
+import boto
+import django
+from django.contrib.auth import authenticate, login, logout
+from boto.s3.key import Key
+from django.db.models import Max
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -9,14 +15,167 @@ from django.http import JsonResponse
 
 # Create your views here.
 from rest_framework import status
+from rest_framework import viewsets
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+
+from comercial_agent.serializers import UserSerializer
 from .models import *
 
 from comercial_agent.models import Notification, Sound, Song
 
 
+#AUTH
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def retrieve(self, request, pk=None):
+        if pk == 'i':
+            return Response(UserSerializer(request.user,
+                    context={'request':request}).data)
+        return super(UserViewSet, self).retrieve(request, pk)
+
 
 def index(request):
     return render(request, 'comercial_agent/index.html')
+
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        user_json = json.loads(request.body.decode("utf-8"))
+        username = user_json['username']
+        password = user_json['password']
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            print(user)
+            login(request, user)
+            token = Token.objects.get(user=user)
+
+            image = None;
+            email = None;
+
+            try:
+                artist_user = Artist.objects.get(user_id=user.pk)
+                user_role = 'artist'
+                email = artist_user.user.email
+                image = os.environ.get('MEDIA_URL') + str(artist_user.profile_picture)
+            except:
+                print('User is not Artist: ' + username)
+                try:
+                    business_agent_user = BusinessAgent.objects.get(user_id=user.pk)
+                    user_role = 'commercial-agent'
+                    email = business_agent_user.user.email
+                    image = os.environ.get('MEDIA_URL') + str(business_agent_user.profile_picture)
+                except:
+                    print('User is not Business Agent: ' + username)
+                    return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+
+            user_json = {"id": user.pk,
+                        "image": image,
+                         "role": user_role,
+                         "username": username,
+                         "email": email,
+                         "token": token.key,
+                         }
+
+            print(user_json)
+            return JsonResponse ({"user":user_json}, safe=False)
+        else:
+            return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+
+
+@csrf_exempt
+def logout_view(request):
+    if request.method == 'POST':
+        try:
+            logout(request)
+            return HttpResponse(status=status.HTTP_200_OK)
+        except:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+def is_logged_view(request):
+    if request.method == 'GET':
+        if request.user.is_authenticated():
+            return JsonResponse({"isLogged": True})
+        else:
+            return JsonResponse({"isLogged": False})
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+def get_authenticated_user(request):
+    if request.method == 'GET':
+        if request.user is not None:
+            user = User.objects.get_by_natural_key(request.user)
+            if user.is_authenticated():
+                return JsonResponse({"user":user})
+            else:
+                return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+def create_artist_user(request):
+    if request.method == 'POST':
+        user_json = json.loads(request.body.decode("utf-8"))
+        user = django.contrib.auth.models.User.objects.create_user(username=user_json['username'],
+                                                                   password=user_json['password'],
+                                                                   first_name=user_json['names'],
+                                                                   last_name=user_json['surname'],
+                                                                   email=user_json['email'])
+
+        artist = Artist(
+            user=user,
+            profile_picture=user_json['photo'],
+            artistic_name=user_json['nickname'],
+            account_number=user_json['accountNumber'],
+            address=user_json['address'],
+            city=user_json['city'],
+            country=user_json['country'],
+            telephone=user_json['phone']
+        )
+        artist.save()
+
+
+        return HttpResponse(status=status.HTTP_201_CREATED)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+def upload_artist_photo(request):
+    if request.method == 'POST':
+        try:
+            imageFile = request.FILES['file']
+            print(imageFile)
+            path = "media/profilePictures/" + imageFile.name
+            extension = imageFile.name.split(".")[-1]
+
+            conn = boto.connect_s3(os.environ.get('AWS_ACCESS_KEY_ID'), os.environ.get('AWS_SECRET_ACCESS_KEY'))
+            bucket = conn.get_bucket(os.environ.get('AWS_STORAGE_BUCKET_NAME'))
+            k = Key(bucket)
+            k.key = path
+            k.set_metadata('Content-Type', 'image/' + extension)
+            k.set_contents_from_file(imageFile)
+            k.set_acl('public-read')
+
+            print("photo " + path + " uploaded to S3")
+
+            return JsonResponse({'img_url': "profilePictures/" + imageFile.name}, safe=False)
+        except:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 
 @csrf_exempt
@@ -44,12 +203,14 @@ def edit_notification(request,notification_id):
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
-def notification_json(request):
+def notification_json(request, user_id):
     if request.method == 'GET':
-        notifications = Notification.objects.order_by(('initial_date'))
+        business_agent = BusinessAgent.objects.get(user_id=user_id)
+        notifications = Notification.objects.filter(business_agent_id=business_agent.pk).order_by(('initial_date'))
         dict_notifications = []
 
         for notification in notifications:
+            notification = update_notification(notification.id)
             pieces = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
             dict_notification = notification.as_dict();
             dict_pieces = []
@@ -63,12 +224,14 @@ def notification_json(request):
     elif request.method == 'POST':
             notification_json = json.loads(request.body.decode("utf-8"))
 
-            print(notification_json)
+            business_agent = BusinessAgent.objects.get(user_id=user_id)
+
             notification_model = Notification(name=notification_json['name'],
                                               initial_date=notification_json['initialDate'],
                                               closing_date=notification_json['closingDate'],
                                               description=notification_json['description'],
-                                              notification_type=notification_json['notificationType'])
+                                              notification_type=notification_json['notificationType'],
+                                              business_agent=business_agent)
 
             notification_model.save()
 
@@ -87,21 +250,57 @@ def notification_json(request):
 
 @csrf_exempt
 def get_open_notifications(request):
-    notifications_model = Notification.objects.filter(notification_state=Notification.PUBLISHED)
+    if request.method == 'GET':
+        notifications_model = Notification.objects.filter(notification_state=Notification.PUBLISHED)
 
-    notifications_array = []
+        notifications_array = []
 
-    for notification in notifications_model:
-        pieces_model = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
-        dict_notification = notification.as_dict();
-        dict_piece = []
-        for piece in pieces_model:
-            dict_piece.append({'id': piece.id, 'name': piece.name, 'features': piece.features})
+        for notification in notifications_model:
+            notification = update_notification(notification.id)
+            pieces_model = RequestedPiece.objects.filter(notification_id=notification.id).order_by(('id'))
+            dict_notification = notification.as_dict();
+            dict_piece = []
+            for piece in pieces_model:
+                dict_piece.append({'id': piece.id, 'name': piece.name, 'features': piece.features})
 
-        dict_notification['request'] = dict_piece
-        notifications_array.append(dict_notification)
+            dict_notification['request'] = dict_piece
+            notifications_array.append(dict_notification)
 
-    return JsonResponse({'notifications': notifications_array}, safe=False)
+        return JsonResponse({'notifications': notifications_array}, safe=False)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+def update_notification(notification_id):
+    notification = Notification.objects.get(pk=notification_id)
+    print(notification.closing_date)
+
+    if (date.today() > notification.closing_date) and (notification.notification_state == Notification.PUBLISHED):
+        notification.notification_state=Notification.CLOSED
+        notification.save()
+
+        if notification.notification_type == Notification.PUBLIC:
+
+            max_polls = Postulation.objects.filter(notification_id=notification_id).aggregate(Max('polls_num'))
+
+            postulations = Postulation.objects.filter(notification_id=notification_id,
+                                                      polls_num=max_polls['polls_num__max'])
+
+            if len(postulations) > 1:
+                Postulation.objects.filter(notification_id=notification_id,
+                                           polls_num=max_polls['polls_num__max']).update(
+                    is_tied=True
+                )
+            elif len(postulations) == 1:
+                Postulation.objects.filter(notification_id=notification_id,
+                                           polls_num=max_polls['polls_num__max']).update(
+                    is_winner=True
+                )
+                notification.notification_state = Notification.FINISHED
+                notification.save()
+
+    return notification
+
 
 
 @csrf_exempt
@@ -261,21 +460,34 @@ def postulate_artwork(request):
         user_id = postulation_json['proposal']['id_user']
         notification_id = postulation_json['proposal']['id_notification']
 
-        artist_info = Artist.objects.get(user_id=user_id)
-        notification_info = Notification.objects.get(id=notification_id)
+        try:
+            artist_info = Artist.objects.get(user_id=user_id)
 
-        postulation_info = Postulation(artist=artist_info, notification=notification_info)
-        postulation_info.save()
+            Postulation.objects.get(artist_id=artist_info.pk,notification_id=notification_id)
+            print('Postulacion ya existe')
 
-        for artwork in postulation_json['proposal']['pairs']:
-            id_feature = artwork['id_feature']
-            id_artwork = artwork['id_artwork']
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+        except Postulation.DoesNotExist:
 
-            feature_info=RequestedPiece.objects.get(id=id_feature)
-            artwork_info=Artwork.objects.get(id=id_artwork)
+            artist_info = Artist.objects.get(user_id=user_id)
+            notification_info = Notification.objects.get(id=notification_id)
 
-            postulated_artwork= PostulatedArtwork(requestedPiece=feature_info,artwork=artwork_info,postulation=postulation_info)
-            postulated_artwork.save()
+            postulation_info = Postulation(artist=artist_info,
+                                           notification=notification_info,
+                                           is_tied=False,
+                                           is_winner=False,
+                                           polls_num=0)
+            postulation_info.save()
+
+            for artwork in postulation_json['proposal']['pairs']:
+                id_feature = artwork['id_feature']
+                id_artwork = artwork['id_artwork']
+
+                feature_info=RequestedPiece.objects.get(id=id_feature)
+                artwork_info=Artwork.objects.get(id=id_artwork)
+
+                postulated_artwork= PostulatedArtwork(requestedPiece=feature_info,artwork=artwork_info,postulation=postulation_info)
+                postulated_artwork.save()
 
         return HttpResponse(status=status.HTTP_201_CREATED)
     else:
@@ -293,7 +505,6 @@ def get_postulations_by_notification(request,notification_id):
             postulation_info = Postulation.objects.get(id=postulation)
 
             artist_info = Artist.objects.get(id=postulation_info.artist.id)
-            artist_info_json = {"id":artist_info.id,"name":artist_info.artistic_name}
 
             postulated_artwork_info = PostulatedArtwork.objects.filter(postulation_id= postulation)
             for postulated_artwork in postulated_artwork_info:
@@ -304,9 +515,67 @@ def get_postulations_by_notification(request,notification_id):
 
                 audio_array.append(artwork_info_json)
 
-            postulation_info_json = {"id": postulation,"artist":artist_info.artistic_name,"audios":audio_array}
+            postulation_info_json = {"id": postulation,
+                                     "artist":artist_info.artistic_name,
+                                     "likes":postulation_info.polls_num,
+                                     "tie":postulation_info.is_tied,
+                                     "winner":postulation_info.is_winner,
+                                     "audios":audio_array}
             postulation_array_json.append(postulation_info_json)
 
         return JsonResponse(dict(proposals=postulation_array_json))
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+def set_notification_winner(request,notification_id,postulation_id):
+    if request.method == 'PUT':
+        postulations = Postulation.objects.filter(notification_id=notification_id,is_winner=True)
+
+        if len(postulations) == 0:
+            Postulation.objects.filter(pk=postulation_id).update(
+                is_winner=True
+            )
+            Notification.objects.filter(pk=notification_id).update(
+                notification_state=Notification.FINISHED
+            )
+
+            return HttpResponse(status=status.HTTP_201_CREATED)
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+def set_postulation_vote(request, notification_id, user_id, postulation_id):
+    if request.method == 'POST':
+
+        postulations_info = Postulation.objects.filter(notification_id=notification_id)
+        for postulation in postulations_info:
+            try:
+                Poll.objects.get(user_id=user_id, postulation_id=postulation.pk)
+                print('Voto no valido, ya registrado')
+
+                return HttpResponse(status=status.HTTP_403_FORBIDDEN)
+            except Poll.DoesNotExist:
+                continue
+
+        print('Voto valido')
+
+        user_info = User.objects.get(pk=user_id)
+        postulation_info = Postulation.objects.get(pk=postulation_id)
+
+        poll_info = Poll(user=user_info,
+                         postulation=postulation_info)
+        poll_info.save()
+
+        postulation_info.polls_num += 1
+        postulation_info.save()
+
+        return HttpResponse(status=status.HTTP_201_CREATED)
+
+
+    return HttpResponse(status=status.HTTP_400_BAD_REQUEST)

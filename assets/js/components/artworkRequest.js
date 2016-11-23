@@ -4,9 +4,9 @@ import {ARTIST_DASHBOARD, SERVER_URL} from '../utils/constants';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Select from 'react-select';
 import SweetAlert from 'sweetalert-react';
-
+import RaisedButton from 'material-ui/RaisedButton';
 import 'react-select/dist/react-select.css';
-
+const style={margin : 12}
 function buildPairs(requests, {selectValue} ) {
     let pairs = [];
     for (let request of requests) {
@@ -55,16 +55,19 @@ class ArtworkRequest extends Component {
             case "artist":
                 return (
                   <div className="row" >
-                    <div className="col-sm-push-1 col-sm-5 col-xs-12" >
-                      <button className='btn btn-primary' onClick={this.sendRequest}>Postularme</button>
-                    </div>
-                    <div className="col-sm-5 col-xs-12 " >
-                      <button className='btn btn-danger' onClick={()=>{
-                            this.props.hideNotifictionModal();
-                          }
-                        }
-                      >Cancelar</button>
-                    </div>
+                  <center>
+                  <RaisedButton label="Postularme"
+                 labelColor='#fff'
+                 style={style}
+                  backgroundColor="#1565C0"
+                  onClick={this.sendRequest } />
+            <RaisedButton label="Cancelar"
+           labelColor='#fff'
+           style={style}
+            backgroundColor="#C62828"
+            onClick={()=>{
+      this.props.hideNotifictionModal();  }} />
+      </center>
                   </div>
                 )
             case "comercial_agent":
@@ -84,7 +87,7 @@ class ArtworkRequest extends Component {
       return (
         <div className="section artwork-selection">
           <div>
-            Seleccionado: { selectLabel }
+            Seleccione obra: { selectLabel }
           </div>
   				<Select ref={`artwork-${cell}`}
              autofocus
@@ -110,7 +113,7 @@ class ArtworkRequest extends Component {
 
     render() {
         return (
-        <div className="artworkrequest-content">
+        <div className="contact-section">
             <SweetAlert
                 show={this.state.show}
                 type={this.state.type}
@@ -120,9 +123,9 @@ class ArtworkRequest extends Component {
             />
             <div className="row" >
             <div className="col-sm-push-1 col-sm-11 col-xs-12 " >
-              <BootstrapTable data={this.props.request} striped={true} hover={true}>
-                  <TableHeaderColumn dataField="name"  isKey={true}  dataAlign="center" dataSort={true}>Name</TableHeaderColumn>
-                  <TableHeaderColumn dataField="features" dataSort={true}>Features</TableHeaderColumn>
+              <BootstrapTable data={this.props.request} striped={true} hover={false}>
+                  <TableHeaderColumn dataField="name" isKey={true}  dataAlign="center" dataSort={true} width="150">Obra Solicitada</TableHeaderColumn>
+                  <TableHeaderColumn dataField="features" dataSort={true} width="150">Características</TableHeaderColumn>
                   { this.tableComponent(this.props.userType) }
               </BootstrapTable>
             </div>
@@ -147,19 +150,28 @@ class ArtworkRequest extends Component {
                type: "success",
                show: true,
                showModal: false,
-               sweetAlertOnConfirm: () => {this.setState({show: false}); window.location = `#${ARTIST_DASHBOARD}/${this.props.userId}/convocatorias`; },
+               sweetAlertOnConfirm: () => {this.setState({show: false}); this.props.hideNotifictionModal();window.location = `#${ARTIST_DASHBOARD}/${this.props.userId}/convocatorias`; },
                sweetAlertMessage: "Postulación enviada exitosamente",
                sweetAlertTitle: "Exito",
              });
            })
          .fail((err) => {
            console.error(err);
-           this.setState({
-             show: true,
-             sweetAlertTitle: "Error Servidor",
-             type: "error",
-             sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
-           });
+           if (err.status == 400) {
+             this.setState({
+               show: true,
+               sweetAlertTitle: "Ya te habías postulado",
+               type: "warning",
+               sweetAlertMessage: 'Lo sentimos, ya estás postulado'
+             });
+           } else {
+             this.setState({
+               show: true,
+               sweetAlertTitle: "Error Servidor",
+               type: "error",
+               sweetAlertMessage: `status: ${err.status} \nstatusText: ${err.statusText}`
+             });
+           }
          })
       }else {
         this.setState({
@@ -180,7 +192,7 @@ class ArtworkRequest extends Component {
     tableComponent(userType){
       switch (userType){
         case "artist":
-          return( <TableHeaderColumn dataField="id" dataFormat={this.requestUpload.bind(this)}> Tipo & Obra </TableHeaderColumn> )
+          return( <TableHeaderColumn dataField="id" dataFormat={this.requestUpload.bind(this)} width="300"> Tipo & Obra </TableHeaderColumn> )
         case "comercial_agent":
           return( <TableHeaderColumn hidden={true}> </TableHeaderColumn> )
         default:
