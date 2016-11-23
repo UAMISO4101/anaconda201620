@@ -12,7 +12,7 @@ from comercial_agent.models import Artist, ArtworkCollection, SoundType, Genre, 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sonidos_libres.settings")
 
 
-def create_artist_user_01():
+def create_artist_user_05():
     user = django.contrib.auth.models.User.objects.create_user(username='ironmaiden_user',
                                                                password='ironmaiden1234',
                                                                first_name='Iron',
@@ -92,7 +92,27 @@ def create_artist_user_04():
     artist.save()
 
 
-def create_content_artist_01():
+def create_artist_user_01():
+    user = django.contrib.auth.models.User.objects.create_user(username='rodaica_user',
+                                                               password='rodaicauser1234',
+                                                               first_name='Rodolfo',
+                                                               last_name='Aicardi',
+                                                                   email='rodolfoaicardi@sonidoslibres.com')
+
+    artist = Artist(
+        user=user,
+        profile_picture='profilePictures/rodolfoaicardi.jpg',
+        artistic_name='Rodolfo Aicardi',
+        account_number=88888,
+        address='Calle 33',
+        city='Magangue',
+        country='Colombia',
+        telephone=1556699,
+    )
+    artist.save()
+
+
+def create_content_artist_05():
 
     artist = Artist.objects.get(artistic_name='Iron Maiden')
 
@@ -117,6 +137,7 @@ def create_content_artist_01():
         collection=collection,
         genre=genre,
         length=3072,
+        contentUrl='audios/Powerslave Full Album (128kbit_AAC).mp3',
         cover='covers/Iron_Maiden_-_Powerslave.jpg',
         artwork_type='ALB',
     )
@@ -180,6 +201,7 @@ def create_content_artist_01():
         averageRating=5,
         collection=collection,
         genre=genre,
+        contentUrl='audios/Iron Maiden - The Number Of The Beast (1982) - Full Album (192kbit_AAC).mp3',
         cover='covers/IronMaiden_NumberOfBeast.jpg',
         length=2351,
         artwork_type='ALB',
@@ -291,6 +313,7 @@ def create_content_artist_03():
         collection=collection,
         genre=genre,
         length=3072,
+        contentUrl='audios/SOLO UN CIGARRO - PASTOR LOPEZ (128kbit_AAC).mp3',
         cover='covers/hector_exitos.jpg',
         artwork_type='ALB',
     )
@@ -370,6 +393,7 @@ def create_content_artist_04():
         collection=collection,
         genre=genre,
         length=3072,
+        contentUrl='audios/HECTOR LAVOE _ Grandes Éxitos Completo (192kbit_AAC).mp3',
         cover='covers/Pastor_Lopez_Y_Su_Combo-20_Grandes_Exitos-Frontal.jpg',
         artwork_type='ALB',
     )
@@ -420,6 +444,67 @@ def create_content_artist_04():
         artwork_type='SNG',
         contentUrl='audios/SOLO UN CIGARRO - PASTOR LOPEZ (128kbit_AAC).mp3',
         cover='covers/pastor_cigarro.jpg',
+    )
+    song.save()
+
+
+def create_content_artist_01():
+
+    artist = Artist.objects.get(artistic_name='Rodolfo Aicardi')
+
+    collection = ArtworkCollection(
+        artist=artist,
+    )
+    collection.save()
+
+    genre = Genre.objects.get(name='Cumbia')
+
+    #Album1
+    album = Album(
+        name='Rodolfo Aicardi - Grandes Exitos',
+        ratingCount=8,
+        likesCount=253,
+        dislikesCount=8,
+        playsCount=155,
+        averageRating=5,
+        collection=collection,
+        genre=genre,
+        length=3072,
+        contentUrl='audios/HECTOR LAVOE _ Grandes Éxitos Completo (192kbit_AAC).mp3',
+        cover='covers/rodolfo_exitos.jpg',
+        artwork_type='ALB',
+    )
+    album.save()
+
+    song = Song(
+        name='Adonay',
+        ratingCount=44,
+        likesCount=365,
+        dislikesCount=7,
+        playsCount=2564,
+        averageRating=4,
+        collection=collection,
+        song_album=album,
+        length=271,
+        artwork_type='SNG',
+        contentUrl='audios/ADONAY - RODOLFO  CON LOS HISPANOS (128kbit_AAC).mp3',
+        cover='covers/adonay.jpg',
+    )
+    song.save()
+
+    song = Song(
+        name='Tus Besos Son',
+        ratingCount=95,
+        likesCount=663,
+        dislikesCount=10,
+        playsCount=8532,
+        averageRating=5,
+        collection=collection,
+        song_album=album,
+        length=432,
+        artwork_type='SNG',
+        contentUrl='audios/TUS BESOS SON Rodolfo Aicardi (128kbit_AAC).mp3',
+        cover='covers/rodolfo_tusbesos.jpg',
     )
     song.save()
 
@@ -530,11 +615,13 @@ create_artist_user_01()
 create_artist_user_02()
 create_artist_user_03()
 create_artist_user_04()
+create_artist_user_05()
 
 create_content_artist_01()
 create_content_artist_02()
 create_content_artist_03()
 create_content_artist_04()
+create_content_artist_05()
 
 create_agent_01()
 create_agent_02()
