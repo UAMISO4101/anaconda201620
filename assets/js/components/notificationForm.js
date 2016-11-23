@@ -53,6 +53,12 @@ class NotificationForm extends Component{
       userId:  window.localStorage.userId,
     };
   }
+  componentWillReceiveProps(nextProps) {
+  // You don't have to do this check first, but it can help prevent an unneeded render
+  if (nextProps.request !== this.props.request) {
+    this.setState({ request: nextProps.request });
+  }
+  }
   componentDidMount(){
     if (this.props.setRequest){
       this.props.getNotifications();
@@ -244,6 +250,7 @@ class NotificationForm extends Component{
       event.preventDefault();
 
       let notificationObj = this.state.notif;
+      notificationObj.request = this.props.request;
       let _url = `${SERVER_URL}/comercial_agent/notifications/user/${this.props.userId}/`;
       let ajaxMethod = "POST";
       if (this.props.notification.id){
@@ -289,7 +296,7 @@ class NotificationForm extends Component{
           <p>Tipo: {this.state.notif.notificationType}</p>
           <h4>Solicitudes:</h4>
           <ul className="list-group">
-            {this.state.notif.request.map( rq => <Request rq={rq} key={rq.id}/> )}
+            {this.props.request.map( rq => <Request rq={rq} key={rq.id}/> )}
           </ul>
           <Form horizontal onSubmit={this.postServer.bind(this)} >
             <FormGroup>
