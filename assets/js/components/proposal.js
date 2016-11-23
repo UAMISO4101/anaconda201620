@@ -55,7 +55,7 @@ class Proposal extends Component {
             { this.selectProposalButton() }
             <br/>
             <br/>
-            <RaisedButton label="Reproducir Propuesta"
+            <RaisedButton label="Agregar propuesta al reproductor"
            labelColor={style.labelColor}
             backgroundColor="#a4c639"
             icon={<PlayArrow color={fullWhite} />}
