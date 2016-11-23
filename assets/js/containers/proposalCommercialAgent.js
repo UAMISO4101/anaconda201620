@@ -27,8 +27,8 @@ const mapDispatchToProps = dispatch => ({
           if (err.status == 400) {
             this.setState({
               show: true,
-              sweetAlertTitle: "Error",
-              type: "error",
+              sweetAlertTitle: "Convocatoria elegida previamente",
+              type: "warning",
               sweetAlertMessage: 'Esta convocatoria ya tiene un ganador'
             });
           } else {
