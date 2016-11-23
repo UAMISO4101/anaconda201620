@@ -377,10 +377,7 @@ def create_content_artist_04():
     )
     collection.save()
 
-    genre = Genre(
-        name='Cumbia',
-    )
-    genre.save()
+    genre = Genre.objects.get(name='Cumbia')
 
     #Album1
     album = Album(
@@ -457,7 +454,10 @@ def create_content_artist_01():
     )
     collection.save()
 
-    genre = Genre.objects.get(name='Cumbia')
+    genre = Genre(
+        name='Cumbia',
+    )
+    genre.save()
 
     #Album1
     album = Album(
