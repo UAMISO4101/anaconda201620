@@ -5,7 +5,7 @@
   "engines": {
     "node": "6.7.0",
     "npm": "3.10.3"
-  },
+  }, 
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node_modules/webpack/bin/webpack.js --color --watch",
